@@ -56,7 +56,6 @@ class ModalForm extends Component
     {
         $totalAlurProses = collect($this->prosess)->count();
         $arrProses = [];
-        dd($totalAlurProses);
         while($totalAlurProses > 0){
             array_push($arrProses, 0);
             $totalAlurProses--;

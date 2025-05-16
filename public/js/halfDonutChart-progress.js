@@ -1,4 +1,6 @@
-const halfDonutChart = (idElemen, tahun, survei) => {
+export function halfDonutChart (idElemen, tahun, survei)  {
+    const elementIdMonitoring = document.getElementById('id-monitoring');
+    const idSubsektor = Alpine.$data(elementIdMonitoring).idMonitoring;
     const elementSelector = document.querySelector(idElemen);
 
     if (elementSelector) {
@@ -6,7 +8,7 @@ const halfDonutChart = (idElemen, tahun, survei) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') // pastikan token ada di HTML
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content') 
             },
             body: JSON.stringify({
                 survei: survei,
@@ -69,4 +71,4 @@ const halfDonutChart = (idElemen, tahun, survei) => {
     }
 };
 
-halfDonutChart('#chartProgress', 2025, 'Laporan Ternak Unggas (LTU)')
+window.halfDonutChart = halfDonutChart;

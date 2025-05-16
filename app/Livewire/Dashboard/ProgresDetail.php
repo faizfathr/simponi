@@ -9,8 +9,6 @@ use Livewire\Attributes\On;
 use App\Models\ListKegiatan;
 use Livewire\WithFileUploads;
 use App\Models\MonitoringKegiatan;
-use Illuminate\Queue\Middleware\Skip;
-use Illuminate\Contracts\Queue\Monitor;
 
 class ProgresDetail extends Component
 {

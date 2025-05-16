@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class MonitoringPertanian extends Component
 {
-    public $itemMonitoring = 'STATISTIK PETERNAKAN, PERIKANAN, DAN KEHUTANAN';
+    public $idMonitoring = 3;
 
     public function render()
     {
@@ -17,7 +17,8 @@ class MonitoringPertanian extends Component
 
     public function updateItem($item)
     {
-        $this->itemMonitoring = $item;
+        $this->idMonitoring = $item;
+        $this->dispatch('updateSubmonitoring', id:$item);
     }
 
 

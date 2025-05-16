@@ -95,7 +95,7 @@ class DashboardController extends Controller
             ['tahun', '=', $tahun]
         ])->first();
         return response()->json([
-            'persentase' => $listKegiatan->target === 0 ? 0 : $monitoring[0]/$listKegiatan->target*100
+            'persentase' => $listKegiatan->target === 0 ? 0 : number_format($monitoring[0]/$listKegiatan->target*100, 2)
         ]);
     }
 
@@ -117,7 +117,7 @@ class DashboardController extends Controller
         $rowData = [...$rowData, ...$arrProses];
         array_push($rowData, $template->status, $template->pcl, $template->pml);
         
-        // Tentukan header CSV
+        
         $arrHeadSampel = ['Sampel'];
         $arrHeadProses = ['Proses'];
         $counter = collect($arrSampel)->count()-1; 
