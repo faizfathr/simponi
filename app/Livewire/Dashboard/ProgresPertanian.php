@@ -35,6 +35,7 @@ class ProgresPertanian extends Component
             ->select(
                 'list_kegiatan.*',
                 'kegiatan_survei.kegiatan',
+                'kegiatan_survei.periode',
                 DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
             )
             ->where('sektor', 1)

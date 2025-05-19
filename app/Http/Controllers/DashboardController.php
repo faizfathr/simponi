@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\MonitoringKegiatan;
 use App\Models\StrukturTabelMonitoring;
 use Illuminate\Database\Query\JoinClause;
+use stdClass;
 
 class DashboardController extends Controller
 {
@@ -40,63 +41,109 @@ class DashboardController extends Controller
 
     public function data(Request $request)
     {
-        $survei = $request->survei;
-        $kegiatan = KegiatanSurvei::where('kegiatan', $survei)->first();
-        $realisasi = MonitoringKegiatan::where([
-            ['id_tabel', '=', $kegiatan->id],
-            ['tahun', '=', 2025],
-        ])->selectRaw('waktu, COUNT(*) as realisasi')
-            ->groupBy('waktu')
-            ->orderBy('waktu')
-            ->get()
-            ->pluck('realisasi', 'waktu');
+        $subsektor = $request->subsektor;
 
-        $target = ListKegiatan::where([
-            ['id_kegiatan', '=', $kegiatan->id],
-            ['tahun', '=', 2025],
-        ])->select('waktu', 'target')
-            ->orderBy('waktu')
-            ->get()
-            ->pluck('target', 'waktu');
+        // 1. Ambil data target per kegiatan dan waktu
+        $target = ListKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
+            $join->on('id_kegiatan', '=', 'kegiatan_survei.id')
+                ->where([
+                    ['kegiatan_survei.periode', '<>', 4],
+                    ['subsektor', '=', $subsektor],
+                ]);
+        })
+            ->select('id_kegiatan', 'kegiatan_survei.periode', 'waktu', 'target')
+            ->get();
 
-        return response()->json([
-            'categories' => ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-            'series' => [
-                [
-                    'name' => 'Target',
-                    'data' => collect(range(1, 12))->map(fn($bulan) => $target[$bulan] ?? 0),
-                ],
-                [
-                    'name' => 'Realisasi',
-                    'data' => collect(range(1, 12))->map(fn($bulan) => $realisasi[$bulan] ?? 0),
-                ]
-            ]
-        ]);
+        // 2. Ambil data realisasi per kegiatan dan waktu
+        $realisasi = MonitoringKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
+            $join->on('id_tabel', '=', 'kegiatan_survei.id')
+                ->where([
+                    ['kegiatan_survei.periode', '<>', 4],
+                    ['subsektor', '=', $subsektor],
+                ]);
+        })
+            ->selectRaw('id_tabel, waktu, COUNT(*) as realisasi')
+            ->groupBy('id_tabel', 'waktu')
+            ->orderBy('id_tabel')
+            ->get();
+
+        // 4. Gabungkan berdasarkan id_kegiatan
+        foreach ($target as $key => $t) {
+            $t->realisasi = (isset($realisasi[$key]) && $t->id_kegiatan === $realisasi[$key]->id_tabel) ? $realisasi[0]->realisasi : 0;
+        }
+
+        $hasil = $target->groupBy('id_kegiatan')->map(function ($items, $id_kegiatan) {
+            $periode = $items->first()['periode'];
+
+            // Tentukan kategori dan range waktu sesuai periode masing-masing kegiatan
+            [$categories, $range] = match ($periode) {
+                1 => [['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], range(1, 12)],
+                2 => [['Subround 1', 'Subround 2', 'Subround 3'], range(1, 3)],
+                3 => [['Triwulan I', 'Triwulan II', 'Triwulan III', 'Triwulan IV'], range(1, 4)],
+                default => [[], []],
+            };
+
+            $byWaktu = $items->keyBy('waktu');
+
+            return [
+                'id_kegiatan' => $id_kegiatan,
+                'periode' => $periode,
+                'categories' => $categories,
+                'target' => collect($range)->map(fn($w) => $byWaktu[$w]['target'] ?? 0)->toArray(),
+                'realisasi' => collect($range)->map(fn($w) => $byWaktu[$w]['realisasi'] ?? 0)->toArray(),
+            ];
+        })->values();
+
+
+        return response()->json($hasil);
     }
 
     public function dataInPersentase(Request $request)
     {
-        $survei = $request->survei;
         $tahun = $request->tahun;
+        $subsektor = $request->subsektor;
 
-        $specifySurvei = KegiatanSurvei::where('kegiatan', $survei)
-            ->first();
-        $monitoring = MonitoringKegiatan::where([
-            ['id_tabel', '=', $specifySurvei->id],
-            ['tahun', '=', $tahun],
-            ['status', '=', 2]
-        ])->selectRaw('status, count(*) as realisasi')
-            ->groupBy('status')
+        // Ambil target berdasarkan kegiatan
+        $surveiByTarget = KegiatanSurvei::where([
+            ['subsektor', '=', $subsektor],
+            ['periode', '=', 4],
+        ])
+            ->join('list_kegiatan', function ($join) {
+                $join->on('kegiatan_survei.id', '=', 'id_kegiatan')
+                    ->where('tahun', 2025);
+            })
+            ->select('id_kegiatan', 'target')
             ->get()
-            ->pluck('realisasi');
-        
-        $listKegiatan = ListKegiatan::where([
-            ['id_kegiatan', '=', $specifySurvei->id],
-            ['tahun', '=', $tahun]
-        ])->first();
-        return response()->json([
-            'persentase' => $listKegiatan->target === 0 ? 0 : number_format($monitoring[0]/$listKegiatan->target*100, 2)
-        ]);
+            ->keyBy('id_kegiatan'); // buat associative array berdasarkan ID
+
+        // Ambil realisasi berdasarkan kegiatan
+        $surveiByRealisasi = MonitoringKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
+            $join->on('monitoring_kegiatan.id_tabel', '=', 'kegiatan_survei.id')
+                ->where([
+                    ['kegiatan_survei.subsektor', '=', $subsektor],
+                    ['kegiatan_survei.periode', '=', 4],
+                ]);
+        })
+            ->where('monitoring_kegiatan.status', 2)
+            ->selectRaw('monitoring_kegiatan.id_tabel as id_kegiatan, count(*) as realisasi')
+            ->groupBy('monitoring_kegiatan.id_tabel')
+            ->get()
+            ->keyBy('id_kegiatan');
+
+        // Gabungkan hasil berdasarkan ID
+        $results = [];
+
+        $ids = $surveiByTarget->keys()->merge($surveiByRealisasi->keys())->unique();
+
+        foreach ($ids as $id) {
+            $results[] = [
+                'id' => $id,
+                'target' => $surveiByTarget[$id]->target ?? 0,
+                'realisasi' => $surveiByRealisasi[$id]->realisasi ?? 0,
+            ];
+        }
+
+        return response()->json($results);
     }
 
     public function downloadTabel($idTabel)
@@ -108,7 +155,7 @@ class DashboardController extends Controller
 
         // Gabungkan data menjadi satu baris array
         $rowData = [];
-        
+
         $arrProses = explode(';', $template->proses);
         $arrSampel = explode(';', $template->ket_sampel);
         array_push($rowData, $template->no);
@@ -116,17 +163,17 @@ class DashboardController extends Controller
         array_push($rowData, $template->jadwal);
         $rowData = [...$rowData, ...$arrProses];
         array_push($rowData, $template->status, $template->pcl, $template->pml);
-        
-        
+
+
         $arrHeadSampel = ['Sampel'];
         $arrHeadProses = ['Proses'];
-        $counter = collect($arrSampel)->count()-1; 
-        while($counter > 0) {
+        $counter = collect($arrSampel)->count() - 1;
+        while ($counter > 0) {
             array_push($arrHeadSampel, '');
             $counter--;
         }
-        $counter = collect($arrProses)->count()-1; 
-        while($counter > 0) {
+        $counter = collect($arrProses)->count() - 1;
+        while ($counter > 0) {
             array_push($arrHeadProses, '');
             $counter--;
         }

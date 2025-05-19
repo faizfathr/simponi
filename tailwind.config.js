@@ -20,11 +20,24 @@ export default {
                 'brand-50': '#ecf3ff',
                 'brand-500': '#465fff',
                 'brand-600': '#3641f5',
-                'primary' : '#465fff',
-                'success-50' : '#ecfdf3',
-                'success-500' : '#12b76a',
-                'success-600' : '#039855',
-                'warning-50' : '#fffaeb',
+                'primary': '#465fff',
+                'success-50': '#ecfdf3',
+                'success-500': '#12b76a',
+                'success-600': '#039855',
+                'warning-50': '#fffaeb',
+            },
+            keyframes: {
+                progressAnimation: {
+                    '0%': {
+                        width: '0%',
+                    },
+                    '100%': {
+                        width: '100%',
+                    },
+                },
+            },
+            animation: {
+                'progress': 'progressAnimation 3000ms linear forwards',
             }
         },
     },

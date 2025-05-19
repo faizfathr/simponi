@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->string('id_kegiatan')->require();
             $table->unsignedSmallInteger('tahun')->require();
-            $table->string('periode')->require();
             $table->unsignedSmallInteger('waktu')->require();
             $table->smallInteger('target')->nullable();
             $table->date('tanggal_mulai')->nullable();

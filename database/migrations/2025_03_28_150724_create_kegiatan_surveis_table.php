@@ -15,6 +15,7 @@ return new class extends Migration
             $table->string('id');
             $table->smallInteger('sektor');
             $table->smallInteger('subsektor');
+            $table->smallInteger('periode');
             $table->string('kegiatan');
             $table->timestamps();
         });

@@ -13,6 +13,7 @@ class Target extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $id, $kegiatan;
+    public bool $showNotif = false;
     public string $id_kegiatan, $periode ="", $action = 'Tambah', $ketWaktu ='';
     public $tanggal_mulai = null, $tanggal_selesai = null;
     public int $tahun, $waktu, $target=0;
@@ -48,11 +49,13 @@ class Target extends Component
 
     public function insert()
     {
-        if (intval($this->periode) == 1) {
+        $surveiTarget = KegiatanSurvei::where('id', $this->id_kegiatan)->first();
+        $this->periode = $surveiTarget->periode;
+        if ($this->periode == 1) {
             $this->loopTask(12);
-        } elseif (intval($this->periode) == 2) {
+        } elseif ($this->periode == 2) {
             $this->loopTask(3);
-        } elseif (intval($this->periode) == 3) {
+        } elseif ($this->periode == 3) {
             $this->loopTask(4);
         } else {
             $this->loopTask(1);
@@ -67,7 +70,6 @@ class Target extends Component
             ListKegiatan::create([
                 'id_kegiatan' => $this->id_kegiatan,
                 'tahun' => $this->tahun,
-                'periode' => $this->periode,
                 'waktu' => $time,
                 'target' => $this->target,
                 'tanggal_mulai' => Carbon::make($this->tanggal_mulai),
@@ -85,7 +87,6 @@ class Target extends Component
         $this->id = $target->id;
         $this->id_kegiatan = $target->id_kegiatan;
         $this->tahun = $target->tahun;
-        $this->periode = $target->periode;
         $this->waktu = $target->waktu;
         $this->target = $target->target;
         $this->tanggal_mulai = $target->tanggal_mulai;
@@ -101,7 +102,6 @@ class Target extends Component
             ->update([
                 'id_kegiatan' => $this->id_kegiatan,
                 'tahun' => $this->tahun,
-                'periode' => $this->periode,
                 'waktu' => $this->waktu,
                 'target' => $this->target,
                 'tanggal_mulai' => Carbon::make($this->tanggal_mulai),
@@ -122,7 +122,6 @@ class Target extends Component
                         : ($target->periode < 4 
                             ? $this->romawiFont[$target->waktu - 1] 
                             : $target->tahun);
-                            // dd($this->ketWaktu);
         $this->openWarningDelete = TRUE;
     }
 
