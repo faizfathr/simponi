@@ -13,8 +13,8 @@ class Target extends Component
 {
     use WithPagination, WithoutUrlPagination;
     public $id, $kegiatan;
-    public bool $showNotif = false;
-    public string $id_kegiatan, $periode ="", $action = 'Tambah', $ketWaktu ='';
+    public bool $showNotif = FALSE;
+    public string $id_kegiatan, $periode ="", $action = 'Tambah', $ketWaktu ='', $message = '', $status = '';
     public $tanggal_mulai = null, $tanggal_selesai = null;
     public int $tahun, $waktu, $target=0;
     public bool $openForm = FALSE, $openWarningDelete = FALSE;
@@ -27,7 +27,9 @@ class Target extends Component
     public function render()
     {
         $listKegiatan = KegiatanSurvei::get();
-        $listTarget = ListKegiatan::orderBy('list_kegiatan.created_at', 'DESC')
+        $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
+            ->selectRaw('list_kegiatan.*, kegiatan_survei.periode as periode')
+            ->orderBy('list_kegiatan.created_at', 'DESC')
             ->paginate(10);
         return view('livewire.dashboard.target', [
             'listTarget' => $listTarget,
@@ -61,6 +63,9 @@ class Target extends Component
             $this->loopTask(1);
         }
         $this->openForm = FALSE;
+        $this->message = "Target berhasil ditambahkan";
+        $this->status = "Berhasil";
+        $this->showNotif =  TRUE;
     }
 
     private function loopTask($intervalTask)
@@ -109,12 +114,17 @@ class Target extends Component
                 'updated_at' => Carbon::now(),
             ]);
         if($isUpdated) $this->openForm = FALSE;
+        $this->message = "Target berhasil diperbaharui";
+        $this->status = "Berhasil";
+        $this->showNotif =  TRUE;
     }
 
     public function confirmDelete($id)
     {
         $this->id = $id;
-        $target = ListKegiatan::where('id', $id)->first();
+        $target = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
+            ->where('list_kegiatan.id', $id)
+            ->first();
         $this->kegiatan = $target->joinKegiatan->kegiatan;
         $this->periode = $this->ketPeriode[$target->periode - 1];
         $this->ketWaktu = $target->periode == 1 
@@ -129,5 +139,8 @@ class Target extends Component
     {
         $isDeleted = ListKegiatan::where('id', $id)->delete();
         if($isDeleted) $this->openWarningDelete = FALSE;
+        $this->message = "Target berhasil dihapus";
+        $this->status = "Berhasil";
+        $this->showNotif =  TRUE;
     }
 }

@@ -1,15 +1,18 @@
 @aware([
-    'showNotif' => true,
+    'show' => FALSE,
     'message' => '',
-    'status' => 'Berhasil'
+    'status' => ''
 ])
-<div x-data = "{ progress: 0 }" x-show="{{ $showNotif }}" x-init="setTimeout(() => {
-    showNotif = false
-}, 3000)"
+<div 
+    x-data = "{ progress: 0 }"
+    x-show="{{ $show }}" 
+    x-init="setTimeout(() => {
+        {{ $show }} = false
+    }, 3000)"
     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-full"
     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-o translate-x-full"
-    class="absolute top-20 right-5 max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden ml-3">
+    class="fixed top-20 right-5 max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden ml-3">
     <div class="inline-flex justify-start w-full">
         <div class="flex justify-center items-center w-12 bg-success-500">
             @if (false)
@@ -29,7 +32,9 @@
         <div class="-mx-3 py-2 px-4">
             <div class="mx-3 text-start">
                 <span class="text-success-500 font-semibold">{{ $status }}</span>
-                <p class="text-gray-600 text-sm">Update data</p>
+                <p class="text-gray-600 text-sm">
+                    {{ $message }}
+                </p>
             </div>
         </div>
     </div>

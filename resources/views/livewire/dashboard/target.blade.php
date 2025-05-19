@@ -1,7 +1,8 @@
 <div x-data="{
     openForm: @entangle('openForm'),
     action: @entangle('action'),
-    openWarningDelete: @entangle('openWarningDelete')
+    openWarningDelete: @entangle('openWarningDelete'),
+    showNotif: @entangle('showNotif')
 }">
     {{-- <div class=" w-[100%] inset-0 bg-slate-500 h-[100vh]"></div> --}}
     <button
@@ -19,7 +20,8 @@
     <div
         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
 
-        <x-dashboard.notification showNotif="{{ $showNotif }}"/>
+        <x-dashboard.notification show="showNotif" message="{{ $message }}" status="{{ $status }}"/>
+
         <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90">
