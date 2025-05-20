@@ -27,7 +27,7 @@
                         fill="" />
                 </svg>
             </span>
-            <input type="text" placeholder="Search or type command..." wire:model.live.debounce.250ms='qSearch'
+            <input type="text" placeholder="Cari kegiatan..." wire:model.live.debounce.250ms='qSearch'
                 class="dark:bg-dark-900 shadow-theme-xs bg-white focus:border-brand-600 focus:ring-brand-500/10 dark:focus:border-brand-600 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[430px] dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30" />
 
             <button id="search-button"
@@ -76,7 +76,7 @@
             </div>
         </div>
 
-        <div class="w-full overflow-x-auto">
+        <div class="w-full overflow-x-auto h-[60vh]">
             <table class="min-w-full">
                 <!-- table header start -->
                 <thead>
@@ -220,12 +220,12 @@
                     <!-- table body end -->
                 </tbody>
             </table>
-            @if (!$qSearch)
-                <div class="my-2 mr-1">
-                    {{ $listTarget->links() }}
-                </div>
-            @endif
         </div>
+        @if (!$qSearch)
+            <div class="my-2 mr-1">
+                {{ $listTarget->links() }}
+            </div>
+        @endif
     </div>
     <!-- Modal Form -->
     <div x-show="openForm"

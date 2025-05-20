@@ -1,12 +1,34 @@
-<div class="grid grid-cols-12 gap-4 md:gap-6">
-    <div class="col-span-12 space-y-6 xl:col-span-7">
+<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6">
+    <style>
+        .swiper-button-next,
+        .swiper-button-prev {
+            color: #475569 ;
+            /* brand-500 */
+            transition: transform 0.2s ease;
+        }
+
+        .swiper-button-next:hover,
+        .swiper-button-prev:hover {
+            transform: scale(1.1);
+        }
+
+        .swiper-slide img {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .swiper-slide img:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+    {{-- <div class="col-span-12 space-y-6 xl:col-span-7">
         <!-- Metric Group One -->
         <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
             <!-- Metric Item Start -->
-            <x-dashboard.bubble-card title="Mitra" :mitra="$mitra"/>
-            <!-- Metric Item End -->
+            <x-dashboard.bubble-card title="Mitra" :mitra="$mitra"/> --}}
+    <!-- Metric Item End -->
 
-            <!-- Metric Item Start -->
+    {{-- <!-- Metric Item Start -->
             <div
                 class="rounded-2xl border border-gray-200 bg-white p-5 dark:border-gray-800 dark:bg-white/[0.03] md:p-6">
                 <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800">
@@ -39,36 +61,132 @@
                     </span>
                 </div>
             </div>
-            <!-- Metric Item End -->
+            <!-- Metric Item End --> --}}
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <!-- Statistik Produksi -->
+        <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Produksi</h2>
+            <p class="text-sm">
+                Statistik Produksi mencakup kegiatan pengumpulan, pengolahan, dan analisis data produksi seperti
+                kegiatan pertanian, perikanan, perkebunan, peternakan, industri besar dan sedang, produksi energi, serta konstruksi.
+            </p>
         </div>
 
-        <!-- Metric Group One -->
-
-        <!-- ====== Chart One Start -->
-        <include src="./partials/chart/chart-01.html" />
-        <!-- ====== Chart One End -->
-    </div>
-    <div class="col-span-12 xl:col-span-5">
-        <!-- ====== Chart Two Start -->
-        {{-- <x-dashboard.chart-progress-total /> --}}
-        <!-- ====== Chart Two End -->
-    </div>
-
-    <div class="col-span-12">
-        <!-- ====== Chart Three Start -->
-        <include src="./partials/chart/chart-03.html" />
-        <!-- ====== Chart Three End -->
+        <!-- Statistik Pertanian dan IPEK -->
+        <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Pertanian & IPEK</h2>
+            <ul class="list-disc list-inside text-sm space-y-1">
+                <li>Survei Tanaman Pangan dan Hortikultura</li>
+                <li>Survei Perkebunan, Peternakan, dan Perikanan</li>
+                <li>Pendataan usaha skala kecil dan besar, Air Bersih, Perusahaan Konstruksi</li>
+                <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, subround, dan tahunan</li>
+            </ul>
+        </div>
     </div>
 
-    <div class="col-span-12 xl:col-span-5">
-        <!-- ====== Map One Start -->
-        <include src="./partials/map-01.html" />
-        <!-- ====== Map One End -->
+    <!-- Anggota Tim -->
+    <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50 mb-6">
+        <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">Anggota Tim</h2>
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- Anggota 1 -->
+            <div class="bg-brand-50 p-3 rounded-xl text-center">
+                <img src="/img/anggota/faiz.png" alt="Foto"
+                    class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
+                <p class="font-semibold text-sm">Elysa, SST</p>
+                <p class="text-xs text-gray-600">Ketua Tim Produksi</p>
+            </div>
+            <!-- Anggota 2 -->
+            <div class="bg-brand-50 p-3 rounded-xl text-center">
+                <img src="/img/anggota/faiz.png" alt="Foto"
+                    class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
+                <p class="font-semibold text-sm">Maudy Sazty Nataya, A.Md.Stat.</p>
+                <p class="text-xs text-gray-600">Statistisi Terampil</p>
+            </div>
+            <!-- Anggota 3 -->
+            <div class="bg-brand-50 p-3 rounded-xl text-center">
+                <img src="/img/anggota/faiz.png" alt="Foto"
+                    class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
+                <p class="font-semibold text-sm">Faiz Fathur Rahman, A.Md.Stat.</p>
+                <p class="text-xs text-gray-600">Statistisi Terampil</p>
+            </div>
+            <!-- Anggota 4 -->
+            <div class="bg-brand-50 p-3 rounded-xl text-center">
+                <img src="/img/anggota/faiz.png" alt="Foto"
+                    class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
+                <p class="font-semibold text-sm">Harmanto</p>
+                <p class="text-xs text-gray-600">Statistisi Penyelia</p>
+            </div>
+        </div>
     </div>
 
-    <div class="col-span-12 xl:col-span-7">
-        <!-- ====== Table One Start -->
-        <include src="./partials/table/table-01.html" />
-        <!-- ====== Table One End -->
-    </div>
+    <!-- Dokumentasi Kegiatan -->
+    <section class="bg-white p-6 rounded-2xl shadow-lg border border-brand-50">
+        <h2 class="text-xl font-semibold text-slate-700 mb-4">Dokumentasi Kegiatan</h2>
+
+        <div class="swiper swiperCardKegiatan">
+            <div class="swiper-wrapper">
+                <!-- Slide 1 -->
+                <div class="swiper-slide">
+                    <img src="/img/kegiatan/kegiatan_1.jpeg"
+                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 1" />
+                </div>
+                <!-- Slide 2 -->
+                <div class="swiper-slide">
+                    <img src="/img/kegiatan/kegiatan_2.jpeg"
+                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 2" />
+                </div>
+                <!-- Slide 3 -->
+                <div class="swiper-slide">
+                    <img src="/img/kegiatan/kegiatan_3.jpeg"
+                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/kegiatan/kegiatan_4.jpeg"
+                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                </div>
+                <!-- Tambahkan slide lainnya jika perlu -->
+            </div>
+
+            <!-- Navigasi panah -->
+            <div class="swiper-button-next text-slate-600"></div>
+            <div class="swiper-button-prev text-slate-600"></div>
+
+            <!-- Navigasi bulatan bawah -->
+            <div class="swiper-pagination mt-4"></div>
+        </div>
+    </section>
+    <script>
+        const swiper = new Swiper(".swiperCardKegiatan", {
+            loop: true,
+            spaceBetween: 20,
+            centeredSlides: true,
+            grabCursor: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                320: {
+                    slidesPerView: 1,
+                },
+                640: {
+                    slidesPerView: 1.2,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                1024: {
+                    slidesPerView: 2.5,
+                },
+            },
+            navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    </script>
 </div>

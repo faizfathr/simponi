@@ -18,6 +18,9 @@ class ProgresIpek extends Component
     public array $ketPeriode = ['Bulan', 'Subround', 'Triwulan', 'Tahun'];
 
     public array $romawiFont = ["I", "II", "III", "IV"];
+
+    public string $qSearch = '';
+
     public function render()
     {
         $subqueryRealisasi = DB::table('monitoring_kegiatan')
@@ -25,21 +28,40 @@ class ProgresIpek extends Component
             ->where('status', 2)
             ->groupBy('id_tabel', 'waktu', 'tahun');
 
-        $progresIpek = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', '=', 'kegiatan_survei.id')
-            ->leftJoinSub($subqueryRealisasi, 'monitoring_realisasi', function ($join) {
-                $join->on('list_kegiatan.id_kegiatan', '=', 'monitoring_realisasi.id_tabel')
-                    ->whereColumn('list_kegiatan.waktu', '=', 'monitoring_realisasi.waktu')
-                    ->whereColumn('list_kegiatan.tahun', '=', 'monitoring_realisasi.tahun');
-            })
-            ->select(
-                'list_kegiatan.*',
-                'kegiatan_survei.kegiatan',
-                'kegiatan_survei.periode',
-                DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
-            )
-            ->where('sektor', 2)
-            ->orderBy('waktu', 'ASC')
-            ->get();
+        if($this->qSearch) {
+            $progresIpek = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', '=', 'kegiatan_survei.id')
+                ->leftJoinSub($subqueryRealisasi, 'monitoring_realisasi', function ($join) {
+                    $join->on('list_kegiatan.id_kegiatan', '=', 'monitoring_realisasi.id_tabel')
+                        ->whereColumn('list_kegiatan.waktu', '=', 'monitoring_realisasi.waktu')
+                        ->whereColumn('list_kegiatan.tahun', '=', 'monitoring_realisasi.tahun');
+                })
+                ->select(
+                    'list_kegiatan.*',
+                    'kegiatan_survei.kegiatan',
+                    'kegiatan_survei.periode',
+                    DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
+                )
+                ->where('sektor', 2)
+                ->whereLike('kegiatan', '%'.$this->qSearch . '%')
+                ->orderBy('waktu', 'ASC')
+                ->get();
+        } else {
+            $progresIpek = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', '=', 'kegiatan_survei.id')
+                ->leftJoinSub($subqueryRealisasi, 'monitoring_realisasi', function ($join) {
+                    $join->on('list_kegiatan.id_kegiatan', '=', 'monitoring_realisasi.id_tabel')
+                        ->whereColumn('list_kegiatan.waktu', '=', 'monitoring_realisasi.waktu')
+                        ->whereColumn('list_kegiatan.tahun', '=', 'monitoring_realisasi.tahun');
+                })
+                ->select(
+                    'list_kegiatan.*',
+                    'kegiatan_survei.kegiatan',
+                    'kegiatan_survei.periode',
+                    DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
+                )
+                ->where('sektor', 2)
+                ->orderBy('waktu', 'ASC')
+                ->paginate(10);
+        }
         return view('livewire.dashboard.progres-ipek', [
             'data' => $progresIpek,
         ]);
