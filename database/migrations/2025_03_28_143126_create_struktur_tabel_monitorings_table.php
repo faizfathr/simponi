@@ -13,9 +13,7 @@ return new class extends Migration
     {
         Schema::create('struktur_tabel_monitoring', function (Blueprint $table) {
             $table->string('id');
-            $table->string('no', 5);
             $table->string('ket_sampel');
-            $table->string('jadwal', 10);
             $table->string('proses');
             $table->string('status');
             $table->string('pcl');

@@ -1,26 +1,26 @@
-﻿1,No,Sampel,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-2,No,Sampel,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-3,No,Sampel,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-4,No,Sampel,Jadwal,Pencacahan;Pemeriksaan,Status,PCL,PML
-5,No,Sampel,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-6,No,Kecamatan;Kelurahan;Blok Sensus,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-7,No,Kecamatan;Kelurahan;Blok sensus/Subsegmen;Nama Responden;Komoditas,Jadwal,Kwitansi;Visum;Entri Data;Foto,Status,PCL,PML
-8,No,Kecamatan;Kelurahan;Segmen,Jadwal,Pencacahan;Pemeriksaan,Status,PCL,PML
-9,No,Dokumen,Jadwal,Dokumen Masuk;Entri Data,Status,PCL,PML
-10,No,Dokumen,Jadwal,Dokumen Masuk;Entri Data,Status,PCL,PML
-11,No,Dokumen,Jadwal,Dokumen Masuk;Entri Data,Status,PCL,PML
-12,No,Dokumen,Jadwal,Dokumen Masuk;Entri Data,Status,PCL,PML
-13,No,Kecamatan;Kelurahan;Nama Usaha;Alamat;CP;Komoditas;Keteranga,Jadwal,Status,Pencacahan;Submitted by PCL;Approved by PML,PCL,PML
-14,No,Kecamatan;Kelurahan;Blok Sensus;NKS;Jumlah Bangunan Blok Sensus;Jumlah Ruta,Jadwal,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
-15,No,Kecamatan;Kelurahan;Blok Sensus;Nama Usaha;Alamat;No Telp;KBLI;Klasifikasi Industri,Jadwal,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
-16,No,Nama Perusahaan;Alamat;Telp;Produk Utama;Keterangan,Jadwal,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
-17,No,Kecamatan;Kelurahan;Nama Perusahaan;Alamat;Telp;Produk Utama;KBLI;Keterangan,Jadwal,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
-18,No,Nama Perusahaan;Alamat;Kontak,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-19,No,Nama Perusahaan;Alamat,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-20,No,Nama Perusahaan;Alamat,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-21,No,Nama Perusahaan;Alamat;Telp;Kegiatan,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-22,No,Sampel,Jadwal,Pencacahan;Pemeriksaan;Entri Dokumen,Status,PCL,PML
-23,No,Nama Perusahaan;Nama Pengusaha;Alamat;CP,Jadwal,Pencacahan;Pemeriksaan,Status,PCL,PML
-24,No,Nama Perusahaan;Alamat;Keterangan,Jadwal,Pencacahan;Pemeriksaan,Status,PCL,PML
-25,No,Nama Perusahaan;Alamat,Jadwal,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
-26,No,Nama Perusahaan;Alamat;Keterangan;Sampel Pengganti,Jadwal,Pencacahan;Submitted by PCL;Aprroved by PML,Status,PCL,PML
+﻿1,Sampel,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+2,Sampel,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+3,Sampel,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+4,Sampel,Pencacahan;Pemeriksaan,Status,PCL,PML
+5,Sampel,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+6,Kecamatan;Kelurahan;Blok Sensus,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+7,Kecamatan;Kelurahan;Blok sensus/Subsegmen;Nama Responden;Komoditas,Kwitansi;Visum;Entri Data;Foto,Status,PCL,PML
+8,Kecamatan;Kelurahan;Segmen,Pencacahan;Pemeriksaan,Status,PCL,PML
+9,Dokumen,Dokumen Masuk;Entri Data,Status,PCL,PML
+10,Dokumen,Dokumen Masuk;Entri Data,Status,PCL,PML
+11,Dokumen,Dokumen Masuk;Entri Data,Status,PCL,PML
+12,Dokumen,Dokumen Masuk;Entri Data,Status,PCL,PML
+13,Kecamatan;Kelurahan;Nama Usaha;Alamat;CP;Komoditas;Keteranga,Status,Pencacahan;Submitted by PCL;Approved by PML,PCL,PML
+14,Kecamatan;Kelurahan;Blok Sensus;NKS;Jumlah Bangunan Blok Sensus;Jumlah Ruta,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
+15,Kecamatan;Kelurahan;Blok Sensus;Nama Usaha;Alamat;Telp;KBLI;Klasifikasi Industri,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
+16,Nama Perusahaan;Alamat;Telp;Produk Utama;Keterangan,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
+17,Kecamatan;Kelurahan;Nama Perusahaan;Alamat;Telp;Produk Utama;KBLI;Keterangan,Pencacahan;Submitted by PCL;Approved by PML,Status,PCL,PML
+18,Nama Perusahaan;Alamat;Kontak,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+19,Nama Perusahaan;Alamat,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+20,Nama Perusahaan;Alamat,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+21,Nama Perusahaan;Alamat;Telp;Kegiatan,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+22,Sampel,Pencacahan;Pemeriksaan;Entri Dokumen,Status,PCL,PML
+23,Nama Perusahaan;Nama Pengusaha;Alamat;CP,Pencacahan;Pemeriksaan,Status,PCL,PML
+24,Nama Perusahaan;Alamat;Keterangan,Pencacahan;Pemeriksaan,Status,PCL,PML
+25,Nama Perusahaan;Alamat,Pencacahan;Pemeriksaan;Pengiriman Dokumen,Status,PCL,PML
+26,Nama Perusahaan;Alamat;Keterangan;Sampel Pengganti,Pencacahan;Submitted by PCL;Aprroved by PML,Status,PCL,PML

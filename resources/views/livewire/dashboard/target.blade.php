@@ -5,22 +5,42 @@
     showNotif: @entangle('showNotif')
 }">
     {{-- <div class=" w-[100%] inset-0 bg-slate-500 h-[100vh]"></div> --}}
-    <button
-        class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 mb-3"
-        wire:click='tambahForm'>
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-            class="size-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-        </svg>
-        Tambah Kegiatan
-        <div wire:loading wire:target='tambahForm'
-            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+    <div class="flex gap-x-2 items-center mb-3">
+        <button
+            class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
+            wire:click='tambahForm'>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="size-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Tambah Kegiatan
+            <div wire:loading wire:target='tambahForm'
+                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+            </div>
+        </button>
+        <div class="relative">
+            <span class="absolute top-1/2 left-4 -translate-y-1/2">
+                <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 5.87693 15.7084 9.37363C15.7084 12.8703 12.8731 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
+                        fill="" />
+                </svg>
+            </span>
+            <input type="text" placeholder="Search or type command..." wire:model.live.debounce.250ms='qSearch'
+                class="dark:bg-dark-900 shadow-theme-xs bg-white focus:border-brand-600 focus:ring-brand-500/10 dark:focus:border-brand-600 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[430px] dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30" />
+
+            <button id="search-button"
+                class="absolute top-1/2 right-2.5 inline-flex -translate-y-1/2 items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-[7px] py-[4.5px] text-xs -tracking-[0.2px] text-gray-500 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-400">
+                <span> ⌘ </span>
+                <span> K </span>
+            </button>
         </div>
-    </button>
+    </div>
     <div
         class="overflow-hidden rounded-2xl border border-gray-200 bg-white px-4 pb-3 pt-4 dark:border-gray-800 dark:bg-white/[0.03] sm:px-6">
 
-        <x-dashboard.notification show="showNotif" message="{{ $message }}" status="{{ $status }}"/>
+        <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
 
         <div class="flex flex-col gap-2 mb-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -108,92 +128,103 @@
                 <!-- table header end -->
 
                 <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-                    @foreach ($listTarget as $item)
-                        <tr>
-                            <td class="py-3">
-                                <div class="flex items-center">
-                                    <div class="flex items-center gap-3">
-                                        <div>
-                                            <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                {{ $item->joinKegiatan->kegiatan }}
-                                            </p>
-                                            <span class="text-gray-500 text-theme-xs dark:text-gray-400">
-                                                {{ $item->joinKegiatan->sektor == 1 ? 'Pertanian' : 'IPEK' }}
-                                            </span>
+                    @if (!$listTarget->isEmpty())
+                        @foreach ($listTarget as $item)
+                            <tr>
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <div class="flex items-center gap-3">
+                                            <div>
+                                                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
+                                                    {{ $item->joinKegiatan->kegiatan }}
+                                                </p>
+                                                <span class="text-gray-500 text-theme-xs dark:text-gray-400">
+                                                    {{ $item->joinKegiatan->sektor == 1 ? 'Pertanian' : 'IPEK' }}
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="flex items-center">
-                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                        {{ $item->tahun }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="flex items-center">
-                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                        {{ $item->periode == 1
-                                            ? $this->listBulan[$item->waktu - 1]
-                                            : ($item->periode == 2 || $item->periode == 3
-                                                ? $this->ketPeriode[$item->periode - 1] . ' ' . $this->romawiFont[$item->waktu - 1]
-                                                : 'Tahunan') }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="flex items-center">
-                                    <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                        {{ $item->target }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="flex items-center">
-                                    <p
-                                        class="rounded-full {{ is_null($item->tanggal_mulai) ? 'bg-brand-50' : (now() < $item->tanggal_mulai ? 'bg-red-500 text-white' : (now() > $item->tanggal_selesai ? 'bg-success-50 text-success-600' : 'bg-yellow-400 text-yellow-100')) }} px-2 py-0.5 text-theme-xs font-medium  text-xs dark:bg-success-500/15 dark:text-success-500">
-                                        {{ is_null($item->tanggal_mulai) ? 'Tanggal belum diatur' : (now() < $item->tanggal_mulai ? 'Kegiatan belum dimulai' : (now() > $item->tanggal_selesai ? 'Kegiatan selesai' : 'Sedang berjalan')) }}
-                                    </p>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="flex items-center gap-2">
-                                    <button wire:click='edit({{ $item->id }}, "update")'
-                                        class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-orange-400 shadow-theme-xs hover:bg-orange-600 mb-3">
-                                        <svg wire:loading.remove wire:target='edit({{ $item->id }}, "update")'
-                                            xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                        </svg>
-                                        <div wire:loading wire:target='edit({{ $item->id }}, "update")'
-                                            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-                                        </div>
-                                    </button>
-                                    <button wire:click="confirmDelete({{ $item->id }})"
-                                        class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-red-400 shadow-theme-xs hover:bg-red-600 mb-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-4"
-                                            wire:loading.remove wire:target="confirmDelete({{ $item->id }})">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                        </svg>
-                                        <div wire:loading wire:target="confirmDelete({{ $item->id }})"
-                                            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-                                        </div>
-                                    </button>
-                                </div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                            {{ $item->tahun }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                            {{ $item->periode == 1
+                                                ? $this->listBulan[$item->waktu - 1]
+                                                : ($item->periode == 2 || $item->periode == 3
+                                                    ? $this->ketPeriode[$item->periode - 1] . ' ' . $this->romawiFont[$item->waktu - 1]
+                                                    : 'Tahunan') }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                            {{ $item->target }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center">
+                                        <p
+                                            class="rounded-full {{ is_null($item->tanggal_mulai) ? 'bg-brand-50' : (now() < $item->tanggal_mulai ? 'bg-red-500 text-white' : (now() > $item->tanggal_selesai ? 'bg-success-50 text-success-600' : 'bg-yellow-400 text-yellow-100')) }} px-2 py-0.5 text-theme-xs font-medium  text-xs dark:bg-success-500/15 dark:text-success-500">
+                                            {{ is_null($item->tanggal_mulai) ? 'Tanggal belum diatur' : (now() < $item->tanggal_mulai ? 'Kegiatan belum dimulai' : (now() > $item->tanggal_selesai ? 'Kegiatan selesai' : 'Sedang berjalan')) }}
+                                        </p>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="flex items-center gap-2">
+                                        <button wire:click='edit({{ $item->id }}, "update")'
+                                            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-orange-400 shadow-theme-xs hover:bg-orange-600 mb-3">
+                                            <svg wire:loading.remove wire:target='edit({{ $item->id }}, "update")'
+                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                            </svg>
+                                            <div wire:loading wire:target='edit({{ $item->id }}, "update")'
+                                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                                            </div>
+                                        </button>
+                                        <button wire:click="confirmDelete({{ $item->id }})"
+                                            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-red-400 shadow-theme-xs hover:bg-red-600 mb-3">
+                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                class="size-4" wire:loading.remove
+                                                wire:target="confirmDelete({{ $item->id }})">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                            </svg>
+                                            <div wire:loading wire:target="confirmDelete({{ $item->id }})"
+                                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                                            </div>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforeach
+                    @else
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-gray-500 dark:text-gray-400">
+                                Kegiatan tidak ditemukan
                             </td>
                         </tr>
-                    @endforeach
+                    @endif
 
                     <!-- table body end -->
                 </tbody>
             </table>
-            <div class="my-2 mr-1">
-                {{ $listTarget->links() }}
-            </div>
+            @if (!$qSearch)
+                <div class="my-2 mr-1">
+                    {{ $listTarget->links() }}
+                </div>
+            @endif
         </div>
     </div>
     <!-- Modal Form -->

@@ -16,10 +16,10 @@ class ProgresDetail extends Component
     public $file;
 
     public $idPage = null;
-    public bool $openForm = FALSE;
+    public bool $openForm = FALSE, $showNotif = FALSE;
     public $sampel_header, $prosess_header, $sampel_body, $prosess_body;
     public array $monitoring;
-    public string $id_tabel;
+    public string $id_tabel,  $message = '', $status='';
     public int $tahun, $waktu;
 
     public function mount($id)
@@ -64,11 +64,10 @@ class ProgresDetail extends Component
 
     public function updateProgres()
     {
-        
         $baris = array_keys($this->monitoring);
         foreach ($baris as $b) {
             $datasets = MonitoringKegiatan::where([
-                ['no_baris', '=', $b + 1],
+                ['id', '=', $b],
                 ['id_tabel', '=', $this->id_tabel],
             ])->first();
             
@@ -84,10 +83,10 @@ class ProgresDetail extends Component
                 $status = 1;
             }
             $separated = implode(';',$separated);
-            // menghitung status
+
             MonitoringKegiatan::where([
                 ['id_tabel', '=', $this->id_tabel],
-                ['no_baris', '=', $b + 1],
+                ['id', '=', $b],
                 ['tahun', '=', $this->tahun],
                 ['waktu', '=', $this->waktu],
             ]
@@ -118,7 +117,6 @@ class ProgresDetail extends Component
             $monitoring = [];
             $arrSampel = [];
             $arrProses = [];
-            $monitoring['no_baris'] = $rows[0];
             $lenData = collect($rows)->count();
             foreach($rows as $indexVal => $value) {
                 if($indexVal >=1 && $value !== "" && $indexVal < $lenData-2) {
@@ -130,7 +128,6 @@ class ProgresDetail extends Component
                 }
             }
             $monitoring['id_tabel'] = $this->id_tabel;
-            $monitoring['no_baris'] = $rows[0];
             $monitoring['tahun'] = $this->tahun;
             $monitoring['waktu'] = $this->waktu;
             $monitoring['ket_sampel'] = implode(';', $arrSampel);
@@ -142,5 +139,9 @@ class ProgresDetail extends Component
             $monitoring['updated_at'] = Carbon::now();
             MonitoringKegiatan::insert($monitoring);
         }
+        $this->message = 'Template berhasil diimport';
+        $this->status = 'Berhasil';
+        $this->showNotif = TRUE;
+        $this->reset('file');
     }
 }

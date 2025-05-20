@@ -1,4 +1,5 @@
-<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel') }">
+<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }">
+    <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}"/>
     <div class="flex items-center gap-x-2 mb-2 w-full">
         <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
             class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
@@ -28,8 +29,9 @@
             </svg>
         </a>
         <form wire:submit.prevent='import'>
-            <div class="flex gap-x-2">
-                <div class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+            <div class="flex gap-x-2 items-center">
+                <div
+                    class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
                     <label for="template-input" class="text-xs flex gap-x-2 h-full p-2 cursor-pointer">Import
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-4">
@@ -37,10 +39,17 @@
                                 d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                         </svg>
                     </label>
-                    <input type="file" wire:model='file' class="w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer">
+                    <input type="file" wire:model='file'
+                        class="w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer">
+                </div>
+                <div wire:loading wire:target='file'
+                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-success-500 border-t-transparent">
                 </div>
                 @if ($file)
-                    <button type="submit">Upload</button>
+                    <span class="font-semibold text-gray-500 text-xs">{{ $file->getClientOriginalName() }}</span>
+                    <button
+                        class="inline-flex items-center p-2 text-xs font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
+                        type="submit">Upload</button>
                 @endif
             </div>
         </form>
@@ -55,7 +64,7 @@
                             <th class="px-5 py-3 sm:px-6">
                                 <div class="flex items-center">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        {{ $event->no }}
+                                        No
                                     </p>
                                 </div>
                             </th>
@@ -119,7 +128,7 @@
                                                 <div>
                                                     <span
                                                         class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                        {{ $monitoring->no_baris }}
+                                                        {{ $row + 1 }}
                                                     </span>
                                                 </div>
                                             </div>
@@ -134,28 +143,32 @@
                                     @endforeach
                                     <td class="px-5 py-4 sm:px-6">
                                         <p class="text-gray-500 text-theme-sm dark:text-gray-400">
-                                            1 - 31 Maret 2025
+                                            {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
                                         </p>
                                     </td>
                                     @foreach (explode(';', $monitoring->proses) as $key => $itemProsesBody)
-                                    <td class="px-5 py-4 sm:px-6">
-                                            <div x-data="{ checkboxToggle{{ $row }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
-                                                <label for="checkboxLabel{{ $row }}{{ $key }}"
+                                        <td class="px-5 py-4 sm:px-6">
+                                            <div x-data="{ checkboxToggle{{ $monitoring->id }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
+                                                <label for="checkboxLabel{{ $monitoring->id }}{{ $key }}"
                                                     class="flex justify-center cursor-pointer select-none ">
                                                     <div class="relative">
                                                         <input
-                                                            wire:model='monitoring.{{ $row }}.prosess.{{ $key }}'
+                                                            wire:model='monitoring.{{ $monitoring->id }}.prosess.{{ $key }}'
                                                             type="checkbox"
-                                                            id="checkboxLabel{{ $row }}{{ $key }}"
+                                                            id="checkboxLabel{{ $monitoring->id }}{{ $key }}"
                                                             class="sr-only"
-                                                            :checked='checkboxToggle{{ $row }}{{ $key }}'
-                                                            @change="checkboxToggle{{ $row }}{{ $key }} = !checkboxToggle{{ $row }}{{ $key }}" />
-                                                        <div :class="checkboxToggle{{ $row }}{{ $key }} ? 'border-brand-500 bg-brand-500' : 'bg-transparent border-gray-300 dark:border-gray-700'" 
+                                                            :checked='checkboxToggle{{ $monitoring->id }}{{ $key }}'
+                                                            @change="checkboxToggle{{ $monitoring->id }}{{ $key }} = !checkboxToggle{{ $monitoring->id }}{{ $key }}" />
+                                                        <div :class="checkboxToggle{{ $monitoring->id }}{{ $key }} ?
+                                                            'border-brand-500 bg-brand-500' :
+                                                            'bg-transparent border-gray-300 dark:border-gray-700'"
                                                             class="hover:border-brand-500 dark:hover:border-brand-500 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]">
                                                             <span
-                                                                :class="checkboxToggle{{ $row }}{{ $key }} ? '' : 'opacity-0'">
-                                                                <svg width="14" height="14" viewBox="0 0 14 14"
-                                                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                :class="checkboxToggle{{ $monitoring->id }}{{ $key }} ?
+                                                                    '' : 'opacity-0'">
+                                                                <svg width="14" height="14"
+                                                                    viewBox="0 0 14 14" fill="none"
+                                                                    xmlns="http://www.w3.org/2000/svg">
                                                                     <path d="M11.6666 3.5L5.24992 9.91667L2.33325 7"
                                                                         stroke="white" stroke-width="1.94437"
                                                                         stroke-linecap="round"
@@ -172,7 +185,7 @@
                                         <div class="flex items-center">
                                             <p
                                                 class="rounded-full px-2 py-0.5 text-xs font-medium {{ $monitoring->status === 0 ? 'bg-gray-50 text-gray-600' : ($monitoring->status === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
-                                                {{ $monitoring->status === 0 ? "Belum Terlaksana" : ($monitoring->status === 1 ? "On Progres" : "Selesai") }}
+                                                {{ $monitoring->status === 0 ? 'Belum Terlaksana' : ($monitoring->status === 1 ? 'On Progres' : 'Selesai') }}
                                             </p>
                                         </div>
                                     </td>
@@ -210,13 +223,4 @@
         class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
         @livewire('progres.modal-form', ['id' => $idPage])
     </div>
-
-    <Script>
-        document.addEventListener('livewire:load', ()=>{
-            console.log('testing')
-            Livewire.on('downloadTemplate', ({id})=>{
-                console.log(id);
-            })
-        })
-    </Script>
 </div>

@@ -6,8 +6,7 @@
             </h3>
 
             <div x-data="{ openDropDown: false }" class="relative">
-                <button 
-                    @click="openDropDown = !openDropDown"
+                <button @click="openDropDown = !openDropDown"
                     :class="openDropDown ? 'text-gray-700 dark:text-white' :
                         'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
                     <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -59,24 +58,21 @@
                             </div>
                             <div class="hidden lg:flex w-full max-w-[140px] items-center gap-3 mx-auto">
                                 <div
-                                  class="relative block h-2 w-full max-w-[100px] rounded-sm bg-gray-200 dark:bg-gray-800"
-                                >
-                                  <div
-                                    style="width: {{ $item->target === 0 ? 0 : number_format($item->realisasi/$item->target*100,0) }}%"
-                                    class="absolute left-0 top-0 flex h-full items-center justify-center rounded-sm {{ $item->target === 0 || $item->realisasi/$item->target*100 <= 20 ? 'bg-red-500' : ($item->realisasi/$item->target*100 <= 70 ? 'bg-yellow-400' : 'bg-success-500') }} text-xs font-medium text-white"
-                                  ></div>
+                                    class="relative block h-2 w-full max-w-[100px] rounded-sm bg-gray-200 dark:bg-gray-800">
+                                    <div style="width: {{ $item->target === 0 ? 0 : number_format(($item->realisasi / $item->target) * 100, 0) }}%"
+                                        class="absolute left-0 top-0 flex h-full items-center justify-center rounded-sm {{ $item->target === 0 || ($item->realisasi / $item->target) * 100 <= 20 ? 'bg-red-500' : (($item->realisasi / $item->target) * 100 <= 70 ? 'bg-yellow-400' : 'bg-success-500') }} text-xs font-medium text-white">
+                                    </div>
                                 </div>
                                 <p class="text-theme-sm font-medium text-gray-800 dark:text-white/90">
-                                  {{ $item->target === 0 ? 0 : number_format($item->realisasi/$item->target*100,1) }}%
+                                    {{ $item->target === 0 ? 0 : number_format(($item->realisasi / $item->target) * 100, 1) }}%
                                 </p>
-                              </div>
+                            </div>
                             {{-- <h3 class="text-sm font-semibold text-white rounded-full px-2 py-0.5 bg-brand-500">
                                 {{ $item->target === 0 ? 0 : number_format($item->realisasi/$item->target*100,1) }}%
                             </h3> --}}
                         </div>
                         <div class="flex items-center gap-x-2 justify-end ">
-                            <button 
-                                wire:click="pageDetail({{ $item->id }})"
+                            <button wire:click="pageDetail({{ $item->id }})"
                                 @click="localStorage.setItem('detail', JSON.stringify('true'))"
                                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                                 <span class="mr-1 text-xs hidden md:block">Detail</span>
@@ -94,5 +90,8 @@
                 @endforeach
             </div>
         </div>
+    </div>
+    <div class="my-2 mr-1">
+        {{ $data->links() }}
     </div>
 </div>

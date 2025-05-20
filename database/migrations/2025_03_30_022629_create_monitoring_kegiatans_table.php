@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('monitoring_kegiatan', function (Blueprint $table) {
             $table->id();
             $table->string('id_tabel');
-            $table->unsignedSmallInteger('no_baris');
             $table->unsignedSmallInteger('tahun');
             $table->unsignedSmallInteger('waktu'); //1=bulanan, 2=twiwulanan, 3=subround, 4=tahunan
             $table->string('ket_sampel');

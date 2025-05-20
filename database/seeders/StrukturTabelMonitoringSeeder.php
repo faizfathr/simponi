@@ -18,13 +18,11 @@ class StrukturTabelMonitoringSeeder extends Seeder
         while($data = fgetcsv($csvFile,200,",")){
             StrukturTabelMonitoring::insert([
                 'id' => $data['0'],
-                'no' => $data['1'],
-                'ket_sampel' => $data['2'],
-                'jadwal' => $data['3'],
-                'proses' => $data['4'],
-                'status' => $data['5'],
-                'pcl' => $data['6'],
-                'pml' => $data['7'],
+                'ket_sampel' => $data['1'],
+                'proses' => $data['2'],
+                'status' => $data['3'],
+                'pcl' => $data['4'],
+                'pml' => $data['5'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now(),
             ]);

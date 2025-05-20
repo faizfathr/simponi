@@ -64,7 +64,6 @@ class ModalForm extends Component
         collect($this->rows)->map(function($row, $index) use($arrProses){
             MonitoringKegiatan::insert([
                 'id_tabel' => $this->id_tabel,
-                'no_baris' => $index,
                 'tahun' => $this->tahun,
                 'waktu' => $this->waktu,
                 'ket_sampel' => implode(';', $row['sampel']),

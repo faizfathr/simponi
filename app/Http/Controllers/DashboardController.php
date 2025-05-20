@@ -62,6 +62,7 @@ class DashboardController extends Controller
                     ['subsektor', '=', $subsektor],
                 ]);
         })
+            ->where('status', 2)
             ->selectRaw('id_tabel, waktu, COUNT(*) as realisasi')
             ->groupBy('id_tabel', 'waktu')
             ->orderBy('id_tabel')
@@ -177,7 +178,7 @@ class DashboardController extends Controller
             array_push($arrHeadProses, '');
             $counter--;
         }
-        $header = ['No', ...$arrHeadSampel, 'Jadwal', ...$arrHeadProses, 'Status', 'PCL', 'PML'];
+        $header = [...$arrHeadSampel, ...$arrHeadProses, 'Status', 'PCL', 'PML'];
 
         // Buat file CSV di memori
         $handle = fopen('php://temp', 'r+');

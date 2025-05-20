@@ -14,7 +14,7 @@ class Target extends Component
     use WithPagination, WithoutUrlPagination;
     public $id, $kegiatan;
     public bool $showNotif = FALSE;
-    public string $id_kegiatan, $periode ="", $action = 'Tambah', $ketWaktu ='', $message = '', $status = '';
+    public string $id_kegiatan, $periode ="", $action = 'Tambah', $ketWaktu ='', $message = '', $status = '', $qSearch='';
     public $tanggal_mulai = null, $tanggal_selesai = null;
     public int $tahun, $waktu, $target=0;
     public bool $openForm = FALSE, $openWarningDelete = FALSE;
@@ -27,10 +27,18 @@ class Target extends Component
     public function render()
     {
         $listKegiatan = KegiatanSurvei::get();
-        $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
-            ->selectRaw('list_kegiatan.*, kegiatan_survei.periode as periode')
+        if($this->qSearch) {
+            $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
+            ->selectRaw('list_kegiatan.*, kegiatan_survei.kegiatan, kegiatan_survei.periode as periode')
+            ->whereLike('kegiatan', '%'.$this->qSearch.'%')
             ->orderBy('list_kegiatan.created_at', 'DESC')
-            ->paginate(10);
+            ->get();    
+        } else {
+            $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
+                ->selectRaw('list_kegiatan.*, kegiatan_survei.kegiatan, kegiatan_survei.periode as periode')
+                ->orderBy('list_kegiatan.created_at', 'DESC')
+                ->paginate(10);
+        }
         return view('livewire.dashboard.target', [
             'listTarget' => $listTarget,
             'listKegiatan' => $listKegiatan
@@ -143,4 +151,5 @@ class Target extends Component
         $this->status = "Berhasil";
         $this->showNotif =  TRUE;
     }
+
 }

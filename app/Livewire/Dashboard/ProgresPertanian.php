@@ -40,7 +40,7 @@ class ProgresPertanian extends Component
             )
             ->where('sektor', 1)
             ->orderBy('waktu', 'ASC')
-            ->get();
+            ->paginate(10);
         return view('livewire.dashboard.progres-pertanian', [
             'data' => $progresPertanian,
         ]);
