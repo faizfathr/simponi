@@ -155,6 +155,7 @@ class DashboardController extends Controller
         }
 
         // Gabungkan data menjadi satu baris array
+        $survei = KegiatanSurvei::where('id', $idTabel)->first();
         $rowData = [];
 
         $arrProses = explode(';', $template->proses);
@@ -182,19 +183,20 @@ class DashboardController extends Controller
         $handle = fopen('php://temp', 'r+');
 
         // Tulis header ke dalam CSV
-        fputcsv($handle, $header);
+        fputcsv($handle, $header, ";");
 
         // Tulis data ke dalam CSV
-        fputcsv($handle, $rowData);
+        fputcsv($handle, $rowData, ";");
 
         // Pindahkan pointer file kembali ke awal
         rewind($handle);
 
+        $fileName = 'template_' . $survei->alias;
         return response()->stream(function () use ($handle) {
             fpassthru($handle);
         }, 200, [
             "Content-Type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=template.csv",
+            "Content-Disposition" => "attachment; filename=" . $fileName .".csv",
             'Cache-Control' => 'no-store, no-cache'
         ]);
     }
@@ -202,7 +204,7 @@ class DashboardController extends Controller
     public function listJadwal()
     {
         $listEventKegiatan = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
-            ->select('list_kegiatan.id','kegiatan_survei.kegiatan', 'tanggal_mulai', 'tanggal_selesai')
+            ->select('list_kegiatan.id','kegiatan_survei.alias', 'tanggal_mulai', 'tanggal_selesai')
             ->get();
         return response()->json($listEventKegiatan);
     }

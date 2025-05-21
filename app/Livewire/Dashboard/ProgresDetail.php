@@ -119,9 +119,10 @@ class ProgresDetail extends Component
             $arrProses = [];
             $lenData = collect($rows)->count();
             foreach($rows as $indexVal => $value) {
-                if($indexVal >=1 && $value !== "" && $indexVal < $lenData-2) {
+                dd($data[0]);
+                if($indexVal >=0 && $value !== "" && $indexVal < $lenData-2) {
                     array_push($arrSampel, $value);
-                } else if($data[0][$indexVal]!=="Jadwal" && $indexVal < $lenData-4) {
+                } else if($data[0][$indexVal]!=="Sampel" && $indexVal < $lenData-4) {
                     array_push($arrProses, 0);
                 } else {
                     continue;

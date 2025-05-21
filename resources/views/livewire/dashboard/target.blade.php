@@ -315,11 +315,11 @@
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 active:bg-brand-500/50">
                     {{ $this->action }} Kegiatan
-                    <div wire:loading
+                    <div wire:loading wire:target='submit' wire:prevent
                         class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                     </div>
                 </button>
-                <button type="" @click="openForm = FALSE"
+                <button type="button" @click="openForm = false"
                     class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-inset ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
                     batal
                 </button>
@@ -360,11 +360,11 @@
                         <button wire:click="delete('{{ $this->id }}')"
                             class="inline-flex items-center gap-2 px-4 py-1 text-sm font-medium text-white transition rounded-lg bg-red-500 shadow-theme-xs hover:bg-red-600 active:bg-red-500/50">
                             Hapus
-                            <div wire:loading
+                            <div wire:loading wire:target="delete('{{ $this->id }}')"
                                 class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                             </div>
                         </button>
-                        <button @click="openWarningDelete = false"
+                        <button @click="openWarningDelete = false" wire:prevent
                             class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-inset ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
                             batal
                         </button>

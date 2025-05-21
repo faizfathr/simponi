@@ -121,10 +121,17 @@ class Target extends Component
                 'tanggal_selesai' => Carbon::make($this->tanggal_selesai),
                 'updated_at' => Carbon::now(),
             ]);
-        if($isUpdated) $this->openForm = FALSE;
-        $this->message = "Target berhasil diperbaharui";
-        $this->status = "Berhasil";
-        $this->showNotif =  TRUE;
+        if($isUpdated) {
+            $this->openForm = false;
+            $this->message = "Target berhasil diperbaharui";
+            $this->status = "Berhasil";
+            $this->showNotif =  true;
+        } else {
+            $this->openForm = false;
+            $this->message = "Target gagal diperbaharui";
+            $this->status = "Gagal";
+            $this->showNotif =  true;
+        }
     }
 
     public function confirmDelete($id)

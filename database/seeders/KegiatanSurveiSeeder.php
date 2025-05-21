@@ -26,6 +26,7 @@ class KegiatanSurveiSeeder extends Seeder
                 'subsektor' => $data['2'],
                 'periode' => $data['3'],
                 'kegiatan' => $data['4'],
+                'alias' => $data['5'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);
