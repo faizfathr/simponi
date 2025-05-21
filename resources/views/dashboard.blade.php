@@ -32,7 +32,9 @@
                     <template x-if="page == 'Monitoring' && subPage =='Pertanian'">
                         <livewire:dashboard.monitoring-pertanian>
                     </template>
-
+                    <template x-if="page == 'Kalender'">
+                        <livewire:dashboard.kalender>
+                    </template>
                     <template x-if="page == 'Target'">
                         <livewire:dashboard.target />
                     </template>

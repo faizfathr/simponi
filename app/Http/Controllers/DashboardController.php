@@ -159,9 +159,7 @@ class DashboardController extends Controller
 
         $arrProses = explode(';', $template->proses);
         $arrSampel = explode(';', $template->ket_sampel);
-        array_push($rowData, $template->no);
         $rowData = [...$rowData, ...$arrSampel];
-        array_push($rowData, $template->jadwal);
         $rowData = [...$rowData, ...$arrProses];
         array_push($rowData, $template->status, $template->pcl, $template->pml);
 
@@ -199,5 +197,13 @@ class DashboardController extends Controller
             "Content-Disposition" => "attachment; filename=template.csv",
             'Cache-Control' => 'no-store, no-cache'
         ]);
+    }
+
+    public function listJadwal()
+    {
+        $listEventKegiatan = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
+            ->select('list_kegiatan.id','kegiatan_survei.kegiatan', 'tanggal_mulai', 'tanggal_selesai')
+            ->get();
+        return response()->json($listEventKegiatan);
     }
 }

@@ -15,6 +15,7 @@
     @vite(['resources/css/app.css'])
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
     @stack('scripts')
     @livewireStyles
 </head>

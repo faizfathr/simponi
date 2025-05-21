@@ -18,7 +18,7 @@
                 class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
             </div>
         </button>
-        <div class="relative">
+        <div class="relative z-0">
             <span class="absolute top-1/2 left-4 -translate-y-1/2">
                 <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20"
                     fill="none" xmlns="http://www.w3.org/2000/svg">
