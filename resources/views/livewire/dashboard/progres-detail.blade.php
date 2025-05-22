@@ -1,5 +1,5 @@
 <div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }">
-    <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}"/>
+    <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     <div class="flex items-center gap-x-2 mb-2 w-full">
         <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
             class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
@@ -49,7 +49,11 @@
                     <span class="font-semibold text-gray-500 text-xs">{{ $file->getClientOriginalName() }}</span>
                     <button
                         class="inline-flex items-center p-2 text-xs font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
-                        type="submit">Upload</button>
+                        type="submit">Upload
+                        <div wire:loading wire:target='import'
+                            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent ml-2">
+                        </div>
+                    </button>
                 @endif
             </div>
         </form>
@@ -63,31 +67,29 @@
                         <tr class="border-b border-gray-100 dark:border-gray-800">
                             <th class="px-5 py-3 sm:px-6">
                                 <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                         No
                                     </p>
                                 </div>
                             </th>
                             @foreach ($this->sampel_header as $itemSampel)
                                 <th class="px-5 py-3 sm:px-6">
-                                    <div class="flex items-center">
-                                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <div class="flex items-center justify-center">
+                                        <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                             {{ $itemSampel }}
                                         </p>
                                     </div>
                                 </th>
                             @endforeach
-                            <th class="px-5 py-3 sm:px-6">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                        {{ $event->jadwal }}
-                                    </p>
-                                </div>
+                            <th class="px-5 py-3 sm:px-6 text-center">
+                                <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
+                                    Jadwal
+                                </p>
                             </th>
                             @foreach ($this->prosess_header as $itemProses)
                                 <th class="px-5 py-3 sm:px-6">
-                                    <div class="flex items-center">
-                                        <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <div class="flex items-center justify-center w-[100%]">
+                                        <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                             {{ $itemProses }}
                                         </p>
                                     </div>
@@ -95,21 +97,21 @@
                             @endforeach
                             <th class="px-5 py-3 sm:px-6">
                                 <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                         {{ $event->status }}
                                     </p>
                                 </div>
                             </th>
                             <th class="px-5 py-3 sm:px-6">
                                 <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                         {{ $event->pcl }}
                                     </p>
                                 </div>
                             </th>
                             <th class="px-5 py-3 sm:px-6">
                                 <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
                                         {{ $event->pml }}
                                     </p>
                                 </div>
@@ -125,24 +127,21 @@
                                     <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <div class="flex items-center gap-3">
-                                                <div>
-                                                    <span
-                                                        class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                        {{ $row + 1 }}
-                                                    </span>
-                                                </div>
+                                                <span class="font-medium text-gray-800 text-xs dark:text-white/90">
+                                                    {{ $row + 1 }}
+                                                </span>
                                             </div>
                                         </div>
                                     </td>
                                     @foreach (explode(';', $monitoring->ket_sampel) as $key => $itemSampelBody)
-                                        <td class="px-5 py-4 sm:px-6">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
+                                            <p class="text-gray-500 text-xs dark:text-gray-400">
                                                 {{ $itemSampelBody }}
                                             </p>
                                         </td>
                                     @endforeach
-                                    <td class="px-5 py-4 sm:px-6">
-                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                    <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
+                                        <p class="text-gray-500 text-xs dark:text-gray-400">
                                             {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
                                         </p>
                                     </td>
@@ -164,7 +163,8 @@
                                                             'bg-transparent border-gray-300 dark:border-gray-700'"
                                                             class="hover:border-brand-500 dark:hover:border-brand-500 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]">
                                                             <span
-                                                                :class="checkboxToggle{{ $monitoring->id }}{{ $key }} ?
+                                                                :class="checkboxToggle{{ $monitoring->id }}{{ $key }}
+                                                                    ?
                                                                     '' : 'opacity-0'">
                                                                 <svg width="14" height="14"
                                                                     viewBox="0 0 14 14" fill="none"
@@ -190,13 +190,13 @@
                                         </div>
                                     </td>
                                     <td class="px-5 py-4 sm:px-6">
-                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <p class="text-gray-500 text-xs dark:text-gray-400">
                                             {{ $monitoring->joinPcl?->nama ?? 'Unknown' }}
                                         </p>
                                     </td>
                                     <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                            <p class="text-gray-500 text-xs dark:text-gray-400">
                                                 {{ $monitoring->joinPml?->nama ?? 'Unknown' }}
                                             </p>
                                         </div>
@@ -213,10 +213,11 @@
         </div>
     </div>
     <button wire:click.prevent='updateProgres'
-        class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 ">
+        class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
         <span>Simpan</span>
-        <div wire:loading wire:target='updateProgres({{ $idPage }})'
-            class="absolute right-2 h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
+        <div 
+            wire:loading wire:target='updateProgres'
+            class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
         </div>
     </button>
     <div x-show="openForm"

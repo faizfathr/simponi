@@ -22,6 +22,8 @@ class ProgresDetail extends Component
     public string $id_tabel,  $message = '', $status='';
     public int $tahun, $waktu;
 
+    public array $bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
     public function mount($id)
     {
         $this->idPage = $id;
@@ -118,11 +120,11 @@ class ProgresDetail extends Component
             $arrSampel = [];
             $arrProses = [];
             $lenData = collect($rows)->count();
+            $dataIsString = is_string($data[0]) ? explode(';', $data[0]) : $data[0];
             foreach($rows as $indexVal => $value) {
-                dd($data[0]);
                 if($indexVal >=0 && $value !== "" && $indexVal < $lenData-2) {
                     array_push($arrSampel, $value);
-                } else if($data[0][$indexVal]!=="Sampel" && $indexVal < $lenData-4) {
+                } else if($dataIsString[$indexVal]!=="Sampel" && $indexVal < $lenData-3) {
                     array_push($arrProses, 0);
                 } else {
                     continue;
