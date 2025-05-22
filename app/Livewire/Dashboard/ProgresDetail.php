@@ -12,14 +12,14 @@ use App\Models\MonitoringKegiatan;
 
 class ProgresDetail extends Component
 {
-    use WithFileUploads; 
+    use WithFileUploads;
     public $file;
 
     public $idPage = null;
     public bool $openForm = FALSE, $showNotif = FALSE;
     public $sampel_header, $prosess_header, $sampel_body, $prosess_body;
     public array $monitoring;
-    public string $id_tabel,  $message = '', $status='';
+    public string $id_tabel,  $message = '', $status = '';
     public int $tahun, $waktu;
 
     public array $bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
@@ -72,26 +72,27 @@ class ProgresDetail extends Component
                 ['id', '=', $b],
                 ['id_tabel', '=', $this->id_tabel],
             ])->first();
-            
+
             $separated = explode(";", $datasets->proses);
             foreach ($this->monitoring[$b]['prosess'] as $key => $progres) {
                 $separated[$key] = strval($progres ? 1 : 0);
             };
-            if (count(explode(";",$datasets->proses))===0) {
+            if (count(explode(";", $datasets->proses)) === 0) {
                 $status = 0;
-            } else if(count(explode(";",$datasets->proses)) === array_sum($separated)) {
+            } else if (count(explode(";", $datasets->proses)) === array_sum($separated)) {
                 $status = 2;
             } else {
                 $status = 1;
             }
-            $separated = implode(';',$separated);
+            $separated = implode(';', $separated);
 
-            MonitoringKegiatan::where([
-                ['id_tabel', '=', $this->id_tabel],
-                ['id', '=', $b],
-                ['tahun', '=', $this->tahun],
-                ['waktu', '=', $this->waktu],
-            ]
+            MonitoringKegiatan::where(
+                [
+                    ['id_tabel', '=', $this->id_tabel],
+                    ['id', '=', $b],
+                    ['tahun', '=', $this->tahun],
+                    ['waktu', '=', $this->waktu],
+                ]
             )->update([
                 'proses' => $separated,
                 'status' => $status,
@@ -113,18 +114,24 @@ class ProgresDetail extends Component
         ]);
 
         $path = $this->file->getRealPath();
-        $data = array_map('str_getcsv', file($path));
-        foreach($data as $indexRows => $rows) {
-            if($indexRows < 2) continue;
+        if (($handle = fopen($path, 'r')) !== false) {
+            while (($row = fgetcsv($handle, 1000, ";")) !== false) {
+                $data[] = $row;
+            }
+            fclose($handle);
+        }
+
+        foreach ($data as $indexRows => $rows) {
+            if ($indexRows < 2) continue;
             $monitoring = [];
             $arrSampel = [];
             $arrProses = [];
             $lenData = collect($rows)->count();
-            $dataIsString = is_string($data[0]) ? explode(';', $data[0]) : $data[0];
-            foreach($rows as $indexVal => $value) {
-                if($indexVal >=0 && $value !== "" && $indexVal < $lenData-2) {
+         
+            foreach ($rows as $indexVal => $value) {
+                if ($indexVal >= 0 && $value !== "" && $indexVal < $lenData - 2) {
                     array_push($arrSampel, $value);
-                } else if($dataIsString[$indexVal]!=="Sampel" && $indexVal < $lenData-3) {
+                } else if ($data[0][$indexVal] !== "Sampel" && $indexVal < $lenData - 3) {
                     array_push($arrProses, 0);
                 } else {
                     continue;
@@ -136,8 +143,8 @@ class ProgresDetail extends Component
             $monitoring['ket_sampel'] = implode(';', $arrSampel);
             $monitoring['proses'] = implode(';', $arrProses);
             $monitoring['status'] = 0;
-            $monitoring['pcl'] = $rows[$lenData-2];
-            $monitoring['pml'] = $rows[$lenData-1];
+            $monitoring['pcl'] = $rows[$lenData - 2];
+            $monitoring['pml'] = $rows[$lenData - 1];
             $monitoring['created_at'] = Carbon::now();
             $monitoring['updated_at'] = Carbon::now();
             MonitoringKegiatan::insert($monitoring);
