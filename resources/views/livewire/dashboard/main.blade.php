@@ -65,20 +65,24 @@
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Statistik Produksi -->
         <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Produksi</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Pertanian</h2>
             <p class="text-sm">
-                Statistik Produksi mencakup kegiatan pengumpulan, pengolahan, dan analisis data produksi seperti
-                kegiatan pertanian, perikanan, perkebunan, peternakan, industri besar dan sedang, produksi energi, serta konstruksi.
+                kegiatan statistik produksi yang mencakup beberapa kegiatan sebagai berikut:
+                <ul class="list-disc list-inside text-sm space-y-1">
+                <li>Statistik Tanaman Pangan dan Hortikultura</li>
+                <li>Statistik Perkebunan, Peternakan, dan Perikanan</li>
+                <li>dan Statistik Hortikultura dan Perkebunan</li>
+            </ul>
             </p>
         </div>
 
         <!-- Statistik Pertanian dan IPEK -->
         <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Pertanian & IPEK</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Industri Pengolahan, Energi, dan Konstruksi</h2>
             <ul class="list-disc list-inside text-sm space-y-1">
-                <li>Survei Tanaman Pangan dan Hortikultura</li>
-                <li>Survei Perkebunan, Peternakan, dan Perikanan</li>
-                <li>Pendataan usaha skala kecil dan besar, Air Bersih, Perusahaan Konstruksi</li>
+                <li>Survei Air Bersih</li>
+                <li>Updating Direktori Perusahaan Konstruksi</li>
+                <li>Pendataan usaha skala kecil dan besar</li>
                 <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, subround, dan tahunan</li>
             </ul>
         </div>
@@ -142,6 +146,10 @@
                 </div>
                 <div class="swiper-slide">
                     <img src="/img/kegiatan/kegiatan_4.jpeg"
+                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                </div>
+                <div class="swiper-slide">
+                    <img src="/img/kegiatan/kegiatan_5.jpeg"
                         class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
                 </div>
                 <!-- Tambahkan slide lainnya jika perlu -->
