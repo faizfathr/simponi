@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             KegiatanSurveiSeeder::class,
             MitraSeeder::class,
             SubsektorSeeder::class,
+            UsersSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

@@ -6,18 +6,22 @@
 }">
     {{-- <div class=" w-[100%] inset-0 bg-slate-500 h-[100vh]"></div> --}}
     <div class="flex gap-x-2 items-center mb-3">
-        <button
-            class="inline-flex items-center gap-2 px-3 py-2.5 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
-            wire:click='tambahForm'>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Tambah Kegiatan
-            <div wire:loading wire:target='tambahForm'
-                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-            </div>
-        </button>
+        @if (Auth::user() || Auth::user()?->id_role === 2)
+            <button
+                class="inline-flex items-center gap-2 px-3 py-2.5 text-xs md:text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-xs hover:bg-brand-600"
+                wire:click='tambahForm'>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <span class="hidden md:block">
+                    Tambah Kegiatan
+                </span>
+                <div wire:loading wire:target='tambahForm'
+                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                </div>
+            </button>
+        @endif
         <div class="relative z-0">
             <span class="absolute top-1/2 left-4 -translate-y-1/2">
                 <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20"
@@ -116,13 +120,15 @@
                                 </p>
                             </div>
                         </th>
-                        <th class="py-3">
-                            <div class="flex items-center col-span-2">
-                                <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
-                                    Aksi
-                                </p>
-                            </div>
-                        </th>
+                        @if (Auth::user() || Auth::user()?->id_role === 2)
+                            <th class="py-3">
+                                <div class="flex items-center col-span-2">
+                                    <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
+                                        Aksi
+                                    </p>
+                                </div>
+                            </th>    
+                        @endif
                     </tr>
                 </thead>
                 <!-- table header end -->
@@ -135,10 +141,10 @@
                                     <div class="flex items-center">
                                         <div class="flex items-center gap-3">
                                             <div>
-                                                <p class="font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                                                    {{ $item->joinKegiatan->kegiatan }}
+                                                <p class="font-medium text-gray-800 text-xs md:text-sm lg:text-base dark:text-white/90">
+                                                    {{ $item->joinKegiatan?->kegiatan }}
                                                 </p>
-                                                <span class="text-gray-500 text-theme-xs dark:text-gray-400">
+                                                <span class="text-gray-500 text-xs dark:text-gray-400">
                                                     {{ $item->joinKegiatan->sektor == 1 ? 'Pertanian' : 'IPEK' }}
                                                 </span>
                                             </div>
@@ -147,14 +153,14 @@
                                 </td>
                                 <td class="py-3">
                                     <div class="flex items-center">
-                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <p class="text-gray-500 text-xs md:text-sm dark:text-gray-400">
                                             {{ $item->tahun }}
                                         </p>
                                     </div>
                                 </td>
                                 <td class="py-3">
                                     <div class="flex items-center">
-                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <p class="text-gray-500 text-xs md:text-sm dark:text-gray-400">
                                             {{ $item->periode == 1
                                                 ? $this->listBulan[$item->waktu - 1]
                                                 : ($item->periode == 2 || $item->periode == 3
@@ -165,7 +171,7 @@
                                 </td>
                                 <td class="py-3">
                                     <div class="flex items-center">
-                                        <p class="text-gray-500 text-theme-sm dark:text-gray-400">
+                                        <p class="text-gray-500 text-xs md:text-sm dark:text-gray-400">
                                             {{ $item->target }}
                                         </p>
                                     </div>
@@ -178,35 +184,37 @@
                                         </p>
                                     </div>
                                 </td>
-                                <td class="py-3">
-                                    <div class="flex items-center gap-2">
-                                        <button wire:click='edit({{ $item->id }}, "update")'
-                                            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-orange-400 shadow-theme-xs hover:bg-orange-600 mb-3">
-                                            <svg wire:loading.remove wire:target='edit({{ $item->id }}, "update")'
-                                                xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-4">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
-                                            </svg>
-                                            <div wire:loading wire:target='edit({{ $item->id }}, "update")'
-                                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-                                            </div>
-                                        </button>
-                                        <button wire:click="confirmDelete({{ $item->id }})"
-                                            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-red-400 shadow-theme-xs hover:bg-red-600 mb-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                                                class="size-4" wire:loading.remove
-                                                wire:target="confirmDelete({{ $item->id }})">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
-                                            </svg>
-                                            <div wire:loading wire:target="confirmDelete({{ $item->id }})"
-                                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-                                            </div>
-                                        </button>
-                                    </div>
-                                </td>
+                                @if (Auth::user()?->id_role === 2)
+                                    <td class="py-3">
+                                        <div class="flex items-center gap-2">
+                                            <button wire:click='edit({{ $item->id }}, "update")'
+                                                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-orange-400 shadow-theme-xs hover:bg-orange-600 mb-3">
+                                                <svg wire:loading.remove wire:target='edit({{ $item->id }}, "update")'
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
+                                                </svg>
+                                                <div wire:loading wire:target='edit({{ $item->id }}, "update")'
+                                                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                                                </div>
+                                            </button>
+                                            <button wire:click="confirmDelete({{ $item->id }})"
+                                                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-red-400 shadow-theme-xs hover:bg-red-600 mb-3">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="size-4" wire:loading.remove
+                                                    wire:target="confirmDelete({{ $item->id }})">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                                </svg>
+                                                <div wire:loading wire:target="confirmDelete({{ $item->id }})"
+                                                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                                                </div>
+                                            </button>
+                                        </div>
+                                    </td>    
+                                @endif
                             </tr>
                         @endforeach
                     @else
@@ -235,7 +243,7 @@
             x-transition:enter-start ="opacity-0 -translate-y-52" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-52"
-            class="w-2/3 rounded-2xl border absolute top-5 border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+            class="w-[90%] md:w-2/3 rounded-2xl border absolute top-5 border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
             @click.outside="openForm=!openForm">
             <div class="px-5 py-4 sm:px-5 sm:py-5">
                 <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
@@ -286,7 +294,7 @@
                 </div>
 
                 <!-- Elements -->
-                <div class="flex gap-4">
+                <div class="flex gap-4 md:flex-row flex-col">
                     <div>
                         <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                             Tanggal Mulai Kegiatan

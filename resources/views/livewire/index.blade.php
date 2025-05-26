@@ -1,15 +1,16 @@
-@extends('layouts.dashboard-layout')
-@section('contents')
+<div x-data="{showNotif: @entangle('showNotif')}">
     <!-- ===== Preloader Start ===== -->
-    <x-preloader />
 
     <!-- ===== Preloader End ===== -->
 
     <!-- ===== Page Wrapper Start ===== -->
     <div class="flex h-screen overflow-hidden">
+
         <!-- ===== Sidebar Start ===== -->
         <livewire:dashboard.sidebar />
         <!-- ===== Sidebar End ===== -->
+
+        
 
         <!-- ===== Content Area Start ===== -->
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
@@ -20,9 +21,9 @@
             <!-- Small Device Overlay End -->
 
             <!-- ===== Header Start ===== -->
-            <x-dashboard.header />
+            <livewire:dashboard.header />
             <!-- ===== Header End ===== -->
-
+            <x-dashboard.notification showNotif="showNotif" message="test" />
             <!-- ===== Main Content Start ===== -->
             <main>
                 <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
@@ -38,10 +39,10 @@
                     <template x-if="page == 'Target'">
                         <livewire:dashboard.target />
                     </template>
-                    <template x-if="page == 'Progres' && subPage == 'Pertanian' && detail == 'false'" >
+                    <template x-if="page == 'Progres' && subPage == 'Pertanian' && detail == 'false'">
                         <livewire:dashboard.progres-pertanian />
                     </template>
-                    <template x-if="page == 'Progres' && subPage == 'IPEK' && detail == 'false'" >
+                    <template x-if="page == 'Progres' && subPage == 'IPEK' && detail == 'false'">
                         <livewire:dashboard.progres-ipek />
                     </template>
                     <template x-if="page == 'Progres' && subPage == 'Pertanian' && detail == 'true'">
@@ -54,4 +55,4 @@
         <!-- ===== Content Area End ===== -->
     </div>
     <!-- ===== Page Wrapper End ===== -->
-@endsection
+</div>

@@ -1,5 +1,5 @@
 <div>
-    <div class="relative mb-3">
+    <div class="relative z-0 mb-3">
         <span class="absolute top-1/2 left-4 -translate-y-1/2">
             <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
@@ -57,10 +57,10 @@
                             class="flex items-center justify-between border-b border-gray-200 pb-4 pt-4 first:pt-0 last:border-b-0 last:pb-0 dark:border-gray-800">
                             <div class="flex items-center gap-3 w-2/4">
                                 <div>
-                                    <h3 class="font-semibold text-gray-800 dark:text-white/90">
+                                    <h3 class="font-semibold text-gray-800 text-sm md:text-base dark:text-white/90">
                                         {{ $item->kegiatan }}
                                     </h3>
-                                    <span class="block text-theme-xs text-gray-500 dark:text-gray-400">
+                                    <span class="block text-xs md:text-sm text-gray-500 dark:text-gray-400">
                                         {{ $this->ketPeriode[$item->periode - 1] }}
                                         {{ $item->periode == 4 ? $item->tahun : ($item->periode == 1 ? $this->listBulan[$item->waktu - 1] : $this->romawiFont[$item->waktu - 1]) }}
                                     </span>

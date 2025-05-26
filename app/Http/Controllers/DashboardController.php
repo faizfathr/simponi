@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\MonitoringKegiatan;
 use App\Models\StrukturTabelMonitoring;
 use Illuminate\Database\Query\JoinClause;
+use Illuminate\Support\Facades\Auth;
 use stdClass;
 
 class DashboardController extends Controller
@@ -20,15 +21,7 @@ class DashboardController extends Controller
     public $idPage = null;
     public function index()
     {
-        $data = StrukturTabelMonitoring::join('kegiatan_survei', function (JoinClause $join) {
-            $join->on('struktur_tabel_monitoring.id', '=', 'kegiatan_survei.id');
-        })->get();
-
-        // $data = Kecamatan::first()->toKelurahan()->get();
-        return view('dashboard', [
-            'struk' => $data,
-            'idPage' => $this->idPage,
-        ]);
+        return view('layouts.dashboard-layout');
     }
 
     public function pageDetail($id)

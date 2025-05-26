@@ -1,63 +1,65 @@
 <div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
-    <div class="flex items-center gap-x-2 mb-2 w-full">
-        <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
-            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
-            </svg>
-        </button>
-        <button wire:click.prevent="openModalForm"
-            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
-            <span class="mr-1 text-xs hidden md:block">Tambah Manual</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            <div wire:loading wire:target='openModalForm'
-                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-            </div>
-        </button>
-        <a href="/dashboard/downloadTemplate/{{ $id_tabel }}"
-            class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
-            <span class="mr-1 text-xs hidden md:block">Template</span>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-4">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
-            </svg>
-        </a>
-        <form wire:submit.prevent='import'>
-            <div class="flex gap-x-2 items-center">
-                <div
-                    class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
-                    <label for="template-input" class="text-xs flex gap-x-2 h-full p-2 cursor-pointer">Import
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            stroke="currentColor" class="size-4">
-                            <path stroke-linecap="round" stroke-linejoin="round"
-                                d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
-                        </svg>
-                    </label>
-                    <input type="file" wire:model='file'
-                        class="w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer">
+    @if (Auth::user() || Auth::user()?->id_role === 2)
+        <div class="flex items-center gap-x-2 mb-2 w-full">
+            <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
+                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                </svg>
+            </button>
+            <button wire:click.prevent="openModalForm"
+                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
+                <span class="mr-1 text-xs hidden md:block">Tambah Manual</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                </svg>
+                <div wire:loading wire:target='openModalForm'
+                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                 </div>
-                <div wire:loading wire:target='file'
-                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-success-500 border-t-transparent">
+            </button>
+            <a href="/dashboard/downloadTemplate/{{ $id_tabel }}"
+                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+                <span class="mr-1 text-xs hidden md:block">Template</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-4">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3" />
+                </svg>
+            </a>
+            <form wire:submit.prevent='import'>
+                <div class="flex gap-x-2 items-center">
+                    <div
+                        class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+                        <label for="template-input" class="text-xs flex gap-x-2 h-full p-2 cursor-pointer">Import
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
+                            </svg>
+                        </label>
+                        <input type="file" wire:model='file'
+                            class="w-full h-full absolute top-0 left-0 opacity-0 cursor-pointer">
+                    </div>
+                    <div wire:loading wire:target='file'
+                        class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-success-500 border-t-transparent">
+                    </div>
+                    @if ($file)
+                        <span class="font-semibold text-gray-500 text-xs">{{ $file->getClientOriginalName() }}</span>
+                        <button
+                            class="inline-flex items-center p-2 text-xs font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
+                            type="submit">Upload
+                            <div wire:loading wire:target='import'
+                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent ml-2">
+                            </div>
+                        </button>
+                    @endif
                 </div>
-                @if ($file)
-                    <span class="font-semibold text-gray-500 text-xs">{{ $file->getClientOriginalName() }}</span>
-                    <button
-                        class="inline-flex items-center p-2 text-xs font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600"
-                        type="submit">Upload
-                        <div wire:loading wire:target='import'
-                            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent ml-2">
-                        </div>
-                    </button>
-                @endif
-            </div>
-        </form>
-    </div>
+            </form>
+        </div>
+    @endif
     <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
         <div class="max-w-full overflow-x-auto custom-scrollbar h-[472px]">
             @if ($idPage)

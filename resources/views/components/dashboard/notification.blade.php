@@ -1,5 +1,5 @@
 @aware([
-    'showNotif' => false,
+    'showNotif' => true,
     'message' => '',
     'status' => '',
 ])
