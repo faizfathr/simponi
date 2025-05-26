@@ -23,7 +23,6 @@
 <body x-data="{
     'page': $persist('Dashboard').as('page'),
     'subPage': $persist('').as('subPage'),
-    'detail': $persist(JSON.stringify(false)).as('detail'),
     'loaded': true,
     'darkMode': false,
     'stickyMenu': false,

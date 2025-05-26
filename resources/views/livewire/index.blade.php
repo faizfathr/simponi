@@ -1,4 +1,4 @@
-<div x-data="{showNotif: @entangle('showNotif')}">
+<div x-data="{ showNotif: @entangle('showNotif') }">
     <!-- ===== Preloader Start ===== -->
 
     <!-- ===== Preloader End ===== -->
@@ -10,7 +10,7 @@
         <livewire:dashboard.sidebar />
         <!-- ===== Sidebar End ===== -->
 
-        
+
 
         <!-- ===== Content Area Start ===== -->
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
@@ -27,27 +27,29 @@
             <!-- ===== Main Content Start ===== -->
             <main>
                 <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
-                    <template x-if="page == 'Dashboard'">
-                        <livewire:dashboard.main>
-                    </template>
-                    <template x-if="page == 'Monitoring' && subPage =='Pertanian'">
-                        <livewire:dashboard.monitoring-pertanian>
-                    </template>
-                    <template x-if="page == 'Kalender'">
-                        <livewire:dashboard.kalender>
-                    </template>
-                    <template x-if="page == 'Target'">
-                        <livewire:dashboard.target />
-                    </template>
-                    <template x-if="page == 'Progres' && subPage == 'Pertanian' && detail == 'false'">
-                        <livewire:dashboard.progres-pertanian />
-                    </template>
-                    <template x-if="page == 'Progres' && subPage == 'IPEK' && detail == 'false'">
-                        <livewire:dashboard.progres-ipek />
-                    </template>
-                    <template x-if="page == 'Progres' && subPage == 'Pertanian' && detail == 'true'">
+                    @if ($idPage)
                         @livewire('dashboard.progres-detail', ['id' => $idPage], key($idPage))
-                    </template>
+                    @else
+                        <template x-if="page == 'Dashboard'">
+                            <livewire:dashboard.main>
+                        </template>
+                        <template x-if="page == 'Monitoring' && subPage =='Pertanian'">
+                            <livewire:dashboard.monitoring-pertanian>
+                        </template>
+                        <template x-if="page == 'Kalender'">
+                            <livewire:dashboard.kalender>
+                        </template>
+                        <template x-if="page == 'Target'">
+                            <livewire:dashboard.target />
+                        </template>
+                        <template x-if="page == 'Progres' && subPage == 'Pertanian' ">
+                            <livewire:dashboard.progres-pertanian />
+                        </template>
+                        <template x-if="page == 'Progres' && subPage == 'IPEK' ">
+                            <livewire:dashboard.progres-ipek />
+                        </template>
+                    @endif
+
                 </div>
             </main>
             <!-- ===== Main Content End ===== -->

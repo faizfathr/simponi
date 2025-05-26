@@ -12,6 +12,11 @@ class Index extends Component
     public string $message = '';
     public $idPage = null;
 
+    public function mount($id = null)
+    {
+        $this->idPage = $id;
+    }
+
     #[Layout('components.main-layout')]
     public function render()
     {
@@ -20,12 +25,6 @@ class Index extends Component
         ]);
     }
 
-    public function pageDetail($id)
-    {
-        return view('layouts.dashboard-layout', [
-            'idPage' => $id
-        ]);
-    }
     #[On('show-notif')]
     public function openNotif($action, $message)
     {

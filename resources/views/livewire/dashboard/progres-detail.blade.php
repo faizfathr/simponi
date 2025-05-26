@@ -1,6 +1,6 @@
 <div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
-    @if (Auth::user() || Auth::user()?->id_role === 2)
+    @if (Auth::user() && Auth::user()?->id_role === 3)
         <div class="flex items-center gap-x-2 mb-2 w-full">
             <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">

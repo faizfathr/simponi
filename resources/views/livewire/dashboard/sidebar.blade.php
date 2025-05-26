@@ -41,7 +41,7 @@
 
                 <ul class="mb-6 flex flex-col gap-4">
                     <!-- Menu Item Dashboard -->
-                    <x-dashboard.sidebar-item itemSelected="Dashboard" :isSubItem="false">
+                    <x-dashboard.sidebar-item href="{{ route('dashboard') }}" itemSelected="Dashboard">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -59,7 +59,7 @@
                     </x-dashboard.sidebar-item>
                     <!-- End Menu Monitoring -->
                     <!-- Menu Item Calendar -->
-                    <x-dashboard.sidebar-item itemSelected="Kalender" :isSubItem="false">
+                    <x-dashboard.sidebar-item href="{{ route('kalender') }}" itemSelected="Kalender">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -70,7 +70,7 @@
 
                     <!-- Menu Item Target -->
                     @if(Auth::user())
-                      <x-dashboard.sidebar-item itemSelected="Target">
+                      <x-dashboard.sidebar-item href="{{ route('target') }}" itemSelected="Target">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                               stroke="currentColor" class="size-6">
                               <path stroke-linecap="round" stroke-linejoin="round"

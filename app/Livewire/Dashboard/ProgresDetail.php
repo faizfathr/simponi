@@ -61,7 +61,7 @@ class ProgresDetail extends Component
 
     public function back()
     {
-        return redirect()->route('dashboard');
+        return redirect()->route('home');
     }
 
     public function updateProgres()

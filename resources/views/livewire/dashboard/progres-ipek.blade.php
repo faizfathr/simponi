@@ -88,8 +88,7 @@
                                 </div>
                             </div>
                             <div class="flex items-center gap-x-2 justify-end ">
-                                <button wire:click="pageDetail({{ $item->id }})"
-                                    @click="localStorage.setItem('detail', JSON.stringify('true'))"
+                                <a href="{{ route('detail-monitoring', $item->id) }}"
                                     class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                                     <span class="mr-1 text-xs hidden md:block">Detail</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -100,7 +99,7 @@
                                     <div wire:loading wire:target="pageDetail({{ $item->id }})"
                                         class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                                     </div>
-                                </button>
+                                </a>
                             </div>
                         </div>
                     @endforeach

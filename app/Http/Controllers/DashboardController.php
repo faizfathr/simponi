@@ -27,7 +27,7 @@ class DashboardController extends Controller
     public function pageDetail($id)
     {
         $idPage = $id;
-        return view('dashboard', [
+        return view('home', [
             'idPage' => $id
         ]);
     }

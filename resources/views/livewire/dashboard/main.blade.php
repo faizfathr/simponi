@@ -1,8 +1,44 @@
-<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6">
+<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6"
+    x-data
+    x-init="
+        $nextTick(() => {
+            if (window.swiperInstance) {
+                window.swiperInstance.destroy(true, true);
+            }
+
+            const swiperEl = document.querySelector('.swiperCardKegiatan');
+            if (!swiperEl) return;
+
+            window.swiperInstance = new Swiper('.swiperCardKegiatan', {
+                loop: true,
+                spaceBetween: 20,
+                centeredSlides: true,
+                grabCursor: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false,
+                },
+                breakpoints: {
+                    320: { slidesPerView: 1 },
+                    640: { slidesPerView: 1.2 },
+                    768: { slidesPerView: 2 },
+                    1024: { slidesPerView: 2.5 },
+                },
+                navigation: {
+                    nextEl: '.swiper-button-next',
+                    prevEl: '.swiper-button-prev',
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+            });
+        });
+    ">
     <style>
         .swiper-button-next,
         .swiper-button-prev {
-            color: #475569 ;
+            color: #475569;
             /* brand-500 */
             transition: transform 0.2s ease;
         }
@@ -27,7 +63,7 @@
             <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Pertanian</h2>
             <p class="text-sm">
                 kegiatan statistik produksi yang mencakup beberapa kegiatan sebagai berikut:
-                <ul class="list-disc list-inside text-sm space-y-1">
+            <ul class="list-disc list-inside text-sm space-y-1">
                 <li>Statistik Tanaman Pangan dan Hortikultura</li>
                 <li>Statistik Perkebunan, Peternakan, dan Perikanan</li>
                 <li>dan Statistik Hortikultura dan Perkebunan</li>
@@ -37,7 +73,8 @@
 
         <!-- Statistik Pertanian dan IPEK -->
         <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Industri Pengolahan, Energi, dan Konstruksi</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Industri Pengolahan, Energi, dan
+                Konstruksi</h2>
             <ul class="list-disc list-inside text-sm space-y-1">
                 <li>Survei Air Bersih</li>
                 <li>Updating Direktori Perusahaan Konstruksi</li>
@@ -90,26 +127,26 @@
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_1.jpeg"
-                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 1" />
+                    <img src="/img/kegiatan/kegiatan_1.jpeg" class="rounded-xl object-cover w-full h-72"
+                        alt="Kegiatan 1" />
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_2.jpeg"
-                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 2" />
+                    <img src="/img/kegiatan/kegiatan_2.jpeg" class="rounded-xl object-cover w-full h-72"
+                        alt="Kegiatan 2" />
                 </div>
                 <!-- Slide 3 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_3.jpeg"
-                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                    <img src="/img/kegiatan/kegiatan_3.jpeg" class="rounded-xl object-cover w-full h-72"
+                        alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_4.jpeg"
-                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                    <img src="/img/kegiatan/kegiatan_4.jpeg" class="rounded-xl object-cover w-full h-72"
+                        alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_5.jpeg"
-                        class="rounded-xl object-cover w-full h-72" alt="Kegiatan 3" />
+                    <img src="/img/kegiatan/kegiatan_5.jpeg" class="rounded-xl object-cover w-full h-72"
+                        alt="Kegiatan 3" />
                 </div>
                 <!-- Tambahkan slide lainnya jika perlu -->
             </div>
@@ -122,38 +159,4 @@
             <div class="swiper-pagination mt-4"></div>
         </div>
     </section>
-    <script>
-        const swiper = new Swiper(".swiperCardKegiatan", {
-            loop: true,
-            spaceBetween: 20,
-            centeredSlides: true,
-            grabCursor: true,
-            autoplay: {
-                delay: 3000,
-                disableOnInteraction: false,
-            },
-            breakpoints: {
-                320: {
-                    slidesPerView: 1,
-                },
-                640: {
-                    slidesPerView: 1.2,
-                },
-                768: {
-                    slidesPerView: 2,
-                },
-                1024: {
-                    slidesPerView: 2.5,
-                },
-            },
-            navigation: {
-                nextEl: ".swiper-button-next",
-                prevEl: ".swiper-button-prev",
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-        });
-    </script>
 </div>
