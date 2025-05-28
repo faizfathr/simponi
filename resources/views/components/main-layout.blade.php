@@ -12,8 +12,11 @@
     <title>
         SIMPONI - Dashboard
     </title>
-    @vite(['resources/css/app.css'])
-
+    @env('APP_ENV', 'local')
+        @vite(['resources/css/app.css'])
+    @else
+        <link rel="stylesheet" href="{{ asset('assets/app.css') }}"/>
+    @endenv
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.17/index.global.min.js'></script>
@@ -28,14 +31,14 @@
     'stickyMenu': false,
     'sidebarToggle': false,
     'scrollTop': false
-}" 
+    }" 
     x-init="$watch('page', value => document.title = `SIMPONI - ${value}`)" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
     $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{ 'dark bg-gray-900': darkMode === true }">
 
     {{ $slot }}
-    
-@livewireScripts
+
+    @livewireScripts
 </body>
 
 </html>

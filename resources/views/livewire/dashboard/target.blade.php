@@ -4,7 +4,6 @@
     openWarningDelete: @entangle('openWarningDelete'),
     showNotif: @entangle('showNotif')
 }">
-    {{-- <div class=" w-[100%] inset-0 bg-slate-500 h-[100vh]"></div> --}}
     <div class="flex gap-x-2 items-center mb-3">
         @if (Auth::user() || Auth::user()?->id_role === 3)
             <button
@@ -184,7 +183,7 @@
                                         </p>
                                     </div>
                                 </td>
-                                @if (Auth::user() && Auth::user()->id_role === 3)
+                                @if (Auth::user() && Auth::user()?->id_role === 3)
                                     <td class="py-3">
                                         <div class="flex items-center gap-2">
                                             <button wire:click='edit({{ $item->id }}, "update")'
