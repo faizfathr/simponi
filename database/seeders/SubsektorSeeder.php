@@ -2,8 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\subsektor;
-use App\Models\Subsektor as ModelsSubsektor;
+use App\Models\Subsektor;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
