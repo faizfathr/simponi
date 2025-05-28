@@ -18,10 +18,10 @@ class MitraSeeder extends Seeder
         $csvFile = fopen(base_path('database/data/mitra.csv'), 'r');
         while($data = fgetcsv($csvFile, 100, ',')) {
             Mitra::insert([
-                'id' => (string) Str::uuid(),
-                'nama' => $data['0'],
-                'no_rek' => $data['1'],
-                'status' => $data['2'],
+                'id' => (string) $data['0'],
+                'nama' => $data['1'],
+                'no_rek' => $data['2'],
+                'status' => $data['3'],
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
             ]);

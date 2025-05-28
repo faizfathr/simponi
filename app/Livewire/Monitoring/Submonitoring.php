@@ -10,8 +10,14 @@ use Livewire\Component;
 class Submonitoring extends Component
 {
 
-    public $idMonitoring = 3;
+    public $idMonitoring;
     public array $bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+    public function mount($idMonitoring)
+    {
+        $this->idMonitoring = intval($idMonitoring);
+    }
+
     public function render()
     {
         $contentsYearly = ListKegiatan::leftJoin('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')

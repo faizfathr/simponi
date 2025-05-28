@@ -15,7 +15,7 @@ class ProgresIpek extends Component
 
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    public array $ketPeriode = ['Bulan', 'Subround', 'Triwulan', 'Tahun'];
+    public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
 
     public array $romawiFont = ["I", "II", "III", "IV"];
 

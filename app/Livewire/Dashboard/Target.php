@@ -20,7 +20,7 @@ class Target extends Component
     public bool $openForm = FALSE, $openWarningDelete = FALSE;
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
-    public array $ketPeriode = ['Bulan', 'Subround', 'Triwulan', 'Tahun'];
+    public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
 
     public array $romawiFont = ["I", "II", "III", "IV"];
 
@@ -64,9 +64,9 @@ class Target extends Component
         if ($this->periode == 1) {
             $this->loopTask(12);
         } elseif ($this->periode == 2) {
-            $this->loopTask(3);
-        } elseif ($this->periode == 3) {
             $this->loopTask(4);
+        } elseif ($this->periode == 3) {
+            $this->loopTask(3);
         } else {
             $this->loopTask(1);
         }

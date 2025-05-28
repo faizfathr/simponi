@@ -1,4 +1,54 @@
-<div x-data="{ idMonitoring: @entangle('idMonitoring') }" id="id-monitoring">
+<div x-data="{ idMonitoring: @entangle('idMonitoring') }" x-watch="idMonitoring"
+    x-effect="
+        if (idMonitoring) {
+            const idXData = document.querySelector('#id-monitoring');
+            if (!idXData) return;
+            
+            const xData = Alpine.$data(idXData);
+            const subsektorActived = xData.idMonitoring;
+
+            fetch('/dashboard/data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                },
+                body: JSON.stringify({ tahun: 2025, subsektor: subsektorActived })
+            })
+            .then(response => response.json())
+            .then(responses => {
+                responses.forEach(response => {
+                    barChart(response.id_kegiatan, {
+                        categories: response.categories,
+                        series: [
+                            { name: 'Target', data: response.target },
+                            { name: 'Realisasi', data: response.realisasi }
+                        ]
+                    });
+                });
+            })
+            .catch(error => console.error('Fetch error:', error));
+
+            fetch('/dashboard/dataPersentase', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                tahun: 2025,
+                subsektor: subsektorActived,})
+            })
+            .then(responses => responses.json())
+            .then(responses => {
+                responses.map((response) => {
+                    halfDonutChart(response.id,  parseFloat(response.realisasi/response.target*100).toFixed(2))
+                })
+            })
+            .catch(error => console.error('Fetch error:', error));
+        }
+    "
+    id="id-monitoring">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 mb-3" wire:key="{{ $idMonitoring }}">
         @foreach ($contentsYearly as $content)
             <div class="rounded-2xl border border-gray-200 bg-gray-200 dark:border-gray-800 dark:bg-white/[0.03]">
@@ -118,20 +168,6 @@
                 </div>
             </div>
         @endforeach
-        <script>
-            Livewire.on('updateSubmonitoring', () => {
-                import('/js/halfDonutChart-progres.js').then((mod) => {
-                    // Panggil fungsi utama dari modul jika ada
-                    if (mod.default) {
-                        mod.default(); // kalau pakai export default
-                    } else if (mod.init) {
-                        mod.init(); // kalau pakai export const init = () => {...}
-                    }
-                }).catch(error => {
-                    console.error('Gagal load module:', error);
-                });
-            })
-        </script>
         <script src="/js/barChart-progres.js"></script>
         <script src="/js/halfDonutChart-progres.js"></script>
     </div>

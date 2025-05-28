@@ -26,6 +26,7 @@ Route::prefix('/dashboard')->group(function () {
     Route::post('/data', [DashboardController::class, 'data']);
     Route::post('/dataPersentase', [DashboardController::class, 'dataInPersentase']);
     Route::get('/downloadTemplate/{idTabel}', [DashboardController::class, 'downloadTabel']);
+    Route::get('/downloadDirektori', [DashboardController::class, 'downloadDirektori']);
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
     Route::get('/logout', [DashboardController::class, 'logout']);
 });

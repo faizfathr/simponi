@@ -15,7 +15,6 @@
                 <img class="w-10" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
                 <span class="ml-2 font-bold lg:hidden block">SIMPONI</span>
             </span>
-
         </a>
     </div>
     <!-- SIDEBAR HEADER -->
@@ -126,7 +125,7 @@
                             Tim Produksi
                         </h3>
                         <p class="mb-4 text-theme-sm text-gray-500 dark:text-gray-400">
-                            Dibuat untung mendukung penyediaan data produksi yang tepat, akurat, dan akuntabel
+                            Dibuat untuk mendukung penyediaan data produksi yang tepat, akurat, dan akuntabel
                         </p>
                     </div>
                     <!-- Promo Box -->

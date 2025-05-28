@@ -61,43 +61,41 @@
         <!-- Statistik Produksi -->
         <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
             <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Pertanian</h2>
-            <p class="text-sm">
-                kegiatan statistik produksi yang mencakup beberapa kegiatan sebagai berikut:
             <ul class="list-disc list-inside text-sm space-y-1">
-                <li>Statistik Tanaman Pangan dan Hortikultura</li>
-                <li>Statistik Perkebunan, Peternakan, dan Perikanan</li>
-                <li>dan Statistik Hortikultura dan Perkebunan</li>
+                <li>Survei Kerangka Sampel Area (KSA)</li>
+                <li>Laporan Pemotongan Ternak Bulanan (LPTB)</li>
+                <li>Survei Tanaman Sayuran dan Buah - buah Semusim (SBS)</li>
+                <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, subround, dan tahunan</li>
             </ul>
-            </p>
         </div>
 
         <!-- Statistik Pertanian dan IPEK -->
         <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Statistik Industri Pengolahan, Energi, dan
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Industri Pengolahan, Energi, dan
                 Konstruksi</h2>
             <ul class="list-disc list-inside text-sm space-y-1">
+                <li>Survei Industri Kecil dan Mikra (IMK)</li>
                 <li>Survei Air Bersih</li>
                 <li>Updating Direktori Perusahaan Konstruksi</li>
-                <li>Pendataan usaha skala kecil dan besar</li>
-                <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, subround, dan tahunan</li>
+                <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, dan tahunan</li>
             </ul>
         </div>
     </div>
 
     <!-- Anggota Tim -->
     <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50 mb-6">
-        <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">Anggota Tim</h2>
+        <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">Anggota Tim Statistik Produksi</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- Anggota 1 -->
             <div class="bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/faiz.png" alt="Foto"
+                <img src="/img/anggota/elysa.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm">Elysa, SST</p>
-                <p class="text-xs text-gray-600">Ketua Tim Produksi</p>
+                <p class="text-xs text-gray-600">Ketua Tim Statistik Produksi</p>
             </div>
             <!-- Anggota 2 -->
             <div class="bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/faiz.png" alt="Foto"
+                <img src="/img/anggota/maudy.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm">Maudy Sazty Nataya, A.Md.Stat.</p>
                 <p class="text-xs text-gray-600">Statistisi Terampil</p>
@@ -111,7 +109,7 @@
             </div>
             <!-- Anggota 4 -->
             <div class="bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/faiz.png" alt="Foto"
+                <img src="/img/anggota/harmanto.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm">Harmanto</p>
                 <p class="text-xs text-gray-600">Statistisi Penyelia</p>

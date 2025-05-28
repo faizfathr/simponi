@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kecamatan;
 use App\Models\KegiatanSurvei;
-use App\Models\Kelurahan;
 use App\Models\ListKegiatan;
+use App\Models\Mitra;
 use Illuminate\Http\Request;
 use App\Models\MonitoringKegiatan;
 use App\Models\StrukturTabelMonitoring;
@@ -62,18 +61,19 @@ class DashboardController extends Controller
             ->get();
 
         // 4. Gabungkan berdasarkan id_kegiatan
-        foreach ($target as $key => $t) {
-            $t->realisasi = (isset($realisasi[$key]) && $t->id_kegiatan === $realisasi[$key]->id_tabel) ? $realisasi[0]->realisasi : 0;
+        foreach ($target as $t) {
+            $match = $realisasi->firstWhere('id_tabel', $t->id_kegiatan);
+            $t->realisasi = $match && $match->waktu == $t->waktu ? $match->realisasi : 0;
         }
 
         $hasil = $target->groupBy('id_kegiatan')->map(function ($items, $id_kegiatan) {
-            $periode = $items->first()['periode'];
+            $periode = intVal($items->first()['periode']);
 
             // Tentukan kategori dan range waktu sesuai periode masing-masing kegiatan
             [$categories, $range] = match ($periode) {
                 1 => [['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], range(1, 12)],
-                2 => [['Subround 1', 'Subround 2', 'Subround 3'], range(1, 3)],
-                3 => [['Triwulan I', 'Triwulan II', 'Triwulan III', 'Triwulan IV'], range(1, 4)],
+                2 => [['Triwulan I', 'Triwulan II', 'Triwulan III', 'Triwulan IV'], range(1, 4)],
+                3 => [['Subround 1', 'Subround 2', 'Subround 3'], range(1, 3)],
                 default => [[], []],
             };
 
@@ -189,7 +189,29 @@ class DashboardController extends Controller
             fpassthru($handle);
         }, 200, [
             "Content-Type" => "text/csv",
-            "Content-Disposition" => "attachment; filename=" . $fileName .".csv",
+            "Content-Disposition" => "attachment; filename=" . $fileName . ".csv",
+            'Cache-Control' => 'no-store, no-cache'
+        ]);
+    }
+
+    public function downloadDirektori()
+    {
+        $data = Mitra::get();
+        $fileName = 'direktori_mitra.csv';
+        $handle = fopen('php://temp', 'r+');
+
+        fputcsv($handle, ['id', 'Nama', 'No Rekening', 'Status'], ";");
+
+        foreach ($data as $mitra) {
+            fputcsv($handle, [$mitra->id, $mitra->nama, $mitra->no_rek, $mitra->status], ";");
+        }
+        // Pindahkan pointer file kembali ke awal
+        rewind($handle);
+        return response()->stream(function () use ($handle) {
+            fpassthru($handle);
+        }, 200, [
+            "Content-Type" => "text/csv",
+            "Content-Disposition" => "attachment; filename=" . $fileName,
             'Cache-Control' => 'no-store, no-cache'
         ]);
     }
@@ -197,7 +219,7 @@ class DashboardController extends Controller
     public function listJadwal()
     {
         $listEventKegiatan = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
-            ->select('list_kegiatan.id','kegiatan_survei.alias', 'tanggal_mulai', 'tanggal_selesai')
+            ->select('list_kegiatan.id', 'kegiatan_survei.alias', 'tanggal_mulai', 'tanggal_selesai')
             ->get();
         return response()->json($listEventKegiatan);
     }

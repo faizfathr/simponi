@@ -53,24 +53,3 @@ const halfDonutChart = (idElemen, data) => {
         chart.render();
     }
 };
-const idXData = document.querySelector('#id-monitoring');
-const xData = Alpine.$data(idXData);
-
-const subsektorActived = xData.idMonitoring;
-fetch('/dashboard/dataPersentase', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-    },
-    body: JSON.stringify({
-        tahun: 2025,
-        subsektor: subsektorActived,
-    })
-})
-    .then(responses => responses.json())
-    .then(responses => {
-        responses.map((response) => {
-            halfDonutChart(response.id,  parseFloat(response.realisasi/response.target*100).toFixed(2))
-        })
-    })
