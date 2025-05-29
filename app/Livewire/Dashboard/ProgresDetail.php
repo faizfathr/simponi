@@ -59,11 +59,6 @@ class ProgresDetail extends Component
         $this->openForm = TRUE;
     }
 
-    public function back()
-    {
-        return redirect()->route('home');
-    }
-
     public function updateProgres()
     {
         $baris = array_keys($this->monitoring);

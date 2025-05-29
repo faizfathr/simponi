@@ -228,7 +228,7 @@
                             </div>
                         </a>
                     @else
-                        <a href="{{ route('login') }}"
+                        <a href="{{ route('login') }}" wire:navigate
                             class="w-full flex gap-x-2 px-3 py-2 text-gray-700 hover:bg-gray-100 hover:text-gray-700 "
                             type="button">
                             <svg class="text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none"

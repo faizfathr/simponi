@@ -2,13 +2,13 @@
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <div class="flex items-center gap-x-2 mb-2 w-full">
-            <button @click="localStorage.setItem('detail', JSON.stringify('false'))" wire:click='back'
+            <a href="{{ route('home') }}" wire:navigate
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                 </svg>
-            </button>
+            </a>
             <button wire:click.prevent="openModalForm"
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <span class="mr-1 text-xs hidden md:block">Tambah Manual</span>

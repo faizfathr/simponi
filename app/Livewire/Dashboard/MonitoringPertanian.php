@@ -3,12 +3,12 @@
 namespace App\Livewire\Dashboard;
 
 use App\Models\Subsektor;
+use Livewire\Attributes\Layout;
 use Livewire\Component;
 
 class MonitoringPertanian extends Component
 {
     public $idMonitoring = 3;
-
     public function render()
     {
         $subsektor = Subsektor::where('id', '>', 2)->get();

@@ -40,7 +40,7 @@
 
                 <ul class="mb-6 flex flex-col gap-4">
                     <!-- Menu Item Dashboard -->
-                    <x-dashboard.sidebar-item href="{{ route('dashboard') }}" itemSelected="Dashboard">
+                    <x-dashboard.sidebar-item href="{{ route('home') }}" itemSelected="Dashboard">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -49,7 +49,10 @@
                     </x-dashboard.sidebar-item>
                     <!-- End Menu Item Dashboard -->
                     <!-- Menu Monitoring -->
-                    <x-dashboard.sidebar-item itemSelected="Monitoring" :isSubItem="true" :subItemSelected="['Pertanian', 'IPEK']">
+                    <x-dashboard.sidebar-item itemSelected="Monitoring" :isSubItem="true" :subItemSelected="[
+                            ['title'=>'Pertanian', 'subLink' =>  route('monitoring-pertanian')], 
+                            ['title'=>'IPEK', 'subLink' =>  route('monitoring-ipek')],
+                        ]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -81,7 +84,8 @@
 
                     <!-- Menu Item Progres -->
                     @if(Auth::user())
-                      <x-dashboard.sidebar-item itemSelected="Progres" :isSubItem="true" :subItemSelected="['Pertanian', 'IPEK']">
+                      <x-dashboard.sidebar-item itemSelected="Progres" :isSubItem="true" :subItemSelected="[['title'=>'Pertanian', 'subLink' =>  route('progres-pertanian')], 
+                            ['title'=>'IPEK', 'subLink' =>  route('progres-ipek')],]">
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                               stroke="currentColor" class="size-6">
                               <path stroke-linecap="round" stroke-linejoin="round"

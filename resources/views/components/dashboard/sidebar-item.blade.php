@@ -2,13 +2,17 @@
     'itemSelected',
     'isSubItem' => FALSE,
     'subItemSelected' => [],
+    'href' => '#'
 ])
-<li>
+<li x-data="{dropdown: {{ collect($subItemSelected)->pluck('subLink')->contains(request()->url()) ? 'true' : 'false' }}}">
     <a
-      href="#"
-      @click.prevent="page = (page === '{{ $itemSelected }}' ? '':'{{ $itemSelected }}'); active = '{{ $itemSelected }}'"
-      class="flex py-2 rounded-md  dark:text-brand-400 relative"
-      :class=" (active === '{{ $itemSelected }}') ? 'fill-primary bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12]' : 'hover:bg-gray-200'"
+      href="{{ $isSubItem ? '#' : $href }}"
+        @if($isSubItem)
+            @click.prevent="dropdown=!dropdown"
+        @else
+            wire:navigate
+        @endif
+      class="flex py-2 rounded-md  dark:text-brand-400 relative {{ request()->url() === $href || collect($subItemSelected)->pluck('subLink')->contains(request()->url()) ? 'fill-primary bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12]' : 'hover:bg-gray-200' }}"
     >
         <div class="mx-2">
             {{ $slot ? $slot : '' }}
@@ -22,7 +26,7 @@
         @if ($isSubItem)
             <svg
                 class="menu-item-arrow  stroke-current absolute mx-auto right-8 transition-all duration-200 "
-                :class="[(page === '{{ $itemSelected }}') ? 'rotate-180' : '-rorate-180', sidebarToggle ? 'lg:hidden' : '' ]"
+                :class="[dropdown ? 'rotate-180' : '-rorate-180', sidebarToggle ? 'lg:hidden' : '' ]"
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"
@@ -44,7 +48,7 @@
     @if ($isSubItem)
         <div
             class="translate transform overflow-hidden"
-            :class="(page === '{{$itemSelected}}')? 'block' : 'hidden'"
+            :class="dropdown ? 'block' : 'hidden'"
         >
         <ul
             :class="sidebarToggle ? 'lg:hidden' : 'flex'"
@@ -54,12 +58,10 @@
         @foreach ($subItemSelected as $subItem)
             <li>
                 <a
-                @click.prevent = "subPage = '{{ $subItem }}'"
-                href="#"
-                class="menu-dropdown-item group block p-2 rounded-md"
-                :class="subPage === '{{ $subItem }}' ? 'fill-primary text-primary bg-brand-50' : 'menu-dropdown-item-inactive'"
+                href="{{ $subItem['subLink'] }}" wire:navigate
+                class="menu-dropdown-item group block p-2 rounded-md {{ request()->url() === $subItem['subLink'] ? 'fill-primary text-primary bg-brand-50' : 'hover:bg-gray-200' }}"
                 >
-                {{ $subItem }}
+                {{ $subItem['title'] }}
                 </a>
             </li>
         @endforeach

@@ -1,16 +1,16 @@
-﻿1,1,3,1,Laporan Pemotongan Ternah Bulanan (LPTB),RPH
-2,1,3,4,Laporan Ternak Besar (LTT),LTT
-3,1,3,4,Laporan Ternak Unggas (LTU),LTU
-4,1,3,2,Survei Penangkapan Ikan (PP-TPI),PP-TPI
-5,1,3,4,Laporan Tahunan Budaya Ikan (LTB),LTB
-6,1,4,3,Updating Ruta Ubinan Palawija,Updating Ubinan
-7,1,4,3,Tanaman Pangan Ubinan,Ubinan
-8,1,4,1,Survei Kerangka Sampel Area (KSA),KSA
-9,1,5,1,Survei Pertanian Hortikultura Sayuran & Buah Semusim (SBS),SBS
-10,1,5,4,Survei Pertanian Hortikultura Sayuran & Buah Tahunan (BST),BST
-11,1,5,4,Survei Pertanian Hortikultura Tanaman Biofarma (SPH-TBF),SPH-TBF
-12,1,5,4,Survei Pertanian Hortikultura Tanaman Hias (SPH-TH),SPH-TH
-13,1,5,4,Survei Usaha Hortikultura Lainnya (VN-Horti),VN-Horti
+﻿1,1,5,1,Laporan Pemotongan Ternah Bulanan (LPTB),RPH
+2,1,5,4,Laporan Ternak Besar (LTT),LTT
+3,1,5,4,Laporan Ternak Unggas (LTU),LTU
+4,1,5,2,Survei Penangkapan Ikan (PP-TPI),PP-TPI
+5,1,5,4,Laporan Tahunan Budaya Ikan (LTB),LTB
+6,1,3,3,Updating Ruta Ubinan Palawija,Updating Ubinan
+7,1,3,3,Tanaman Pangan Ubinan,Ubinan
+8,1,3,1,Survei Kerangka Sampel Area (KSA),KSA
+9,1,4,1,Survei Pertanian Hortikultura Sayuran & Buah Semusim (SBS),SBS
+10,1,4,4,Survei Pertanian Hortikultura Sayuran & Buah Tahunan (BST),BST
+11,1,4,4,Survei Pertanian Hortikultura Tanaman Biofarma (SPH-TBF),SPH-TBF
+12,1,4,4,Survei Pertanian Hortikultura Tanaman Hias (SPH-TH),SPH-TH
+13,1,4,4,Survei Usaha Hortikultura Lainnya (VN-Horti),VN-Horti
 14,2,1,4,Listing Survei Industri Kecil dan Mikro (IMK),Listing IMK
 15,2,1,2,Pencacahan Survei Industri Kecil dan Mikro (IMK),Pencacahan IMK
 16,2,1,4,Pemutakhiran DPA,DPA

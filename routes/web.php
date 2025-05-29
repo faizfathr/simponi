@@ -3,6 +3,8 @@
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Livewire\Dashboard\MonitoringIpek;
+use App\Livewire\Dashboard\MonitoringPertanian;
 use App\Livewire\Login\Index;
 use App\Livewire\Index as Home;
 
@@ -12,13 +14,19 @@ Livewire::setUpdateRoute(function ($handle) {
 
 Route::get('/', Home::class)->name('home');
 
-Route::get('/login', Index::class)->name('login');
+Route::get('/monitoring-pertanian', Home::class)->name('monitoring-pertanian');
 
-Route::get('/dashboard', Home::class)->name('dashboard');
+Route::get('/monitoring-ipek', Home::class)->name('monitoring-ipek');
+
+Route::get('/login', Index::class)->name('login');
 
 Route::get('/kalender', Home::class)->name('kalender');
 
 Route::get('/target', Home::class)->name('target');
+
+Route::get('/progres-pertanian', Home::class)->name('progres-pertanian');
+
+Route::get('/progres-ipek', Home::class)->name('progres-ipek');
 
 Route::get('/detail-monitorin/{id}', Home::class)->name('detail-monitoring');
 

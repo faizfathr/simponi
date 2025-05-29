@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="{{ asset('/logo/logo.png') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <title>
-        SIMPONI - Dashboard
+        SIMPONI
     </title>
     @env('APP_ENV', 'local')
         @vite(['resources/css/app.css'])
@@ -24,15 +24,13 @@
 </head>
 
 <body x-data="{
-    'page': $persist('Dashboard').as('page'),
-    'subPage': $persist('').as('subPage'),
     'loaded': true,
     'darkMode': false,
     'stickyMenu': false,
     'sidebarToggle': false,
     'scrollTop': false
     }" 
-    x-init="$watch('page', value => document.title = `SIMPONI - ${value}`)" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
+    x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
     $watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))"
     :class="{ 'dark bg-gray-900': darkMode === true }">
 

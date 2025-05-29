@@ -30,27 +30,27 @@
                     @if ($idPage)
                         @livewire('dashboard.progres-detail', ['id' => $idPage], key($idPage))
                     @else
-                        <template x-if="page == 'Dashboard'">
-                            <livewire:dashboard.main>
-                        </template>
-                        <template x-if="page == 'Monitoring' && subPage =='Pertanian'">
+                        @if (request()->routeIs('home'))
+                            <livewire:dashboard.main />
+                        @endif
+                        @if (request()->routeIs('monitoring-pertanian'))
                             <livewire:dashboard.monitoring-pertanian>
-                        </template>
-                        <template x-if="page == 'Monitoring' && subPage =='IPEK'">
+                        @endif
+                        @if (request()->routeIs('monitoring-ipek'))
                             <livewire:dashboard.monitoring-ipek>
-                        </template>
-                        <template x-if="page == 'Kalender'">
-                            <livewire:dashboard.kalender>
-                        </template>
-                        <template x-if="page == 'Target'">
+                        @endif
+                        @if (request()->routeIs('kalender'))
+                            <livewire:dashboard.kalender />
+                        @endif
+                        @if (request()->routeIs('target'))
                             <livewire:dashboard.target />
-                        </template>
-                        <template x-if="page == 'Progres' && subPage == 'Pertanian' ">
-                            <livewire:dashboard.progres-pertanian />
-                        </template>
-                        <template x-if="page == 'Progres' && subPage == 'IPEK' ">
-                            <livewire:dashboard.progres-ipek />
-                        </template>
+                        @endif
+                        @if (request()->routeIs('progres-pertanian'))
+                            <livewire:dashboard.progres-pertanian>
+                        @endif
+                        @if (request()->routeIs('progres-ipek'))
+                            <livewire:dashboard.progres-ipek>
+                        @endif
                     @endif
 
                 </div>
