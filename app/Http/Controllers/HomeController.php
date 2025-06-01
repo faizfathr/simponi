@@ -60,7 +60,7 @@ class HomeController extends Controller
     {
         $request = HTTP::post('https://sso.bps.go.id/auth/realms/pegawai-bps/protocol/openid-connect/auth?client_id=account', [
             'username' => 'faiz.fathur',
-            'password' => 'Tupaikeren21'
+            'password' => ''
         ]);
 
         $response = json_decode($request->body(), TRUE);

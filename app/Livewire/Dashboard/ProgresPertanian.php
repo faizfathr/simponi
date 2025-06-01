@@ -66,11 +66,4 @@ class ProgresPertanian extends Component
             'data' => $progresPertanian,
         ]);
     }
-
-    public function pageDetail($id)
-    {
-        return redirect()->route('dashboard.detail-monitoring', [
-            'id' => $id,
-        ]);
-    }
 }

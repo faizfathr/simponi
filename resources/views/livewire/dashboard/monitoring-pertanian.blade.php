@@ -5,8 +5,5 @@
             {{ $sb->nama }}
         </button>
     @endforeach
-    <div>
-        <span>{{ $idMonitoring }}</span>
-    </div>
     <livewire:monitoring.submonitoring idMonitoring='3'/>
 </div>

@@ -12,7 +12,7 @@
         @else
             wire:navigate
         @endif
-      class="flex py-2 rounded-md  dark:text-brand-400 relative {{ request()->url() === $href || collect($subItemSelected)->pluck('subLink')->contains(request()->url()) ? 'fill-primary bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12]' : 'hover:bg-gray-200' }}"
+      class="flex py-2 rounded-md   relative {{ request()->url() === $href || collect($subItemSelected)->pluck('subLink')->contains(request()->url()) ? 'fill-primary bg-brand-50 text-brand-500 dark:bg-brand-500/[0.12]' : 'hover:bg-gray-200 text-gray-500 dark:hover:bg-gray-800' }}"
     >
         <div class="mx-2">
             {{ $slot ? $slot : '' }}
@@ -59,7 +59,7 @@
             <li>
                 <a
                 href="{{ $subItem['subLink'] }}" wire:navigate
-                class="menu-dropdown-item group block p-2 rounded-md {{ request()->url() === $subItem['subLink'] ? 'fill-primary text-primary bg-brand-50' : 'hover:bg-gray-200' }}"
+                class="menu-dropdown-item group block p-2 rounded-md {{ request()->url() === $subItem['subLink'] ? 'dark:bg-brand-500/[0.12] fill-primary text-primary bg-brand-50' : 'dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-500' }}"
                 >
                 {{ $subItem['title'] }}
                 </a>

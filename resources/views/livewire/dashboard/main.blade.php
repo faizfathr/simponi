@@ -59,9 +59,9 @@
     </style>
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Statistik Produksi -->
-        <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Pertanian</h2>
-            <ul class="list-disc list-inside text-sm space-y-1">
+        <div class="bg-white dark:bg-gray-800 dark:border-slate-900 p-4 rounded-2xl shadow-md border border-brand-50">
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 dark:text-white mb-2">Kegiatan Statistik Pertanian</h2>
+            <ul class="list-disc list-inside text-sm space-y-1 dark:text-slate-100">
                 <li>Survei Kerangka Sampel Area (KSA)</li>
                 <li>Laporan Pemotongan Ternak Bulanan (LPTB)</li>
                 <li>Survei Tanaman Sayuran dan Buah - buah Semusim (SBS)</li>
@@ -70,10 +70,10 @@
         </div>
 
         <!-- Statistik Pertanian dan IPEK -->
-        <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-2">Kegiatan Statistik Industri Pengolahan, Energi, dan
+        <div class="dark:bg-gray-800 dark:border-slate-900 bg-white p-4 rounded-2xl shadow-md border border-brand-50">
+            <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-2">Kegiatan Statistik Industri Pengolahan, Energi, dan
                 Konstruksi</h2>
-            <ul class="list-disc list-inside text-sm space-y-1">
+            <ul class="list-disc list-inside text-sm space-y-1 dark:text-slate-100">
                 <li>Survei Industri Kecil dan Mikra (IMK)</li>
                 <li>Survei Air Bersih</li>
                 <li>Updating Direktori Perusahaan Konstruksi</li>
@@ -83,43 +83,43 @@
     </div>
 
     <!-- Anggota Tim -->
-    <div class="bg-white p-4 rounded-2xl shadow-md border border-brand-50 mb-6">
-        <h2 class="text-lg sm:text-xl font-semibold text-slate-700 mb-4">Anggota Tim Statistik Produksi</h2>
+    <div class="dark:bg-gray-800 dark:border-slate-900 bg-white p-4 rounded-2xl shadow-md border border-brand-50 mb-6">
+        <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-4">Anggota Tim Statistik Produksi</h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- Anggota 1 -->
-            <div class="bg-brand-50 p-3 rounded-xl text-center">
+            <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
                 <img src="/img/anggota/elysa.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
-                <p class="font-semibold text-sm">Elysa, SST</p>
-                <p class="text-xs text-gray-600">Ketua Tim Statistik Produksi</p>
+                <p class="font-semibold text-sm dark:text-white">Elysa, SST</p>
+                <p class="text-xs text-gray-600 dark:text-gray-100">Ketua Tim Statistik Produksi</p>
             </div>
             <!-- Anggota 2 -->
-            <div class="bg-brand-50 p-3 rounded-xl text-center">
+            <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
                 <img src="/img/anggota/maudy.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
-                <p class="font-semibold text-sm">Maudy Sazty Nataya, A.Md.Stat.</p>
-                <p class="text-xs text-gray-600">Statistisi Terampil</p>
+                <p class="font-semibold text-sm dark:text-white">Maudy Sazty Nataya, A.Md.Stat.</p>
+                <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Terampil</p>
             </div>
             <!-- Anggota 3 -->
-            <div class="bg-brand-50 p-3 rounded-xl text-center">
+            <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
                 <img src="/img/anggota/faiz.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
-                <p class="font-semibold text-sm">Faiz Fathur Rahman, A.Md.Stat.</p>
-                <p class="text-xs text-gray-600">Statistisi Terampil</p>
+                <p class="font-semibold text-sm dark:text-white">Faiz Fathur Rahman, A.Md.Stat.</p>
+                <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Terampil</p>
             </div>
             <!-- Anggota 4 -->
-            <div class="bg-brand-50 p-3 rounded-xl text-center">
+            <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
                 <img src="/img/anggota/harmanto.png" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
-                <p class="font-semibold text-sm">Harmanto</p>
-                <p class="text-xs text-gray-600">Statistisi Penyelia</p>
+                <p class="font-semibold text-sm dark:text-white">Harmanto</p>
+                <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Penyelia</p>
             </div>
         </div>
     </div>
 
     <!-- Dokumentasi Kegiatan -->
-    <section class="bg-white p-6 rounded-2xl shadow-lg border border-brand-50">
-        <h2 class="text-xl font-semibold text-slate-700 mb-4">Dokumentasi Kegiatan</h2>
+    <section class="dark:bg-gray-700 dark:border-slate-900 bg-white p-6 rounded-2xl shadow-lg border border-brand-50">
+        <h2 class="dark:text-gray-100 text-xl font-semibold text-slate-700 mb-4">Dokumentasi Kegiatan</h2>
 
         <div class="swiper swiperCardKegiatan">
             <div class="swiper-wrapper">

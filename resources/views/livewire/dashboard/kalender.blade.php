@@ -1,5 +1,5 @@
 <div x-init="initCalendar()" x-data="{ showModal: false, event: {} }" id="xDataModal">
-    <div id='calendar' class="bg-white p-4 rounded-md"></div>
+    <div id='calendar' class="bg-white dark:bg-gray-800 dark:text-slate-100 p-4 rounded-md"></div>
     <!-- Modal -->
     <div x-show="showModal" x-transition
         class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

@@ -22,13 +22,17 @@ Route::get('/login', Index::class)->name('login');
 
 Route::get('/kalender', Home::class)->name('kalender');
 
-Route::get('/target', Home::class)->name('target');
-
-Route::get('/progres-pertanian', Home::class)->name('progres-pertanian');
-
-Route::get('/progres-ipek', Home::class)->name('progres-ipek');
-
-Route::get('/detail-monitorin/{id}', Home::class)->name('detail-monitoring');
+Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS'])->group(function(){
+    Route::get('/target', Home::class)->name('target');
+    
+    Route::get('/progres-pertanian', Home::class)->name('progres-pertanian');
+    
+    Route::get('/progres-ipek', Home::class)->name('progres-ipek');
+    
+    Route::get('/detail-monitorin/{id}', Home::class)->name('detail-monitoring');
+    
+    Route::get('/dashboard/logout', [DashboardController::class, 'logout']);
+});
 
 Route::prefix('/dashboard')->group(function () {
     Route::post('/data', [DashboardController::class, 'data']);
@@ -36,6 +40,5 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/downloadTemplate/{idTabel}', [DashboardController::class, 'downloadTabel']);
     Route::get('/downloadDirektori', [DashboardController::class, 'downloadDirektori']);
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
-    Route::get('/logout', [DashboardController::class, 'logout']);
 });
 

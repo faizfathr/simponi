@@ -1,14 +1,13 @@
 <aside :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
-    class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-black lg:static lg:translate-x-0"
+    class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-gray-900 lg:static lg:translate-x-0"
     @click.outside="sidebarToggle = false">
     <!-- SIDEBAR HEADER -->
     <div :class="sidebarToggle ? 'justify-center' : 'justify-between'"
         class="sidebar-header flex items-center gap-2 pb-7 lg:pt-8">
         <a href="/dashboard">
             <span class="logo flex items-center" :class="sidebarToggle ? 'hidden' : ''">
-                <img class="dark:hidden w-10 lg:block hidden" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
-                <span class="ml-2 font-bold">SIMPONI</span>
-                <img class="hidden dark:block" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
+                <img class="w-10 lg:block hidden" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
+                <span class="ml-2 font-bold dark:text-brand-500">SIMPONI</span>
             </span>
 
             <span class="flex items-center lg:mt-0 mt-20" :class="sidebarToggle ? 'lg:block' : 'hidden'">
@@ -21,7 +20,7 @@
 
     <div class="scrollbar-hide flex flex-col overflow-y-auto duration-300 ease-linear">
         <!-- Sidebar Menu -->
-        <nav x-data="{ 'active': $persist('Dashboard').as('active') }">
+        <nav>
             <!-- Menu Group -->
             <div>
                 <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">

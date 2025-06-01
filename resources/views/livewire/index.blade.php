@@ -26,7 +26,7 @@
             <x-dashboard.notification showNotif="showNotif" message="test" />
             <!-- ===== Main Content Start ===== -->
             <main>
-                <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6">
+                <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6  dark:bg-gray-900">
                     @if ($idPage)
                         @livewire('dashboard.progres-detail', ['id' => $idPage], key($idPage))
                     @else

@@ -1,4 +1,10 @@
-<div class="flex items-center justify-center min-h-screen px-4 bg-gray-100 dark:bg-gray-900">
+<div 
+    x-data="{showNotif: true}"
+    class="flex items-center justify-center min-h-screen px-4 bg-gray-100 dark:bg-gray-900">
+    @if (session('unauthorized'))
+        <span>{{ session('unauthorized') }}</span>
+        <x-dashboard.notification showNotif="showNotif" />
+    @endif
     <div
         class="w-full max-w-xl px-6 pb-6 bg-white rounded-2xl border border-gray-200 dark:border-gray-800 dark:bg-white/[0.03]">
         <!-- Logo -->

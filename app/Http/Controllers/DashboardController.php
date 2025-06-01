@@ -18,24 +18,12 @@ class DashboardController extends Controller
     public $prosess, $sampel;
     public $fileImport;
     public $idPage = null;
-    public function index()
-    {
-        return view('layouts.dashboard-layout');
-    }
-
-    public function pageDetail($id)
-    {
-        $idPage = $id;
-        return view('home', [
-            'idPage' => $id
-        ]);
-    }
 
     public function data(Request $request)
     {
         $subsektor = $request->subsektor;
 
-        // 1. Ambil data target per kegiatan dan waktu
+        // 1. Data target per kegiatan dan waktu
         $target = ListKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
             $join->on('id_kegiatan', '=', 'kegiatan_survei.id')
                 ->where([
@@ -46,7 +34,7 @@ class DashboardController extends Controller
             ->select('id_kegiatan', 'kegiatan_survei.periode', 'waktu', 'target')
             ->get();
 
-        // 2. Ambil data realisasi per kegiatan dan waktu
+        // 2. Data realisasi per kegiatan dan waktu
         $realisasi = MonitoringKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
             $join->on('id_tabel', '=', 'kegiatan_survei.id')
                 ->where([
@@ -60,7 +48,7 @@ class DashboardController extends Controller
             ->orderBy('id_tabel')
             ->get();
 
-        // 4. Gabungkan berdasarkan id_kegiatan
+        // 4. Gabungan berdasarkan id_kegiatan
         foreach ($target as $t) {
             $match = $realisasi->firstWhere('id_tabel', $t->id_kegiatan);
             $t->realisasi = $match && $match->waktu == $t->waktu ? $match->realisasi : 0;
@@ -69,7 +57,7 @@ class DashboardController extends Controller
         $hasil = $target->groupBy('id_kegiatan')->map(function ($items, $id_kegiatan) {
             $periode = intVal($items->first()['periode']);
 
-            // Tentukan kategori dan range waktu sesuai periode masing-masing kegiatan
+            // menentukan kategori dan range waktu sesuai periode masing-masing kegiatan
             [$categories, $range] = match ($periode) {
                 1 => [['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], range(1, 12)],
                 2 => [['Triwulan I', 'Triwulan II', 'Triwulan III', 'Triwulan IV'], range(1, 4)],

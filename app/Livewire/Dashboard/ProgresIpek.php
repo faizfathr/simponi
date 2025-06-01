@@ -66,11 +66,4 @@ class ProgresIpek extends Component
             'data' => $progresIpek,
         ]);
     }
-
-    public function pageDetail($id)
-    {
-        return redirect()->route('dashboard.detail-monitoring', [
-            'id' => $id,
-        ]);
-    }
 }

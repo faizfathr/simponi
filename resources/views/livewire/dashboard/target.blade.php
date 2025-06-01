@@ -5,7 +5,7 @@
     showNotif: @entangle('showNotif')
 }">
     <div class="flex gap-x-2 items-center mb-3">
-        @if (Auth::user() || Auth::user()?->id_role === 3)
+        @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
             <button
                 class="inline-flex items-center gap-2 px-3 py-2.5 text-xs md:text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-xs hover:bg-brand-600"
                 wire:click='tambahForm'>
@@ -119,7 +119,7 @@
                                 </p>
                             </div>
                         </th>
-                        @if (Auth::user() || Auth::user()?->id_role === 3)
+                        @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
                             <th class="py-3">
                                 <div class="flex items-center col-span-2">
                                     <p class="font-medium text-gray-500 text-theme-xs dark:text-gray-400">
@@ -178,7 +178,7 @@
                                 <td class="py-3">
                                     <div class="flex items-center">
                                         <p
-                                            class="rounded-full {{ is_null($item->tanggal_mulai) ? 'bg-brand-50' : (now() < $item->tanggal_mulai ? 'bg-red-500 text-white' : (now() > $item->tanggal_selesai ? 'bg-success-50 text-success-600' : 'bg-yellow-400 text-yellow-100')) }} px-2 py-0.5 text-theme-xs font-medium  text-xs dark:bg-success-500/15 dark:text-success-500">
+                                            class="rounded-full {{ is_null($item->tanggal_mulai) ? 'bg-brand-50' : (now() < $item->tanggal_mulai ? 'bg-red-500 text-white' : (now() > $item->tanggal_selesai ? 'bg-success-50 text-success-600 dark:bg-success-500 dark:text-slate-100' : 'bg-yellow-400 text-yellow-100')) }} px-2 py-0.5 text-theme-xs font-medium  text-xs dark:bg-slate-400">
                                             {{ is_null($item->tanggal_mulai) ? 'Tanggal belum diatur' : (now() < $item->tanggal_mulai ? 'Kegiatan belum dimulai' : (now() > $item->tanggal_selesai ? 'Kegiatan selesai' : 'Sedang berjalan')) }}
                                         </p>
                                     </div>
@@ -242,7 +242,7 @@
             x-transition:enter-start ="opacity-0 -translate-y-52" x-transition:enter-end="opacity-100 translate-y-0"
             x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
             x-transition:leave-end="opacity-0 -translate-y-52"
-            class="w-[90%] md:w-2/3 rounded-2xl border absolute top-5 border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]"
+            class="w-[90%] md:w-2/3 rounded-2xl border absolute top-5 border-gray-200 bg-white dark:border-gray-800 dark:bg-slate-800"
             @click.outside="openForm=!openForm">
             <div class="px-5 py-4 sm:px-5 sm:py-5">
                 <h3 class="text-base font-medium text-gray-800 dark:text-white/90">
@@ -255,7 +255,7 @@
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Kegiatan Survei
                     </label>
-                    <div x-data="{ isOptionKegiatan: false }" class="relative z-20 bg-transparent">
+                    <div x-data="{ isOptionKegiatan: false }" class="relative z-20">
                         <select wire:model='id_kegiatan'
                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
                             :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
