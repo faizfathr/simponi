@@ -9,6 +9,7 @@ use Livewire\Attributes\On;
 use App\Models\ListKegiatan;
 use Livewire\WithFileUploads;
 use App\Models\MonitoringKegiatan;
+use Illuminate\Http\Request;
 
 class ProgresDetail extends Component
 {
@@ -18,7 +19,7 @@ class ProgresDetail extends Component
     public $idPage = null;
     public bool $openForm = FALSE, $showNotif = FALSE;
     public $sampel_header, $prosess_header, $sampel_body, $prosess_body;
-    public array $monitoring;
+    public array $monitoring, $allItem;
     public string $id_tabel,  $message = '', $status = '';
     public int $tahun, $waktu;
 
@@ -27,6 +28,16 @@ class ProgresDetail extends Component
     public function mount($id)
     {
         $this->idPage = $id;
+        $list_kegiatan = ListKegiatan::where('id', $id)->first();
+        $this->monitoring = MonitoringKegiatan::where([
+            ['id_tabel', '=', $list_kegiatan->id_kegiatan],
+            ['tahun', '=', $list_kegiatan->tahun],
+            ['waktu', '=', $list_kegiatan->waktu],
+        ])->get()
+            ->map(function ($item) {
+                $item->sampel_body = explode(';', $item->ket_sampel);
+                return $item;
+            })->toArray();
     }
 
     public function render()
@@ -41,13 +52,18 @@ class ProgresDetail extends Component
             $this->tahun = $event->tahun;
             $this->waktu = $event->waktu;
             $monitorings = MonitoringKegiatan::where([
-                ['id_tabel', '=', $event->id_tabel],
+                ['id_tabel', '=', $event->id_kegiatan],
                 ['tahun', '=', $event->tahun],
                 ['waktu', '=', $event->waktu],
-            ])->get();
+            ])->get()
+                ->map(function ($item) {
+                    $item->sampel_body = explode(';', $item->ket_sampel);
+                    return $item;
+                })->toArray();
 
             $this->sampel_header = explode(';', $event->ket_sampel);
             $this->prosess_header = explode(';', $event->proses);
+            $this->allItem = $monitorings;
             return view('livewire.dashboard.progres-detail', compact('event', 'monitorings'));
         } else {
             return view('livewire.dashboard.progres-detail', compact('event'));
@@ -59,8 +75,9 @@ class ProgresDetail extends Component
         $this->openForm = TRUE;
     }
 
-    public function updateProgres()
+    public function updateProgres(Request $request)
     {
+        dd($this->allItem);
         $baris = array_keys($this->monitoring);
         foreach ($baris as $b) {
             $datasets = MonitoringKegiatan::where([
@@ -122,7 +139,7 @@ class ProgresDetail extends Component
             $arrSampel = [];
             $arrProses = [];
             $lenData = collect($rows)->count();
-         
+
             foreach ($rows as $indexVal => $value) {
                 if ($indexVal >= 0 && $value !== "" && $indexVal < $lenData - 2) {
                     array_push($arrSampel, $value);

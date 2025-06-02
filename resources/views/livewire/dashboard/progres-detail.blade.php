@@ -2,7 +2,7 @@
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <div class="flex items-center gap-x-2 mb-2 w-full">
-            <a href="{{ route('home') }}" wire:navigate
+            <a href="#" @click.prevent="history.back()"
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4">
@@ -144,8 +144,10 @@
                                             </div>
                                         </div>
                                     </td>
-                                    @foreach (explode(';', $monitoring->ket_sampel) as $key => $itemSampelBody)
+                                    @foreach ($monitoring['sampel_body'] as $key => $itemSampelBody)
                                         <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
+                                            <input wire:model='allItem.{{ $row }}.sampel_body.{{ $key }}'
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-1 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
                                             <p class="text-gray-500 text-xs dark:text-gray-400">
                                                 {{ $itemSampelBody }}
                                             </p>
@@ -156,7 +158,7 @@
                                             {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
                                         </p>
                                     </td>
-                                    @foreach (explode(';', $monitoring->proses) as $key => $itemProsesBody)
+                                    {{-- @foreach (explode(';', $monitoring->proses) as $key => $itemProsesBody)
                                         <td class="px-5 py-4 sm:px-6">
                                             <div x-data="{ checkboxToggle{{ $monitoring->id }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
                                                 <label for="checkboxLabel{{ $monitoring->id }}{{ $key }}"
@@ -191,8 +193,8 @@
                                                 </label>
                                             </div>
                                         </td>
-                                    @endforeach
-                                    <td class="px-5 py-4 sm:px-6">
+                                    @endforeach --}}
+                                    {{-- <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <p
                                                 class="rounded-full px-2 py-0.5 text-xs font-medium {{ $monitoring->status === 0 ? 'bg-gray-50 text-gray-600' : ($monitoring->status === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
@@ -211,7 +213,7 @@
                                                 {{ $monitoring->joinPml?->nama ?? 'Unknown' }}
                                             </p>
                                         </div>
-                                    </td>
+                                    </td> --}}
                                 </tr>
                             @endforeach
                         @else
