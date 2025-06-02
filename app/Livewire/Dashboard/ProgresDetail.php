@@ -58,13 +58,15 @@ class ProgresDetail extends Component
             ])->get()
                 ->map(function ($item) {
                     $item->sampel_body = explode(';', $item->ket_sampel);
+                    $item->prosess = explode(';', $item->proses);
                     return $item;
                 })->toArray();
-
+            $pcl = Mitra::where('status', 1)->get();
+            $pml = Mitra::where('status', 0)->get();
             $this->sampel_header = explode(';', $event->ket_sampel);
             $this->prosess_header = explode(';', $event->proses);
             $this->allItem = $monitorings;
-            return view('livewire.dashboard.progres-detail', compact('event', 'monitorings'));
+            return view('livewire.dashboard.progres-detail', compact('event', 'monitorings', 'pcl', 'pml'));
         } else {
             return view('livewire.dashboard.progres-detail', compact('event'));
         }

@@ -6,7 +6,8 @@
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
                 </svg>
             </a>
             <button wire:click.prevent="openModalForm"
@@ -43,8 +44,8 @@
                     <div
                         class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
                         <label for="template-input" class="text-xs flex gap-x-2 h-full p-2 cursor-pointer">Import
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                stroke="currentColor" class="size-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-4">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5" />
                             </svg>
@@ -70,7 +71,7 @@
         </div>
     @endif
     <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-        <div class="max-w-full overflow-x-auto custom-scrollbar h-[472px]">
+        <div class="max-w-full overflow-x-auto custom-scrollbar h-[80vh]">
             @if ($idPage)
                 <table class="min-w-full custom-scrollbar h-auto overflow-y-auto">
                     <!-- table header start -->
@@ -144,13 +145,11 @@
                                             </div>
                                         </div>
                                     </td>
-                                    @foreach ($monitoring['sampel_body'] as $key => $itemSampelBody)
+                                    @foreach ($allItem[$row]['sampel_body'] as $key => $itemSampelBody)
                                         <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
-                                            <input wire:model='allItem.{{ $row }}.sampel_body.{{ $key }}'
+                                            <input
+                                                wire:model='allItem.{{$row}}.sampel_body.{{ $key }}'
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-1 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
-                                            <p class="text-gray-500 text-xs dark:text-gray-400">
-                                                {{ $itemSampelBody }}
-                                            </p>
                                         </td>
                                     @endforeach
                                     <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
@@ -158,25 +157,25 @@
                                             {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
                                         </p>
                                     </td>
-                                    {{-- @foreach (explode(';', $monitoring->proses) as $key => $itemProsesBody)
+                                    @foreach ($allItem[$row]['prosess'] as $key => $itemProsesBody)
                                         <td class="px-5 py-4 sm:px-6">
-                                            <div x-data="{ checkboxToggle{{ $monitoring->id }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
-                                                <label for="checkboxLabel{{ $monitoring->id }}{{ $key }}"
+                                            <div x-data="{ checkboxToggle{{ $monitoring['id'] }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
+                                                <label for="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
                                                     class="flex justify-center cursor-pointer select-none ">
                                                     <div class="relative">
                                                         <input
-                                                            wire:model='monitoring.{{ $monitoring->id }}.prosess.{{ $key }}'
+                                                            wire:model='allItem.{{$row}}.prosess.{{ $key }}'
                                                             type="checkbox"
-                                                            id="checkboxLabel{{ $monitoring->id }}{{ $key }}"
+                                                            id="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
                                                             class="sr-only"
-                                                            :checked='checkboxToggle{{ $monitoring->id }}{{ $key }}'
-                                                            @change="checkboxToggle{{ $monitoring->id }}{{ $key }} = !checkboxToggle{{ $monitoring->id }}{{ $key }}" />
-                                                        <div :class="checkboxToggle{{ $monitoring->id }}{{ $key }} ?
+                                                            :checked='checkboxToggle{{ $monitoring['id'] }}{{ $key }}'
+                                                            @change="checkboxToggle{{ $monitoring['id'] }}{{ $key }} = !checkboxToggle{{ $monitoring['id'] }}{{ $key }}" />
+                                                        <div :class="checkboxToggle{{ $monitoring['id'] }}{{ $key }} ?
                                                             'border-brand-500 bg-brand-500' :
                                                             'bg-transparent border-gray-300 dark:border-gray-700'"
                                                             class="hover:border-brand-500 dark:hover:border-brand-500 flex h-5 w-5 items-center justify-center rounded-md border-[1.25px]">
                                                             <span
-                                                                :class="checkboxToggle{{ $monitoring->id }}{{ $key }}
+                                                                :class="checkboxToggle{{ $monitoring['id'] }}{{ $key }}
                                                                     ?
                                                                     '' : 'opacity-0'">
                                                                 <svg width="14" height="14"
@@ -193,31 +192,60 @@
                                                 </label>
                                             </div>
                                         </td>
-                                    @endforeach --}}
-                                    {{-- <td class="px-5 py-4 sm:px-6">
+                                    @endforeach
+                                    <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <p
-                                                class="rounded-full px-2 py-0.5 text-xs font-medium {{ $monitoring->status === 0 ? 'bg-gray-50 text-gray-600' : ($monitoring->status === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
-                                                {{ $monitoring->status === 0 ? 'Belum Terlaksana' : ($monitoring->status === 1 ? 'On Progres' : 'Selesai') }}
+                                                class="rounded-full px-2 py-0.5 text-xs font-medium {{ $allItem[$row]['status'] === 0 ? 'bg-gray-50 text-gray-600' : ($allItem[$row]['status'] === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
+                                                {{ $allItem[$row]['status'] === 0 ? 'Belum Terlaksana' : ($allItem[$row]['status'] === 1 ? 'On Progres' : 'Selesai') }}
                                             </p>
                                         </div>
                                     </td>
                                     <td class="px-5 py-4 sm:px-6">
-                                        <p class="text-gray-500 text-xs dark:text-gray-400">
-                                            {{ $monitoring->joinPcl?->nama ?? 'Unknown' }}
-                                        </p>
+                                        <select wire:model='allItem.{{ $row }}.pcl'
+                                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                                            :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
+                                            @change="isOptionKegiatan = true">
+                                            <option
+                                                class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
+                                                --- Petugas ---
+                                            </option>
+                                            @foreach ($pcl as $key => $p)
+                                                <option value="{{ $p->id }}"
+                                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                                    {{ $p->nama }}
+                                                </option>
+                                            @endforeach
+                                        </select>
                                     </td>
                                     <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
-                                            <p class="text-gray-500 text-xs dark:text-gray-400">
-                                                {{ $monitoring->joinPml?->nama ?? 'Unknown' }}
-                                            </p>
+                                            <select wire:model='allItem.{{ $row }}.pml'
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
+                                                :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
+                                                @change="isOptionKegiatan = true">
+                                                <option
+                                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
+                                                    --- Petugas ---
+                                                </option>
+                                                @foreach ($pml as $key => $p)
+                                                    <option value="{{ $p->id }}"
+                                                        class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                                        {{ $p->nama }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                    </td> --}}
+                                    </td>
                                 </tr>
                             @endforeach
                         @else
-                            <span>Belum ada data untuk dimonitoring</span>
+                            <tr>
+                                <td colspan="" class="text-center py-4 text-gray-500 dark:text-gray-400">
+                                    <span class="font-medium text-gray-500 text-xs dark:text-gray-400">Belum ada data
+                                        untuk dimonitoring</span>
+                                </td>
+                            </tr>
                         @endif
 
                     </tbody>
@@ -228,8 +256,7 @@
     <button wire:click.prevent='updateProgres'
         class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
         <span>Simpan</span>
-        <div 
-            wire:loading wire:target='updateProgres'
+        <div wire:loading wire:target='updateProgres'
             class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
         </div>
     </button>
