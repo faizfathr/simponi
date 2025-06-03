@@ -79,40 +79,39 @@ class ProgresDetail extends Component
 
     public function updateProgres(Request $request)
     {
-        dd($this->allItem);
-        $baris = array_keys($this->monitoring);
-        foreach ($baris as $b) {
-            $datasets = MonitoringKegiatan::where([
-                ['id', '=', $b],
-                ['id_tabel', '=', $this->id_tabel],
-            ])->first();
+        foreach ($this->allItem as $key => &$data) {
+            $data['ket_sampel'] = implode(';', $data['sampel_body']);
 
-            $separated = explode(";", $datasets->proses);
-            foreach ($this->monitoring[$b]['prosess'] as $key => $progres) {
-                $separated[$key] = strval($progres ? 1 : 0);
-            };
-            if (count(explode(";", $datasets->proses)) === 0) {
-                $status = 0;
-            } else if (count(explode(";", $datasets->proses)) === array_sum($separated)) {
-                $status = 2;
+            $data['prosess'] = collect($data['prosess'])->map(function ($item) {
+                return (int) $item;
+            })->toArray();
+            $data['proses'] = implode(';', $data['prosess']);
+            if (array_sum(explode(";", $data['proses'])) === 0) {
+                $data['status'] = 0;
+            } else if (count(explode(";", $data['proses'])) === array_sum($data['prosess'])) {
+                $data['status'] = 2;
             } else {
-                $status = 1;
+                $data['status'] = 1;
             }
-            $separated = implode(';', $separated);
-
-            MonitoringKegiatan::where(
-                [
-                    ['id_tabel', '=', $this->id_tabel],
-                    ['id', '=', $b],
-                    ['tahun', '=', $this->tahun],
-                    ['waktu', '=', $this->waktu],
-                ]
-            )->update([
-                'proses' => $separated,
-                'status' => $status,
-            ]);
-        };
-        $this->render();
+            $updated[$key] = MonitoringKegiatan::where('id', $data['id'])
+                ->update([
+                    'ket_sampel' => $data['ket_sampel'],
+                    'status' => $data['status'],
+                    'proses' => $data['proses'],
+                    'pcl' => $data['pcl'],
+                    'pml' => $data['pml'],
+                ]);
+        }
+        unset($data);
+        if (array_sum($updated) > 0) {
+            $this->message = 'Data berhasil disimpan';
+            $this->status = 'Suksess';
+            $this->showNotif = TRUE;
+        } else {
+            $this->message = 'Tidak ada data yg diupdate';
+            $this->status = 'Gagal';
+            $this->showNotif = TRUE;
+        }
     }
 
     #[On('close-modal')]
