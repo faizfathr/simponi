@@ -4,7 +4,7 @@
     <!-- SIDEBAR HEADER -->
     <div :class="sidebarToggle ? 'justify-center' : 'justify-between'"
         class="sidebar-header flex items-center gap-2 pb-7 lg:pt-8">
-        <a href="/dashboard">
+        <a href="{{ route('home') }}">
             <span class="logo flex items-center" :class="sidebarToggle ? 'hidden' : ''">
                 <img class="w-10 lg:block hidden" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
                 <span class="ml-2 font-bold dark:text-brand-500">SIMPONI</span>

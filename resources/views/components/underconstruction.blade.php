@@ -1,4 +1,4 @@
-<div class="h-[85vh] flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-center px-6">
+<div class="h-[85vh] flex flex-col items-center justify-center bg-white dark:bg-gray-900 text-center px-6" x-init="setTimeout(()=>loading=false, 500)">
     {{-- Ilustrasi SVG bawaan --}}
     <div class="w-72 sm:w-96 mb-8">
         <svg viewBox="0 0 1024 1024" class="w-full h-auto" fill="none" xmlns="http://www.w3.org/2000/svg">

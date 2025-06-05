@@ -1,4 +1,4 @@
-<div x-init="initCalendar()" x-data="{ showModal: false, event: {} }" id="xDataModal">
+<div x-init="initCalendar();setTimeout(()=>loading=false, 500)" x-data="{ showModal: false, event: {} }" id="xDataModal">
     <div id='calendar' class="bg-white dark:bg-gray-800 dark:text-slate-100 p-4 rounded-md"></div>
     <!-- Modal -->
     <div x-show="showModal" x-transition

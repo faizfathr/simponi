@@ -17,4 +17,9 @@ class MonitoringKegiatan extends Model
     {
         return $this->belongsTo(Mitra::class, 'pml', 'id');
     }
+
+    public function joinKegiatan()
+    {
+        return $this->belongsTo(KegiatanSurvei::class, 'id_tabel', 'id');
+    }
 }

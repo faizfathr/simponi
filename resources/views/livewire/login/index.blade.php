@@ -1,5 +1,6 @@
 <div 
     x-data="{showNotif: true}"
+    x-init="setTimeout(() => loading = false, 500)"
     class="flex items-center justify-center min-h-screen px-4 bg-gray-100 dark:bg-gray-900">
     @if (session('unauthorized'))
         <x-dashboard.notification showNotif="showNotif" message="{{ session('unauthorized')}}" status="Invalid Role"/>

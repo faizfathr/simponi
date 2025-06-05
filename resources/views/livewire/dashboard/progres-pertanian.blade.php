@@ -1,4 +1,4 @@
-<div>
+<div x-init="setTimeout(()=>loading=false, 500)">
     <div class="relative z-0 mb-3">
         <span class="absolute top-1/2 left-4 -translate-y-1/2">
             <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"

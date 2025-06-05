@@ -1,4 +1,4 @@
-<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }">
+<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }" x-init="setTimeout(()=>loading=false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <div class="flex items-center gap-x-2 mb-2 w-full">

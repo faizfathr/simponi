@@ -36,9 +36,18 @@ export default {
                         width: '100%',
                     },
                 },
+                barUpDown: {
+                    '0%, 100%': { transform: 'scaleY(0.5)' },
+                    '50%': { transform: 'scaleY(1.5)' },
+                },
             },
             animation: {
                 'progress': 'progressAnimation 3000ms linear forwards',
+                'bar-1': 'barUpDown 1s ease-in-out infinite',
+                'bar-2': 'barUpDown 1s ease-in-out infinite 0.1s',
+                'bar-3': 'barUpDown 1s ease-in-out infinite 0.2s',
+                'bar-4': 'barUpDown 1s ease-in-out infinite 0.3s',
+                'bar-5': 'barUpDown 1s ease-in-out infinite 0.4s',
             }
         },
     },
