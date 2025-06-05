@@ -126,7 +126,7 @@
                                         Aksi
                                     </p>
                                 </div>
-                            </th>    
+                            </th>
                         @endif
                     </tr>
                 </thead>
@@ -140,7 +140,8 @@
                                     <div class="flex items-center">
                                         <div class="flex items-center gap-3">
                                             <div>
-                                                <p class="font-medium text-gray-800 text-xs md:text-sm lg:text-base dark:text-white/90">
+                                                <p
+                                                    class="font-medium text-gray-800 text-xs md:text-sm lg:text-base dark:text-white/90">
                                                     {{ $item->joinKegiatan?->kegiatan }}
                                                 </p>
                                                 <span class="text-gray-500 text-xs dark:text-gray-400">
@@ -188,9 +189,11 @@
                                         <div class="flex items-center gap-2">
                                             <button wire:click='edit({{ $item->id }}, "update")'
                                                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-orange-400 shadow-theme-xs hover:bg-orange-600 mb-3">
-                                                <svg wire:loading.remove wire:target='edit({{ $item->id }}, "update")'
-                                                    xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke-width="1.5" stroke="currentColor" class="size-4">
+                                                <svg wire:loading.remove
+                                                    wire:target='edit({{ $item->id }}, "update")'
+                                                    xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="size-4">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
                                                         d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10" />
                                                 </svg>
@@ -212,7 +215,7 @@
                                                 </div>
                                             </button>
                                         </div>
-                                    </td>    
+                                    </td>
                                 @endif
                             </tr>
                         @endforeach
@@ -279,6 +282,16 @@
                             </svg>
                         </span>
                     </div>
+                    @error('id_kegiatan')
+                        <div class="mt-1 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-5 text-red-700">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-red-700 text-xs">{{ $message }}</span>
+                        </div>
+                    @enderror
                 </div>
 
                 <!-- Elements Survei -->
@@ -291,6 +304,16 @@
                     <input type="number" wire:model='tahun'
                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
                 </div>
+                @error('tahun')
+                    <div class="mt-1 flex items-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                            stroke="currentColor" class="size-5 text-red-700">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M12 9v3m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span class="text-red-700 text-xs">{{ $message }}</span>
+                    </div>
+                @enderror
 
                 <!-- Elements -->
                 <div class="flex gap-4 md:flex-row flex-col">
@@ -312,12 +335,22 @@
                     </div>
                 </div>
                 <div>
-                    <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Target Kegiatan
                     </label>
                     <input wire:model='target' type="number"
                         placeholder="target dapat diatur setelah kegiatan dibentuk"
                         class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full rounded-lg border border-gray-300 bg-transparent px-4 py-2.5 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30" />
+                    @error('target')
+                        <div class="flex items-center gap-x-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-5 text-red-700">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 9v3m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="text-red-700 text-xs">{{ $message }}</span>
+                        </div>
+                    @enderror
                 </div>
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 active:bg-brand-500/50">
@@ -327,7 +360,7 @@
                     </div>
                 </button>
                 <button type="button" @click="openForm = false"
-                    class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-inset ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
+                    class="mt-1.5 inline-flex items-center gap-2 rounded-lg bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-inset ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
                     batal
                 </button>
             </div>

@@ -49,9 +49,9 @@
                     <!-- End Menu Item Dashboard -->
                     <!-- Menu Monitoring -->
                     <x-dashboard.sidebar-item itemSelected="Monitoring" :isSubItem="true" :subItemSelected="[
-                            ['title'=>'Pertanian', 'subLink' =>  route('monitoring-pertanian')], 
-                            ['title'=>'IPEK', 'subLink' =>  route('monitoring-ipek')],
-                        ]">
+                        ['title' => 'Pertanian', 'subLink' => route('monitoring-pertanian')],
+                        ['title' => 'IPEK', 'subLink' => route('monitoring-ipek')],
+                    ]">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                             stroke="currentColor" class="size-6">
                             <path stroke-linecap="round" stroke-linejoin="round"
@@ -70,27 +70,29 @@
                     <!-- End Menu Item Calendar -->
 
                     <!-- Menu Item Target -->
-                    @if(Auth::user())
-                      <x-dashboard.sidebar-item href="{{ route('target') }}" itemSelected="Target">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="size-6">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
-                          </svg>
-                      </x-dashboard.sidebar-item>
+                    @if (Auth::user())
+                        <x-dashboard.sidebar-item href="{{ route('target') }}" itemSelected="Target">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                            </svg>
+                        </x-dashboard.sidebar-item>
                     @endif
                     <!-- End Menu Item Target -->
 
                     <!-- Menu Item Progres -->
-                    @if(Auth::user())
-                      <x-dashboard.sidebar-item itemSelected="Progres" :isSubItem="true" :subItemSelected="[['title'=>'Pertanian', 'subLink' =>  route('progres-pertanian')], 
-                            ['title'=>'IPEK', 'subLink' =>  route('progres-ipek')],]">
-                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                              stroke="currentColor" class="size-6">
-                              <path stroke-linecap="round" stroke-linejoin="round"
-                                  d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
-                          </svg>
-                      </x-dashboard.sidebar-item>
+                    @if (Auth::user())
+                        <x-dashboard.sidebar-item itemSelected="Progres" :isSubItem="true" :subItemSelected="[
+                            ['title' => 'Pertanian', 'subLink' => route('progres-pertanian')],
+                            ['title' => 'IPEK', 'subLink' => route('progres-ipek')],
+                        ]">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                            </svg>
+                        </x-dashboard.sidebar-item>
                     @endif
                     <!-- End Menut Item Progres -->
                     <!-- Tambahan Group -->
@@ -110,11 +112,15 @@
 
                         <ul class="mb-6 flex flex-col gap-4">
                             <!-- Menu Item Database Mitra -->
-                            <x-dashboard.sidebar-item itemSelected="Database Mitra">
+                            <x-dashboard.sidebar-item itemSelected="Manajemen" :isSubItem="true" :subItemSelected="[
+                                ['title' => 'Survei', 'subLink' => route('manajemen-survei')],
+                                ['title' => 'Petugas', 'subLink' => route('manajemen-petugas')],
+                                ['title' => 'Administrasi', 'subLink' => route('manajemen-administrasi')],
+                            ]">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                                        d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
                                 </svg>
                             </x-dashboard.sidebar-item>
                             <!-- End Menu Item Database Mitra -->
@@ -128,7 +134,7 @@
                             Tim Produksi
                         </h3>
                         <p class="mb-4 text-theme-sm text-gray-500 dark:text-gray-400">
-                            Dibuat untuk mendukung penyediaan data produksi yang tepat, akurat, dan akuntabel
+                            Dibuat untuk mendukung penyediaan data statistik produksi yang tepat, akurat, dan akuntabel
                         </p>
                     </div>
                     <!-- Promo Box -->

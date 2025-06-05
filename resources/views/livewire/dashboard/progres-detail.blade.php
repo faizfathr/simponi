@@ -148,7 +148,7 @@
                                     @foreach ($allItem[$row]['sampel_body'] as $key => $itemSampelBody)
                                         <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
                                             <input
-                                                wire:model='allItem.{{$row}}.sampel_body.{{ $key }}'
+                                                wire:model='allItem.{{ $row }}.sampel_body.{{ $key }}'
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 rounded-lg border border-gray-300 bg-transparent px-4 py-1 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 max-w-max" />
                                         </td>
                                     @endforeach
@@ -164,7 +164,7 @@
                                                     class="flex justify-center cursor-pointer select-none ">
                                                     <div class="relative">
                                                         <input
-                                                            wire:model='allItem.{{$row}}.prosess.{{ $key }}'
+                                                            wire:model='allItem.{{ $row }}.prosess.{{ $key }}'
                                                             type="checkbox"
                                                             id="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
                                                             class="sr-only"
@@ -196,16 +196,14 @@
                                     <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <p
-                                                class="rounded-full px-2 py-0.5 text-xs font-medium {{ $allItem[$row]['status'] === 0 ? 'bg-gray-50 text-gray-600' : ($allItem[$row]['status'] === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
-                                                {{ $allItem[$row]['status'] === 0 ? 'Belum Terlaksana' : ($allItem[$row]['status'] === 1 ? 'On Progres' : 'Selesai') }}
+                                                class="rounded-full px-2 py-0.5 text-xs font-medium {{ (int) $allItem[$row]['status'] === 0 ? 'bg-gray-50 text-gray-600' : ((int) $allItem[$row]['status'] === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
+                                                {{ (int) $allItem[$row]['status'] === 0 ? 'Belum Terlaksana' : ((int) $allItem[$row]['status'] === 1 ? 'On Progres' : 'Selesai') }}
                                             </p>
                                         </div>
                                     </td>
                                     <td class="px-5 py-4 sm:px-6">
                                         <select wire:model='allItem.{{ $row }}.pcl'
-                                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                            :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
-                                            @change="isOptionKegiatan = true">
+                                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                             <option
                                                 class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
                                                 --- Petugas ---
@@ -221,9 +219,7 @@
                                     <td class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <select wire:model='allItem.{{ $row }}.pml'
-                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                                                :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
-                                                @change="isOptionKegiatan = true">
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                                 <option
                                                     class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
                                                     --- Petugas ---
@@ -253,13 +249,15 @@
             @endif
         </div>
     </div>
-    <button wire:click.prevent='updateProgres'
-        class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
-        <span>Simpan</span>
-        <div wire:loading wire:target='updateProgres'
-            class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
-        </div>
-    </button>
+    @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
+        <button wire:click.prevent='updateProgres'
+            class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
+            <span>Simpan</span>
+            <div wire:loading wire:target='updateProgres'
+                class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
+            </div>
+        </button>
+    @endif
     <div x-show="openForm"
         class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
         @livewire('progres.modal-form', ['id' => $idPage])

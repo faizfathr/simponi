@@ -1,40 +1,36 @@
-<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6"
-    x-data
-    x-init="
-        $nextTick(() => {
-            if (window.swiperInstance) {
-                window.swiperInstance.destroy(true, true);
-            }
+<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data x-init="$nextTick(() => {
+    if (window.swiperInstance) {
+        window.swiperInstance.destroy(true, true);
+    }
 
-            const swiperEl = document.querySelector('.swiperCardKegiatan');
-            if (!swiperEl) return;
+    const swiperEl = document.querySelector('.swiperCardKegiatan');
+    if (!swiperEl) return;
 
-            window.swiperInstance = new Swiper('.swiperCardKegiatan', {
-                loop: true,
-                spaceBetween: 20,
-                centeredSlides: true,
-                grabCursor: true,
-                autoplay: {
-                    delay: 3000,
-                    disableOnInteraction: false,
-                },
-                breakpoints: {
-                    320: { slidesPerView: 1 },
-                    640: { slidesPerView: 1.2 },
-                    768: { slidesPerView: 2 },
-                    1024: { slidesPerView: 2.5 },
-                },
-                navigation: {
-                    nextEl: '.swiper-button-next',
-                    prevEl: '.swiper-button-prev',
-                },
-                pagination: {
-                    el: '.swiper-pagination',
-                    clickable: true,
-                },
-            });
-        });
-    ">
+    window.swiperInstance = new Swiper('.swiperCardKegiatan', {
+        loop: true,
+        spaceBetween: 20,
+        centeredSlides: true,
+        grabCursor: true,
+        autoplay: {
+            delay: 3000,
+            disableOnInteraction: false,
+        },
+        breakpoints: {
+            320: { slidesPerView: 1 },
+            640: { slidesPerView: 1.2 },
+            768: { slidesPerView: 2 },
+            1024: { slidesPerView: 2.5 },
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev',
+        },
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+    });
+});">
     <style>
         .swiper-button-next,
         .swiper-button-prev {
@@ -57,10 +53,22 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
     </style>
+    @if (session('login-valid'))
+        <div x-data="{ showNotif: true }">
+            <x-dashboard.notification showNotif="showNotif" message="Selamat datang {{ Auth::user()->nama }}" status="Login Berhasil" />
+        </div>
+    @endif
+    @if (session('logout-valid'))
+        <div x-data="{ showNotif: true }">
+            <x-dashboard.notification showNotif="showNotif" message="Silahkan login kembali jika ingin menggunakan hak user" status="Logout Berhasil" />
+        </div>
+    @endif
+
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         <!-- Statistik Produksi -->
         <div class="bg-white dark:bg-gray-800 dark:border-slate-900 p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 dark:text-white mb-2">Kegiatan Statistik Pertanian</h2>
+            <h2 class="text-lg sm:text-xl font-semibold text-slate-700 dark:text-white mb-2">Kegiatan Statistik Pertanian
+            </h2>
             <ul class="list-disc list-inside text-sm space-y-1 dark:text-slate-100">
                 <li>Survei Kerangka Sampel Area (KSA)</li>
                 <li>Laporan Pemotongan Ternak Bulanan (LPTB)</li>
@@ -71,10 +79,11 @@
 
         <!-- Statistik Pertanian dan IPEK -->
         <div class="dark:bg-gray-800 dark:border-slate-900 bg-white p-4 rounded-2xl shadow-md border border-brand-50">
-            <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-2">Kegiatan Statistik Industri Pengolahan, Energi, dan
+            <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-2">Kegiatan Statistik Industri
+                Pengolahan, Energi, dan
                 Konstruksi</h2>
             <ul class="list-disc list-inside text-sm space-y-1 dark:text-slate-100">
-                <li>Survei Industri Kecil dan Mikra (IMK)</li>
+                <li>Survei Industri Kecil dan Mikro (IMK)</li>
                 <li>Survei Air Bersih</li>
                 <li>Updating Direktori Perusahaan Konstruksi</li>
                 <li>Serta kegiatan lainnya yang dilakukan secara Rutin bulanan, triwulanan, dan tahunan</li>
@@ -84,7 +93,8 @@
 
     <!-- Anggota Tim -->
     <div class="dark:bg-gray-800 dark:border-slate-900 bg-white p-4 rounded-2xl shadow-md border border-brand-50 mb-6">
-        <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-4">Anggota Tim Statistik Produksi</h2>
+        <h2 class="text-lg sm:text-xl font-semibold dark:text-white text-slate-700 mb-4">Anggota Tim Statistik Produksi
+        </h2>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- Anggota 1 -->
             <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">

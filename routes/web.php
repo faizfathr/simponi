@@ -3,8 +3,6 @@
 use Livewire\Livewire;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Livewire\Dashboard\MonitoringIpek;
-use App\Livewire\Dashboard\MonitoringPertanian;
 use App\Livewire\Login\Index;
 use App\Livewire\Index as Home;
 
@@ -22,7 +20,11 @@ Route::get('/login', Index::class)->name('login');
 
 Route::get('/kalender', Home::class)->name('kalender');
 
-Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS'])->group(function(){
+Route::get('/manajemen-survei', Home::class)->name('manajemen-survei');
+Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
+Route::get('/manajemen-administrasi', Home::class)->name('manajemen-administrasi');
+
+Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BPS'])->group(function(){
     Route::get('/target', Home::class)->name('target');
     
     Route::get('/progres-pertanian', Home::class)->name('progres-pertanian');

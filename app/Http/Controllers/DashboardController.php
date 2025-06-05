@@ -49,9 +49,11 @@ class DashboardController extends Controller
             ->get();
 
         // 4. Gabungan berdasarkan id_kegiatan
+        $indexedRealisasi = $realisasi->keyBy(fn($item) => $item->id_tabel . '-' . $item->waktu);
+
         foreach ($target as $t) {
-            $match = $realisasi->firstWhere('id_tabel', $t->id_kegiatan);
-            $t->realisasi = $match && $match->waktu == $t->waktu ? $match->realisasi : 0;
+            $key = $t->id_kegiatan . '-' . $t->waktu;
+            $t->realisasi = $indexedRealisasi[$key]->realisasi ?? 0;
         }
 
         $hasil = $target->groupBy('id_kegiatan')->map(function ($items, $id_kegiatan) {

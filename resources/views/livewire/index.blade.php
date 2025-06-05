@@ -23,7 +23,10 @@
             <!-- ===== Header Start ===== -->
             <livewire:dashboard.header />
             <!-- ===== Header End ===== -->
-            <x-dashboard.notification showNotif="showNotif" message="test" />
+            @if (session('unauthorized'))
+                <x-dashboard.notification showNotif="showNotif" message="{{ session('unauthorized') }}"
+                    status="Invalid Role" />
+            @endif
             <!-- ===== Main Content Start ===== -->
             <main>
                 <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6  dark:bg-gray-900">
@@ -50,6 +53,9 @@
                         @endif
                         @if (request()->routeIs('progres-ipek'))
                             <livewire:dashboard.progres-ipek>
+                        @endif
+                        @if (request()->routeIs('manajemen-survei') || request()->routeIs('manajemen-petugas') || request()->routeIs('manajemen-administrasi'))
+                            <x-underconstruction />
                         @endif
                     @endif
 

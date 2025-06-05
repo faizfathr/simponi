@@ -18,6 +18,6 @@ class Header extends Component
         session()->invalidate();
         session()->regenerateToken();
         $this->dispatch('show-notif', action:true, message:'Logout berhasil');
-        redirect()->route('home');
+        redirect()->route('home')->with('logout-valid', 'Anda telah berhasil logout');
     }
 }

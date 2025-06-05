@@ -34,7 +34,7 @@ class Index extends Component
         $authenticated = Auth::attempt(['username' => $this->username, 'password' => $this->password]);
         if($authenticated) {
             session()->regenerate();
-            return redirect()->route('home');
+            return redirect()->route('home')->with('login-valid', 'Selamat datang, ' . Auth::user()->name);
         }
 
         $this->addError('username', 'Username wajib diisi');
