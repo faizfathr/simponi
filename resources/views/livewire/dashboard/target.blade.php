@@ -3,7 +3,7 @@
     action: @entangle('action'),
     openWarningDelete: @entangle('openWarningDelete'),
     showNotif: @entangle('showNotif')
-}" x-init="setTimeout(()=>loading=false, 500)">
+}" x-init="setTimeout(() => loading = false, 500)">
     <div class="flex gap-x-2 items-center mb-3">
         @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
             <button
@@ -30,7 +30,7 @@
                         fill="" />
                 </svg>
             </span>
-            <input type="text" placeholder="Cari kegiatan..." wire:model.live.debounce.250ms='qSearch'
+            <input type="text" placeholder="Cari kegiatan..." wire:model.live.debounce.300ms='qSearch'
                 class="dark:bg-dark-900 shadow-theme-xs bg-white focus:border-brand-600 focus:ring-brand-500/10 dark:focus:border-brand-600 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[430px] dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30" />
 
             <button id="search-button"
@@ -52,31 +52,37 @@
                 </h3>
             </div>
 
-            <div class="flex items-center gap-3">
-                <select wire:model.live='pagination'
-                    class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
-                    
-                    <option value="5" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                        5
-                    </option>
-                    <option value="10" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                        10
-                    </option>
-                    <option value="25" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                        25
-                    </option>
-                    <option value="50" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                        50
-                    </option>
-                    <option value="100" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                        100
-                    </option>
-                </select>
+            <div class="flex flex-col md:flex-row gap-3 justify-start">
+                <div class="flex items-center gap-2">
+                    <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Menampilkan
+                    </label>
+                    <select wire:model.live='perPage'
+                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                        @foreach ([5, 10, 25, 50, 100] as $pgn)
+                            <option value="{{ $pgn }}"
+                                class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                {{ $pgn }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex items-center gap-2">
+                    <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        Tahun Kegiatan
+                    </label>
+                    <select id="tahun" wire:model.live="tahun"
+                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
 
-                <button
-                    class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-theme-sm font-medium text-gray-700 shadow-theme-xs hover:bg-gray-50 hover:text-gray-800 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-white/[0.03] dark:hover:text-gray-200">
-                    See all
-                </button>
+                        @foreach (range(2023, 2028) as $thn)
+                            <option value="{{ $thn }}"
+                                class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                {{ $thn }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+
             </div>
         </div>
 
@@ -259,30 +265,27 @@
                     <label class="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-400">
                         Kegiatan Survei
                     </label>
-                    <div x-data="{ isOptionKegiatan: false }" class="relative z-20">
-                        <select wire:model='id_kegiatan'
-                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 w-full appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30"
-                            :class="isOptionKegiatan && 'text-gray-800 dark:text-white/90'"
-                            @change="isOptionKegiatan = true">
-                            <option class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
-                                --- Pilih Survei ---
-                            </option>
-                            @foreach ($listKegiatan as $item)
-                                <option value="{{ $item->id }}"
-                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+
+                    <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                        <input type="text" wire:model.live.debounce.300ms="querySearchKegiatan" @focus="open = true"
+                            placeholder="Cari kegiatan survei..."
+                            class="w-full h-11 px-4 py-2.5 text-sm rounded-lg border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 focus:ring-3 focus:outline-none">
+
+                        <!-- Dropdown -->
+                        <ul x-show="open" x-transition
+                            class="absolute z-20 mt-1 w-full max-h-60 overflow-auto rounded-lg bg-white dark:bg-dark-900 border border-gray-300 dark:border-gray-700 shadow-lg text-sm">
+                            @forelse ($listKegiatan as $item)
+                                <li wire:click.prevent="setIdKegiatan('{{ $item->id }}', '{{ $item->kegiatan }}')"
+                                    @click="open = false"
+                                    class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-800 dark:text-gray-200">
                                     {{ $item->kegiatan }}
-                                </option>
-                            @endforeach
-                        </select>
-                        <span
-                            class="pointer-events-none absolute top-1/2 right-4 z-30 -translate-y-1/2 text-gray-500 dark:text-gray-400">
-                            <svg class="stroke-current" width="20" height="20" viewBox="0 0 20 20"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M4.79175 7.396L10.0001 12.6043L15.2084 7.396" stroke=""
-                                    stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                        </span>
+                                </li>
+                            @empty
+                                <li class="px-4 py-2 text-gray-500 dark:text-gray-400">Tidak ditemukan.</li>
+                            @endforelse
+                        </ul>
                     </div>
+
                     @error('id_kegiatan')
                         <div class="mt-1 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -356,7 +359,7 @@
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 active:bg-brand-500/50">
                     {{ $this->action }} Kegiatan
-                    <div wire:loading
+                    <div wire:loading wire:target='submit'
                         class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                     </div>
                 </button>

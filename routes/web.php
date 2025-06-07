@@ -36,6 +36,7 @@ Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BP
     Route::get('/dashboard/logout', [DashboardController::class, 'logout']);
 });
 
+Route::post('/resource/aggregatProgres', [DashboardController::class, 'aggregatProgres']);
 Route::prefix('/dashboard')->group(function () {
     Route::post('/data', [DashboardController::class, 'data']);
     Route::post('/dataPersentase', [DashboardController::class, 'dataInPersentase']);

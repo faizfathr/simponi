@@ -9,6 +9,7 @@ use Livewire\Component;
 
 class Main extends Component
 {
+
     public function render()
     {
         $mitra = collect([
@@ -17,6 +18,9 @@ class Main extends Component
         ]);
         $kegiatan = ListKegiatan::where('tanggal_mulai', '<=', now())
             ->where('tanggal_selesai', '>=', now())
+            ->orWhereMonth('tanggal_mulai', now()->month)
+            ->orWhereMonth('tanggal_selesai', now()->month)
+            ->whereYear('tanggal_selesai', now()->year)
             ->get();
         $kegiatanBerjalan = MonitoringKegiatan::whereIn('status', [1, 2])
             ->selectRaw('

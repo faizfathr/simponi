@@ -24,26 +24,36 @@
             </h3>
 
             <div x-data="{ openDropDown: false }" class="relative">
-                <button @click="openDropDown = !openDropDown"
-                    :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
-                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                            fill="" />
-                    </svg>
-                </button>
-                <div x-show="openDropDown" @click.outside="openDropDown = false"
-                    class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark">
-                    <button
-                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                        View More
-                    </button>
-                    <button
-                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                        Delete
-                    </button>
+                <div class="flex flex-col md:flex-row gap-3 justify-start">
+                    <div class="flex items-center gap-2">
+                        <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Menampilkan
+                        </label>
+                        <select wire:model.live='perPage'
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                            @foreach ([5, 10, 25, 50, 100] as $pgn)
+                                <option value="{{ $pgn }}"
+                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                    {{ $pgn }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Tahun Kegiatan
+                        </label>
+                        <select id="tahun" wire:model.live="tahun"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+
+                            @foreach (range(2023, 2028) as $thn)
+                                <option value="{{ $thn }}"
+                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                    {{ $thn }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-<div x-init="setTimeout(()=>loading=false, 500)">
+<div x-init="setTimeout(() => loading = false, 500)">
     <div class="relative z-0 mb-3">
         <span class="absolute top-1/2 left-4 -translate-y-1/2">
             <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"
@@ -8,14 +8,24 @@
                     fill="" />
             </svg>
         </span>
-        <input type="text" placeholder="Cari progres kegiatan..." wire:model.live.debounce.250ms='qSearch'
-            class="dark:bg-dark-900 shadow-theme-xs bg-white focus:border-brand-600 focus:ring-brand-500/10 dark:focus:border-brand-600 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[430px] dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30" />
-
-        <button id="search-button"
-            class="absolute top-1/2 right-2.5 inline-flex -translate-y-1/2 items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-[7px] py-[4.5px] text-xs -tracking-[0.2px] text-gray-500 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-400">
-            <span> ⌘ </span>
-            <span> K </span>
-        </button>
+        <div class="relative">
+            <span class="absolute top-1/2 left-4 -translate-y-1/2">
+                <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20"
+                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M3.04175 9.37363C3.04175 5.87693 5.87711 3.04199 9.37508 3.04199C12.8731 3.04199 15.7084 5.87693 15.7084 9.37363C15.7084 12.8703 12.8731 15.7053 9.37508 15.7053C5.87711 15.7053 3.04175 12.8703 3.04175 9.37363ZM9.37508 1.54199C5.04902 1.54199 1.54175 5.04817 1.54175 9.37363C1.54175 13.6991 5.04902 17.2053 9.37508 17.2053C11.2674 17.2053 13.003 16.5344 14.357 15.4176L17.177 18.238C17.4699 18.5309 17.9448 18.5309 18.2377 18.238C18.5306 17.9451 18.5306 17.4703 18.2377 17.1774L15.418 14.3573C16.5365 13.0033 17.2084 11.2669 17.2084 9.37363C17.2084 5.04817 13.7011 1.54199 9.37508 1.54199Z"
+                        fill="" />
+                </svg>
+            </span>
+            <input type="text" placeholder="Cari progres kegiatan..." wire:model.live.debounce.250ms='qSearch'
+                class="dark:bg-dark-900 shadow-theme-xs bg-white focus:border-brand-600 focus:ring-brand-500/10 dark:focus:border-brand-600 h-11 w-full rounded-lg border border-gray-200 bg-transparent py-2.5 pr-14 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden xl:w-[430px] dark:border-gray-800 dark:bg-gray-900 dark:bg-white/[0.03] dark:text-white/90 dark:placeholder:text-white/30" />
+    
+            <button id="search-button"
+                class="absolute top-1/2 right-2.5 inline-flex -translate-y-1/2 items-center gap-0.5 rounded-lg border border-gray-200 bg-gray-50 px-[7px] py-[4.5px] text-xs -tracking-[0.2px] text-gray-500 dark:border-gray-800 dark:bg-white/[0.03] dark:text-gray-400">
+                <span> ⌘ </span>
+                <span> K </span>
+            </button>
+        </div>
     </div>
     <div class="rounded-2xl border border-gray-200 bg-white p-6 dark:border-gray-800 dark:bg-white/[0.03]">
         <div class="mb-6 flex items-center justify-between">
@@ -24,26 +34,36 @@
             </h3>
 
             <div x-data="{ openDropDown: false }" class="relative">
-                <button @click="openDropDown = !openDropDown"
-                    :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                        'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
-                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path fill-rule="evenodd" clip-rule="evenodd"
-                            d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                            fill="" />
-                    </svg>
-                </button>
-                <div x-show="openDropDown" @click.outside="openDropDown = false"
-                    class="absolute right-0 top-full z-40 w-40 space-y-1 rounded-2xl border border-gray-200 bg-white p-2 shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark">
-                    <button
-                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                        View More
-                    </button>
-                    <button
-                        class="flex w-full rounded-lg px-3 py-2 text-left text-theme-xs font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                        Delete
-                    </button>
+                <div class="flex flex-col md:flex-row gap-3 justify-start">
+                    <div class="flex items-center gap-2">
+                        <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Menampilkan
+                        </label>
+                        <select wire:model.live='perPage'
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                            @foreach ([5, 10, 25, 50, 100] as $pgn)
+                                <option value="{{ $pgn }}"
+                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                    {{ $pgn }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Tahun Kegiatan
+                        </label>
+                        <select id="tahun" wire:model.live="tahun"
+                            class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+
+                            @foreach (range(2023, 2028) as $thn)
+                                <option value="{{ $thn }}"
+                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                                    {{ $thn }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
             </div>
         </div>

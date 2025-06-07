@@ -15,6 +15,8 @@ class ProgresPertanian extends Component
 
     public string $qSearch = '';
 
+    public int $tahun = 2025, $perPage = 10;
+
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
     public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
@@ -59,8 +61,9 @@ class ProgresPertanian extends Component
                     DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
                 )
                 ->where('sektor', 1)
+                ->where('list_kegiatan.tahun', $this->tahun)
                 ->orderBy('waktu', 'ASC')
-                ->paginate(10);
+                ->paginate($this->perPage);
         }
         return view('livewire.dashboard.progres-pertanian', [
             'data' => $progresPertanian,

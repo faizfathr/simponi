@@ -2,15 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\KegiatanSurvei;
-use App\Models\ListKegiatan;
+use stdClass;
 use App\Models\Mitra;
+use App\Models\ListKegiatan;
 use Illuminate\Http\Request;
+use App\Models\KegiatanSurvei;
 use App\Models\MonitoringKegiatan;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use App\Models\StrukturTabelMonitoring;
 use Illuminate\Database\Query\JoinClause;
-use Illuminate\Support\Facades\Auth;
-use stdClass;
 
 class DashboardController extends Controller
 {
@@ -128,6 +129,30 @@ class DashboardController extends Controller
         }
 
         return response()->json($results);
+    }
+
+    public function aggregatProgres()
+    {
+        $tahun = request()->input('tahun', 2025);
+        $outputKegiatan = MonitoringKegiatan::selectRaw("
+            DATE_FORMAT(updated_at, '%m') as bulan,
+            COUNT(CASE WHEN status = 2 THEN 1 END) as progres,
+            tahun
+        ")
+            ->where('tahun', $tahun)
+            ->groupBy(DB::raw("DATE_FORMAT(updated_at, '%m'), tahun"))
+            ->orderBy('bulan')
+            ->get();
+
+        $dataPerBulan = $outputKegiatan->pluck('progres', 'bulan');
+
+        $outputKegiatanArr = [];
+
+        foreach (range(1, 12) as $bulan) {
+            $bulanStr = str_pad($bulan, 2, '0', STR_PAD_LEFT); 
+            $outputKegiatanArr[] = (int) ($dataPerBulan[$bulanStr] ?? 0);
+        }
+        return response()->json($outputKegiatanArr);
     }
 
     public function downloadTabel($idTabel)

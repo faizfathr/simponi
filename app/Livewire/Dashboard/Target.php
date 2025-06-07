@@ -16,9 +16,9 @@ class Target extends Component
     use WithPagination, WithoutUrlPagination;
     public $id, $kegiatan;
     public bool $showNotif = FALSE;
-    public string $id_kegiatan, $periode = "", $action = 'Tambah', $ketWaktu = '', $message = '', $status = '', $qSearch = '';
+    public string $id_kegiatan, $periode = "", $action = 'Tambah', $ketWaktu = '', $message = '', $status = '', $qSearch = '', $querySearchKegiatan = '';
     public $tanggal_mulai = null, $tanggal_selesai = null;
-    public int $tahun = 2025, $waktu, $target = 0, $pagination = 10;
+    public int $tahun = 2025, $waktu, $target = 0, $perPage = 10;
     public bool $openForm = FALSE, $openWarningDelete = FALSE;
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
@@ -26,30 +26,39 @@ class Target extends Component
 
     public array $romawiFont = ["I", "II", "III", "IV"];
 
-    public function updatedPagination()
-    {
-        $this->resetPage();
-    }
-
     public function render()
     {
-        $listKegiatan = KegiatanSurvei::get();
+        if($this->querySearchKegiatan) {
+            $listKegiatan = KegiatanSurvei::
+                whereLike('kegiatan','%'. $this->querySearchKegiatan . '%')
+                ->get();
+        } else {
+            $listKegiatan = KegiatanSurvei::get();
+        }
         if ($this->qSearch) {
             $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
                 ->selectRaw('list_kegiatan.*, kegiatan_survei.kegiatan, kegiatan_survei.periode as periode')
                 ->whereLike('kegiatan', '%' . $this->qSearch . '%')
+                ->where('tahun', $this->tahun)
                 ->orderBy('list_kegiatan.created_at', 'DESC')
                 ->get();
         } else {
             $listTarget = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
                 ->selectRaw('list_kegiatan.*, kegiatan_survei.kegiatan, kegiatan_survei.periode as periode')
                 ->orderBy('list_kegiatan.created_at', 'DESC')
-                ->paginate($this->pagination);
+                ->where('tahun', $this->tahun)
+                ->paginate($this->perPage);
         }
         return view('livewire.dashboard.target', [
             'listTarget' => $listTarget,
             'listKegiatan' => $listKegiatan
         ]);
+    }
+
+    public function setIdKegiatan($id, $kegiatan)
+    {
+        $this->id_kegiatan = $id;
+        $this->querySearchKegiatan = $kegiatan;
     }
 
     public function submitForm()
@@ -131,6 +140,7 @@ class Target extends Component
         $target = ListKegiatan::where('id', $id)->first();
         $this->id = $target->id;
         $this->id_kegiatan = $target->id_kegiatan;
+        $this->querySearchKegiatan = $target->joinKegiatan->kegiatan;
         $this->tahun = $target->tahun;
         $this->waktu = $target->waktu;
         $this->target = $target->target;

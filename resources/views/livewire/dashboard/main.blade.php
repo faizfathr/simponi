@@ -1,37 +1,56 @@
-<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-init="$nextTick(() => {
-    if (window.swiperInstance) {
-        window.swiperInstance.destroy(true, true);
-    }
+<div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" 
+    x-data="{tahunKegiatan:2025}"
+    x-init="$nextTick(() => {
+        if (window.swiperInstance) {
+            window.swiperInstance.destroy(true, true);
+        }
 
-    const swiperEl = document.querySelector('.swiperCardKegiatan');
-    if (!swiperEl) return;
+        const swiperEl = document.querySelector('.swiperCardKegiatan');
+        if (!swiperEl) return;
 
-    window.swiperInstance = new Swiper('.swiperCardKegiatan', {
-        loop: true,
-        spaceBetween: 20,
-        centeredSlides: true,
-        grabCursor: true,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
-        },
-        breakpoints: {
-            320: { slidesPerView: 1 },
-            640: { slidesPerView: 1.2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 2.5 },
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
+        window.swiperInstance = new Swiper('.swiperCardKegiatan', {
+            loop: true,
+            spaceBetween: 20,
+            centeredSlides: true,
+            grabCursor: true,
+            autoplay: {
+                delay: 3000,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                320: { slidesPerView: 1 },
+                640: { slidesPerView: 1.2 },
+                768: { slidesPerView: 2 },
+                1024: { slidesPerView: 2.5 },
+            },
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+        });
     });
-});
-setTimeout(() => loading = false, 500)">
+    setTimeout(() => loading = false, 500)"
+    x-watch="tahunKegiatan"
+    x-effect="
+        if(tahunKegiatan) {
+            fetch('/resource/aggregatProgres', {
+                method: 'POST',
+                headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                    },
+                body: JSON.stringify({ tahun: tahunKegiatan })
+            })
+            .then((response)=> response.json())
+            .then((response)=> {
+                mainChart('progresChart', response)
+            });
+        }"
+    >
     <style>
         .swiper-button-next,
         .swiper-button-prev {
@@ -199,15 +218,32 @@ setTimeout(() => loading = false, 500)">
 
 
     <div class="bg-white dark:bg-gray-800 shadow-md rounded-xl p-4 mb-6">
-        <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex gap-x-2 items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                stroke="currentColor" class="size-6">
-                <path stroke-linecap="round" stroke-linejoin="round"
-                    d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
-            </svg>
+        <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-4 flex gap-x-2 items-center justify-between">
+            <div class="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                    stroke="currentColor" class="size-6">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M3.75 3v11.25A2.25 2.25 0 0 0 6 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0 1 18 16.5h-2.25m-7.5 0h7.5m-7.5 0-1 3m8.5-3 1 3m0 0 .5 1.5m-.5-1.5h-9.5m0 0-.5 1.5m.75-9 3-3 2.148 2.148A12.061 12.061 0 0 1 16.5 7.605" />
+                </svg>
+    
+                <span>Progres Bulanan</span>
+            </div>
+            <div class="flex items-center gap-2">
+                <label for="tahun" class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Tahun Kegiatan
+                </label>
+                <select id="tahun"
+                    x-model="tahunKegiatan"
+                    class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
 
-            <span>Progres vs Target Bulanan</span>
-
+                @foreach (range(2023, 2028) as $thn)
+                    <option value="{{ $thn }}"
+                        class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                        {{ $thn }}
+                    </option>
+                @endforeach
+            </select>
+            </div>
         </div>
         <div id="progresChart" class="w-full"></div>
     </div>
@@ -289,60 +325,7 @@ setTimeout(() => loading = false, 500)">
             <div class="swiper-pagination mt-4"></div>
         </div>
     </section>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const options = {
-                chart: {
-                    type: 'line',
-                    height: 350,
-                    toolbar: {
-                        show: false
-                    },
-                    zoom: {
-                        enabled: false
-                    },
-                    foreColor: document.documentElement.classList.contains('dark') ? '#E5E7EB' : '#374151'
-                },
-                series: [{
-                        name: 'Progres',
-                        data: [10, 20, 35, 50, 60, 75, 80, 85, 90, 93, 96, 100]
-                    },
-                    {
-                        name: 'Target',
-                        data: [8, 18, 30, 45, 55, 70, 80, 88, 95, 100, 100, 100]
-                    }
-                ],
-                xaxis: {
-                    categories: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov',
-                        'Des'
-                    ]
-                },
-                yaxis: {
-                    max: 100,
-                    title: {
-                        text: 'Persentase (%)'
-                    }
-                },
-                stroke: {
-                    curve: 'smooth',
-                    width: 3
-                },
-                colors: ['#3B82F6', '#10B981'], // Progres: Biru, Target: Hijau
-                markers: {
-                    size: 4
-                },
-                tooltip: {
-                    y: {
-                        formatter: val => `${val}%`
-                    }
-                },
-                legend: {
-                    position: 'top'
-                }
-            };
-
-            const chart = new ApexCharts(document.querySelector("#progresChart"), options);
-            chart.render();
-        });
-    </script>
+    @once
+        <script src="{{ asset('js/mainChart.js') }}"></script>
+    @endonce
 </div>
