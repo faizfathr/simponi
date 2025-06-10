@@ -186,7 +186,7 @@
                 <h2>Progres Berjalan</h2>
             </div>
             <div class="max-h-[30vh] overflow-y-auto space-y-4 pr-2">
-                @if (!$kegiatanBerjalan)
+                @if ($kegiatanBerjalan)
                     @foreach ($kegiatanBerjalan as $kegiatanBerjalanItem)
                         @if (($kegiatanBerjalanItem->realisasi / $kegiatanBerjalanItem->target) * 100 < 100)
                             <div>

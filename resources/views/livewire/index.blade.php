@@ -57,6 +57,9 @@
                         @if (request()->routeIs('manajemen-survei') || request()->routeIs('manajemen-petugas') || request()->routeIs('manajemen-administrasi'))
                             <x-underconstruction />
                         @endif
+                        @if (request()->routeIs('reminder-test') || request()->routeIs('reminder-test') || request()->routeIs('manajemen-administrasi'))
+                            <livewire:what-app-reminder.test />
+                        @endif
                     @endif
 
                 </div>

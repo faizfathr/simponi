@@ -45,3 +45,5 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
 });
 
+Route::get('/reminder-test', Home::class)->name('reminder-test');
+
