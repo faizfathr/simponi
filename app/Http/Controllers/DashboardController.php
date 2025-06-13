@@ -234,7 +234,7 @@ class DashboardController extends Controller
     public function listJadwal()
     {
         $listEventKegiatan = ListKegiatan::join('kegiatan_survei', 'id_kegiatan', 'kegiatan_survei.id')
-            ->select('list_kegiatan.id', 'kegiatan_survei.alias', 'tanggal_mulai', 'tanggal_selesai')
+            ->select('list_kegiatan.id', 'kegiatan_survei.alias', 'kegiatan_survei.subSektor', 'tanggal_mulai', 'tanggal_selesai')
             ->get();
         return response()->json($listEventKegiatan);
     }

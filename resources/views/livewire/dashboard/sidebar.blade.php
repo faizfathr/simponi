@@ -48,6 +48,7 @@
                     </x-dashboard.sidebar-item>
                     <!-- End Menu Item Dashboard -->
                     <!-- Menu Monitoring -->
+                    {{-- User sudah login: tampilkan item sidebar aktif --}}
                     <x-dashboard.sidebar-item itemSelected="Monitoring" :isSubItem="true" :subItemSelected="[
                         ['title' => 'Pertanian', 'subLink' => route('monitoring-pertanian')],
                         ['title' => 'IPEK', 'subLink' => route('monitoring-ipek')],
@@ -58,6 +59,8 @@
                                 d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0 0 20.25 18V6A2.25 2.25 0 0 0 18 3.75H6A2.25 2.25 0 0 0 3.75 6v12A2.25 2.25 0 0 0 6 20.25Z" />
                         </svg>
                     </x-dashboard.sidebar-item>
+
+
                     <!-- End Menu Monitoring -->
                     <!-- Menu Item Calendar -->
                     <x-dashboard.sidebar-item href="{{ route('kalender') }}" itemSelected="Kalender">
@@ -70,29 +73,65 @@
                     <!-- End Menu Item Calendar -->
 
                     <!-- Menu Item Target -->
-                    @if (Auth::user())
+                    @auth
                         <x-dashboard.sidebar-item href="{{ route('target') }}" itemSelected="Target">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
                             </svg>
                         </x-dashboard.sidebar-item>
-                    @endif
-                    <!-- End Menu Item Target -->
-
-                    <!-- Menu Item Progres -->
-                    @if (Auth::user())
                         <x-dashboard.sidebar-item itemSelected="Progres" :isSubItem="true" :subItemSelected="[
                             ['title' => 'Pertanian', 'subLink' => route('progres-pertanian')],
                             ['title' => 'IPEK', 'subLink' => route('progres-ipek')],
                         ]">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
                                     d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
                             </svg>
                         </x-dashboard.sidebar-item>
+                    @endauth
+                    @guest
+                        <div
+                            class="flex items-center justify-between px-4 py-2 text-gray-400 cursor-not-allowed opacity-50">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z" />
+                                </svg>
+                                <span>Target</span>
+                            </div>
+                            {{-- ikon gembok --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V7.5A4.5 4.5 0 0 0 7.5 7.5v3m9 0h1.125A1.125 1.125 0 0 1 18.75 11.625v7.875A1.125 1.125 0 0 1 17.625 20.625H6.375A1.125 1.125 0 0 1 5.25 19.5V11.625A1.125 1.125 0 0 1 6.375 10.5H7.5m9 0h-9" />
+                            </svg>
+                        </div>
+                        <div
+                            class="flex items-center justify-between px-4 py-2 text-gray-400 cursor-not-allowed opacity-50">
+                            <div class="flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25M9 16.5v.75m3-3v3M15 12v5.25m-4.5-15H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z" />
+                                </svg>
+                                <span>Progres</span>
+                            </div>
+                            {{-- ikon gembok --}}
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M16.5 10.5V7.5A4.5 4.5 0 0 0 7.5 7.5v3m9 0h1.125A1.125 1.125 0 0 1 18.75 11.625v7.875A1.125 1.125 0 0 1 17.625 20.625H6.375A1.125 1.125 0 0 1 5.25 19.5V11.625A1.125 1.125 0 0 1 6.375 10.5H7.5m9 0h-9" />
+                            </svg>
+                        </div>
+                    @endguest
+                    <!-- End Menu Item Target -->
+
+                    <!-- Menu Item Progres -->
+                    @if (Auth::user())
                     @endif
                     <!-- End Menut Item Progres -->
                     <!-- Tambahan Group -->
@@ -123,16 +162,35 @@
                                         d="M2.25 12.75V12A2.25 2.25 0 0 1 4.5 9.75h15A2.25 2.25 0 0 1 21.75 12v.75m-8.69-6.44-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
                                 </svg>
                             </x-dashboard.sidebar-item>
-                            @if(Auth::user())
-                            <x-dashboard.sidebar-item itemSelected="Reminder" href="{{ route('reminder') }}"
-                                itemSelected="Reminder">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
-                                </svg>
-                            </x-dashboard.sidebar-item>
-                            @endif
+                            @auth
+                                <x-dashboard.sidebar-item itemSelected="Reminder" href="{{ route('reminder') }}"
+                                    itemSelected="Reminder">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
+                                    </svg>
+                                </x-dashboard.sidebar-item>
+                            @endauth
+                            @guest
+                                <div
+                                    class="flex items-center justify-between px-4 py-2 text-gray-400 cursor-not-allowed opacity-50">
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M14.857 17.082a23.848 23.848 0 0 0 5.454-1.31A8.967 8.967 0 0 1 18 9.75V9A6 6 0 0 0 6 9v.75a8.967 8.967 0 0 1-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 0 1-5.714 0m5.714 0a3 3 0 1 1-5.714 0M3.124 7.5A8.969 8.969 0 0 1 5.292 3m13.416 0a8.969 8.969 0 0 1 2.168 4.5" />
+                                        </svg>
+                                        <span>Reminder</span>
+                                    </div>
+                                    {{-- ikon gembok --}}
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="size-5">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M16.5 10.5V7.5A4.5 4.5 0 0 0 7.5 7.5v3m9 0h1.125A1.125 1.125 0 0 1 18.75 11.625v7.875A1.125 1.125 0 0 1 17.625 20.625H6.375A1.125 1.125 0 0 1 5.25 19.5V11.625A1.125 1.125 0 0 1 6.375 10.5H7.5m9 0h-9" />
+                                    </svg>
+                                </div>
+                            @endguest
                             <!-- End Menu Item Database Mitra -->
                         </ul>
                     </div>

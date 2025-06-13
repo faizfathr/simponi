@@ -21,7 +21,9 @@ Route::get('/login', Index::class)->name('login');
 Route::get('/kalender', Home::class)->name('kalender');
 
 Route::get('/manajemen-survei', Home::class)->name('manajemen-survei');
+
 Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
+
 Route::get('/manajemen-administrasi', Home::class)->name('manajemen-administrasi');
 
 Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BPS'])->group(function(){
@@ -34,9 +36,12 @@ Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BP
     Route::get('/detail-monitorin/{id}', Home::class)->name('detail-monitoring');
     
     Route::get('/dashboard/logout', [DashboardController::class, 'logout']);
+
+    Route::get('/reminder', Home::class)->name('reminder');
 });
 
 Route::post('/resource/aggregatProgres', [DashboardController::class, 'aggregatProgres']);
+
 Route::prefix('/dashboard')->group(function () {
     Route::post('/data', [DashboardController::class, 'data']);
     Route::post('/dataPersentase', [DashboardController::class, 'dataInPersentase']);
@@ -45,5 +50,6 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
 });
 
-Route::get('/reminder', Home::class)->name('reminder');
-
+Route::get('/download/GUIDEBOOK SIMPONI.pdf', function () {
+    return response()->download(public_path('download/GUIDEBOOK SIMPONI.pdf'));
+})->name('download.guidebook');

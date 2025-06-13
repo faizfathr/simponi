@@ -335,7 +335,7 @@ setTimeout(() => loading = false, 500)"
                     Unduh buku panduan penggunaan sistem SIMPONI untuk memahami fitur dan alur kerja.
                 </p>
             </div>
-            <a href="{{ asset('buku-panduan/simponi-panduan.pdf') }}" download
+            <a href="{{ route('download.guidebook')}}" download
                 class="inline-flex items-center gap-2 px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg shadow transition-all duration-200">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="w-5 h-5">

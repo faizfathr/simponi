@@ -1,4 +1,5 @@
-<div x-init="initCalendar();setTimeout(()=>loading=false, 500)" x-data="{ showModal: false, event: {} }" id="xDataModal">
+<div x-init="initCalendar();
+setTimeout(() => loading = false, 500)" x-data="{ showModal: false, event: {} }" id="xDataModal">
     <div id='calendar' class="bg-white dark:bg-gray-800 dark:text-slate-100 p-4 rounded-md"></div>
     <!-- Modal -->
     <div x-show="showModal" x-transition
@@ -19,6 +20,24 @@
                     const month = newDate.getMonth() + 1;
                     return month < 10 ? `0${month}` : `${month}`;
                 };
+
+                getColorById = (id) => {
+                    const colors = [
+                        '#A5D8FF', // soft blue
+                        '#B2F2BB', // soft green
+                        '#FFF3BF', // soft yellow
+                        '#C5F6FA', // soft teal
+                        '#D0BFFF' // soft purple
+                    ];
+                    return colors[id];
+                }
+
+                getDateDiffInDays = (start, end) => {
+                    const startDate = new Date(start);
+                    const endDate = new Date(end);
+                    const diffTime = Math.abs(endDate - startDate);
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                }
                 fetch('/dashboard/listJadwal', {
                         method: 'GET',
                         headers: {
@@ -29,23 +48,37 @@
                     .then(responses => responses.json())
                     .then(responses => {
                         calendarEventsList = responses.map((response) => {
-                            return [{
-                                    id: `${response.id}-start`,
-                                    title: response.alias + ' (Mulai)',
+                            const color = getColorById(response.subSektor - 1);
+                            const dateDiff = getDateDiffInDays(response.tanggal_mulai, response.tanggal_selesai);
+                            if (dateDiff > 30) {
+                                return [{
+                                        id: `${response.id}-start`,
+                                        title: response.alias + ' (Mulai)',
+                                        start: response.tanggal_mulai,
+                                        backgroundColor: color,
+                                        borderColor: color,
+                                        textColor: '#1f2937',
+                                    },
+                                    {
+                                        id: `${response.id}-end`,
+                                        title: response.alias + ' (Selesai)',
+                                        start: response.tanggal_selesai,
+                                        backgroundColor: color,
+                                        borderColor: color,
+                                        textColor: '#1f2937',
+                                    }
+                                ];
+                            } else {
+                                return [{
+                                    id: `${response.id}`,
+                                    title: response.alias,
                                     start: response.tanggal_mulai,
-                                    extendedProps: {
-                                        calendar: "Danger"
-                                    }
-                                },
-                                {
-                                    id: `${response.id}-end`,
-                                    title: response.alias + ' (Selesai)',
-                                    start: response.tanggal_selesai,
-                                    extendedProps: {
-                                        calendar: "Danger"
-                                    }
-                                }
-                            ];
+                                    end: response.tanggal_selesai,
+                                    backgroundColor: color,
+                                    borderColor: color,
+                                    textColor: '#1f2937',
+                                }];
+                            }
                         }).flat(); // ratakan array dalam array
                         ;
                         const calendarEl = document.getElementById('calendar');
