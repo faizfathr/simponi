@@ -19,6 +19,8 @@ return new class extends Migration
             $table->smallInteger('target')->nullable();
             $table->date('tanggal_mulai')->nullable();
             $table->date('tanggal_selesai')->nullable();
+            $table->unsignedSmallInteger('reminder_mulai')->default(0);
+            $table->unsignedSmallInteger('reminder_selesai')->default(0);
             $table->timestamps();
         });
     }
