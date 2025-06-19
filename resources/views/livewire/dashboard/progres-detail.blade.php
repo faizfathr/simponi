@@ -1,4 +1,4 @@
-<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }" x-init="setTimeout(()=>loading=false, 500)">
+<div x-data="{ openForm: @entangle('openForm'), idTabel: @entangle('id_tabel'), showNotif: @entangle('showNotif') }" x-init="setTimeout(() => loading = false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <div class="flex items-center gap-x-2 mb-2 w-full">
@@ -71,72 +71,205 @@
         </div>
     @endif
     <div class="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03]">
-        <div class="max-w-full overflow-x-auto custom-scrollbar h-[80vh]">
+        <div class="max-w-full overflow-x-auto custom-scrollbar h-[80vh]" x-data="{
+            columns: {
+                no: true,
+                jadwal: true,
+                status: true,
+                pcl: true,
+                pml: true,
+                @foreach ($sampel_header as $key => $item) sampel{{ $key }}: true, @endforeach
+                @foreach ($prosess_header as $key => $item) proses{{ $key }}: true, @endforeach
+            }
+        }">
             @if ($idPage)
+                <div class="sticky top-0 z-30 bg-white dark:bg-gray-900" x-data="{ openColumnFilter: false }">
+                    <div class="text-sm text-gray-700 dark:text-gray-300 relative w-fit p-2">
+                        <!-- Toggle Button -->
+                        <button @click="openColumnFilter = !openColumnFilter"
+                            class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2">
+                            <!-- SVG Palu & Tang -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke-width="1.5" stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M11.42 15.17 17.25 21A2.652 2.652 0 0 0 21 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 1 1-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 0 0 4.486-6.336l-3.276 3.277a3.004 3.004 0 0 1-2.25-2.25l3.276-3.276a4.5 4.5 0 0 0-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437 1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008Z" />
+                            </svg>
+
+                            <span>Pilih Kolom</span>
+                        </button>
+
+                        <!-- Dropdown Kolom Checkbox -->
+                        <div x-show="openColumnFilter" @click.outside="openColumnFilter = false" x-transition
+                            class="absolute mt-2 z-50 bg-white dark:bg-gray-800 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 p-4 grid grid-cols-2 md:grid-cols-3 gap-3 w-[400px] max-h-[400px] overflow-y-auto custom-scrollbar">
+
+                            <!-- Kolom "No" -->
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" x-model="columns.no"
+                                    class="accent-brand-500 rounded focus:ring-0" />
+                                <span>No</span>
+                            </label>
+
+                            <!-- Kolom Sampel -->
+                            @foreach ($sampel_header as $key => $item)
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" x-model="columns.sampel{{ $key }}"
+                                        class="accent-brand-500 rounded focus:ring-0" />
+                                    <span>{{ $item }}</span>
+                                </label>
+                            @endforeach
+
+                            <!-- Kolom Jadwal -->
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" x-model="columns.jadwal"
+                                    class="accent-brand-500 rounded focus:ring-0" />
+                                <span>Jadwal</span>
+                            </label>
+
+                            <!-- Kolom Proses -->
+                            @foreach ($prosess_header as $key => $item)
+                                <label class="flex items-center gap-2">
+                                    <input type="checkbox" x-model="columns.proses{{ $key }}"
+                                        class="accent-brand-500 rounded focus:ring-0" />
+                                    <span>{{ $item }}</span>
+                                </label>
+                            @endforeach
+
+                            <!-- Kolom Status -->
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" x-model="columns.status"
+                                    class="accent-brand-500 rounded focus:ring-0" />
+                                <span>Status</span>
+                            </label>
+
+                            <!-- Kolom PCL -->
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" x-model="columns.pcl"
+                                    class="accent-brand-500 rounded focus:ring-0" />
+                                <span>PCL</span>
+                            </label>
+
+                            <!-- Kolom PML -->
+                            <label class="flex items-center gap-2">
+                                <input type="checkbox" x-model="columns.pml"
+                                    class="accent-brand-500 rounded focus:ring-0" />
+                                <span>PML</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <table class="min-w-full custom-scrollbar h-auto overflow-y-auto">
                     <!-- table header start -->
-                    <thead class="sticky top-0 z-10 bg-gray-200">
-                        <tr class="border-b border-gray-100 dark:border-gray-800">
-                            <th class="px-5 py-3 sm:px-6">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                        No
-                                    </p>
-                                </div>
-                            </th>
-                            @foreach ($this->sampel_header as $itemSampel)
-                                <th class="px-5 py-3 sm:px-6">
-                                    <div class="flex items-center justify-center">
-                                        <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                            {{ $itemSampel }}
-                                        </p>
-                                    </div>
+                    <!-- Filter Row -->
+                    <thead class="sticky top-[50px]  z-10 bg-gray-200 dark:bg-gray-800">
+                        <!-- Baris Judul Kolom -->
+                        <tr class="border-b border-gray-100 dark:border-gray-700">
+                            <th x-show="columns.no"
+                                class="px-5 py-3 sm:px-6 text-left text-xs font-medium text-gray-500 dark:text-gray-400">
+                                No</th>
+
+                            @foreach ($sampel_header as $itemSampel)
+                                <th x-show="columns.sampel{{ $loop->index }}"
+                                    class="px-5 py-3 sm:px-6 text-center text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {{ $itemSampel }}
                                 </th>
                             @endforeach
-                            <th class="px-5 py-3 sm:px-6 text-center">
-                                <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                    Jadwal
-                                </p>
-                            </th>
-                            @foreach ($this->prosess_header as $itemProses)
-                                <th class="px-5 py-3 sm:px-6">
-                                    <div class="flex items-center justify-center w-[100%]">
-                                        <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                            {{ $itemProses }}
-                                        </p>
-                                    </div>
+
+                            <th x-show="columns.jadwal"
+                                class="px-5 py-3 sm:px-6 text-center text-xs font-medium text-gray-500 dark:text-gray-400">
+                                Jadwal</th>
+
+                            @foreach ($prosess_header as $itemProses)
+                                <th x-show="columns.proses{{ $loop->index }}"
+                                    class="px-5 py-3 sm:px-6 text-center text-xs font-medium text-gray-500 dark:text-gray-400">
+                                    {{ $itemProses }}
                                 </th>
                             @endforeach
-                            <th class="px-5 py-3 sm:px-6">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                        {{ $event->status }}
-                                    </p>
-                                </div>
+
+                            <th x-show="columns.status"
+                                class="px-5 py-3 sm:px-6 text-xs font-medium text-gray-500 dark:text-gray-400">
+                                Status
                             </th>
-                            <th class="px-5 py-3 sm:px-6">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                        {{ $event->pcl }}
-                                    </p>
-                                </div>
+                            <th x-show="columns.pcl"
+                                class="px-5 py-3 sm:px-6 text-xs font-medium text-gray-500 dark:text-gray-400">PCL
                             </th>
-                            <th class="px-5 py-3 sm:px-6">
-                                <div class="flex items-center">
-                                    <p class="font-medium text-gray-500 text-xs dark:text-gray-400">
-                                        {{ $event->pml }}
-                                    </p>
-                                </div>
+                            <th x-show="columns.pml"
+                                class="px-5 py-3 sm:px-6 text-xs font-medium text-gray-500 dark:text-gray-400">PML
+                            </th>
+                        </tr>
+
+                        <!-- Baris Input Filter -->
+                        <tr class="border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900">
+                            <th class="px-5 py-2 sm:px-6">
+                                <input type="text" placeholder="No"
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
+                            </th>
+
+                            @foreach ($sampel_header as $item)
+                                <th x-show="columns.sampel{{ $loop->index }}" class="px-5 py-2 sm:px-6">
+                                    <input type="text" placeholder="{{ $item }}"
+                                        class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
+                                </th>
+                            @endforeach
+
+                            <th x-show="columns.jadwal" class="px-5 py-2 sm:px-6">
+                                <input type="text" placeholder="Cari Jadwal"
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
+                            </th>
+
+                            @foreach ($prosess_header as $item)
+                                <th x-show="columns.proses{{ $loop->index }}" class="px-5 py-2 sm:px-6">
+                                    <select
+                                        class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                        <option value="">{{ $item }}</option>
+                                        <option value="1">✓</option>
+                                        <option value="0">✗</option>
+                                    </select>
+                                </th>
+                            @endforeach
+
+                            <th x-show="columns.status" class="px-5 py-2 sm:px-6">
+                                <select
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                    <option value="">Status</option>
+                                    <option value="0">Belum</option>
+                                    <option value="1">Progres</option>
+                                    <option value="2">Selesai</option>
+                                </select>
+                            </th>
+
+                            <th x-show="columns.pcl" class="px-5 py-2 sm:px-6">
+                                <select
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                    <option value="">PCL</option>
+                                    @foreach ($pcl as $p)
+                                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </th>
+
+                            <th x-show="columns.pml" class="px-5 py-2 sm:px-6">
+                                <select
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                    <option value="">PML</option>
+                                    @foreach ($pml as $p)
+                                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
+                                    @endforeach
+                                </select>
                             </th>
                         </tr>
                     </thead>
+
+
                     <!-- table header end -->
                     <!-- table body start -->
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
                         @if ($monitorings)
                             @foreach ($monitorings as $row => $monitoring)
                                 <tr>
-                                    <td class="px-5 py-4 sm:px-6">
+                                    <td x-show="columns.no" class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <div class="flex items-center gap-3">
                                                 <span class="font-medium text-gray-800 text-xs dark:text-white/90">
@@ -146,19 +279,20 @@
                                         </div>
                                     </td>
                                     @foreach ($allItem[$row]['sampel_body'] as $key => $itemSampelBody)
-                                        <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
+                                        <td x-show="columns.sampel{{ $key }}"
+                                            class="px-5 py-4 sm:px-6 whitespace-nowrap">
                                             <input
                                                 wire:model='allItem.{{ $row }}.sampel_body.{{ $key }}'
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 rounded-lg border border-gray-300 bg-transparent px-4 py-1 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 max-w-max" />
                                         </td>
                                     @endforeach
-                                    <td class="px-5 py-4 sm:px-6 whitespace-nowrap">
+                                    <td x-show="columns.jadwal" class="px-5 py-4 sm:px-6 whitespace-nowrap">
                                         <p class="text-gray-500 text-xs dark:text-gray-400">
                                             {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
                                         </p>
                                     </td>
                                     @foreach ($allItem[$row]['prosess'] as $key => $itemProsesBody)
-                                        <td class="px-5 py-4 sm:px-6">
+                                        <td x-show="columns.proses{{ $key }}" class="px-5 py-4 sm:px-6">
                                             <div x-data="{ checkboxToggle{{ $monitoring['id'] }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
                                                 <label for="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
                                                     class="flex justify-center cursor-pointer select-none ">
@@ -193,7 +327,7 @@
                                             </div>
                                         </td>
                                     @endforeach
-                                    <td class="px-5 py-4 sm:px-6">
+                                    <td x-show="columns.status" class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <p
                                                 class="rounded-full px-2 py-0.5 text-xs font-medium {{ (int) $allItem[$row]['status'] === 0 ? 'bg-gray-50 text-gray-600' : ((int) $allItem[$row]['status'] === 1 ? 'bg-warning-50 text-orange-600' : 'bg-success-50 text-success-600') }} dark:bg-success-500/15 dark:text-success-500">
@@ -201,7 +335,7 @@
                                             </p>
                                         </div>
                                     </td>
-                                    <td class="px-5 py-4 sm:px-6">
+                                    <td x-show="columns.pcl" class="px-5 py-4 sm:px-6">
                                         <select wire:model='allItem.{{ $row }}.pcl'
                                             class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                             <option
@@ -216,7 +350,7 @@
                                             @endforeach
                                         </select>
                                     </td>
-                                    <td class="px-5 py-4 sm:px-6">
+                                    <td x-show="columns.pml" class="px-5 py-4 sm:px-6">
                                         <div class="flex items-center">
                                             <select wire:model='allItem.{{ $row }}.pml'
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
@@ -237,9 +371,10 @@
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="" class="text-center py-4 text-gray-500 dark:text-gray-400">
-                                    <span class="font-medium text-gray-500 text-xs dark:text-gray-400">Belum ada data
-                                        untuk dimonitoring</span>
+                                <td colspan="100" class="py-10 text-center">
+                                    <div class="text-xs text-gray-500 dark:text-gray-400 font-medium">
+                                        Belum ada data untuk dimonitoring
+                                    </div>
                                 </td>
                             </tr>
                         @endif
