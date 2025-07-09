@@ -359,7 +359,7 @@
                 <button type="submit"
                     class="inline-flex items-center gap-2 px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 active:bg-brand-500/50">
                     {{ $this->action }} Kegiatan
-                    <div wire:loading wire:target='submit'
+                    <div wire:loading wire:target='submitForm'
                         class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                     </div>
                 </button>

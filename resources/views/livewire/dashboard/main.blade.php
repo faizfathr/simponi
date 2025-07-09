@@ -116,7 +116,8 @@ setTimeout(() => loading = false, 500)"
                 <span>Statistik </span>
                 <span class="font-bold text-brand-500">P</span><span>r<span
                         class="font-bold text-brand-500">O</span>duksi </span>
-                <span>Ter</span><span class="font-bold text-brand-500">I</span><span>ntegrasi</span>
+                <span>Teri</span><span class="font-bold text-brand-500">N</span><span>tegras<span class="font-bold text-brand-500">I</span></span>
+                
             </p>
         </div>
     </div>

@@ -55,7 +55,8 @@ class ProgresDetail extends Component
                 ['id_tabel', '=', $event->id_kegiatan],
                 ['tahun', '=', $event->tahun],
                 ['waktu', '=', $event->waktu],
-            ])->get()
+            ])
+                ->get()
                 ->map(function ($item) {
                     $item->sampel_body = explode(';', $item->ket_sampel);
                     $item->prosess = explode(';', $item->proses);
@@ -77,7 +78,7 @@ class ProgresDetail extends Component
         $this->openForm = TRUE;
     }
 
-    public function updateProgres(Request $request)
+    public function updateProgres()
     {
         foreach ($this->allItem as $key => &$data) {
             $data['ket_sampel'] = implode(';', $data['sampel_body']);
@@ -166,5 +167,10 @@ class ProgresDetail extends Component
         $this->status = 'Berhasil';
         $this->showNotif = TRUE;
         $this->reset('file');
+    }
+
+    public function bindingSampelBody($row, $index, $value)
+    {
+        $this->allItem[$row]['ket_sampel'][$index] = $value;
     }
 }
