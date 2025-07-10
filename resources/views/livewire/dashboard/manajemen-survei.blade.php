@@ -1,5 +1,10 @@
 <div>
-<div x-init="setTimeout(() => loading = false, 500)">
+<div x-init="setTimeout(() => loading = false, 500)"x-data="{
+    openForm: @entangle('openForm'),
+    action: @entangle('action'),
+    openWarningDelete: @entangle('openWarningDelete'),
+    showNotif: @entangle('showNotif')
+}">
    <!-- Container utama -->
 <div class="w-full max-w-3xl mb-2 px-4">
   <div class="flex flex-col md:flex-row md:items-center gap-4">
@@ -24,28 +29,76 @@
       </div>
     </div>
 
-    <!-- ➕ Tombol Tambah Data -->
+  
+  </div>
+</div>
+
+</div>
+<div class="overflow-x-auto">
+    <table class="table w-full">
+        <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs leading-4  text-gray-500 dark:text-gray-300 uppercase tracking-wider text-md font-bold">
+                    Kegiatan Survei
+                </th>
+                <th class="px-6 py-3 text-left text-xs leading-4  text-gray-500 dark:text-gray-300 uppercase tracking-wider font-bold text-md">
+                    Kategori
+                </th>
+                <th class="px-6 py-3 text-left text-xs leading-4 font-bold text-md text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                    Jenis Periode
+                </th>
+                <th class="px-6 py-3  text-xs leading-4 font-bold text-md text-gray-500 dark:text-gray-300 uppercase tracking-wider text-center">
+                    Status
+                </th>
+                <th class="px-6 py-3">  <!-- ➕ Tombol Tambah Data -->
+                      @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
     <button
-      class="inline-flex items-center justify-center w-full md:w-auto px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition">
+      class="inline-flex items-center justify-center w-full md:w-auto px-4 py-2 bg-green-500 text-white rounded-lg text-sm hover:bg-green-600 transition "wire:click='tambahForm'>
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
         stroke-width="1.5" stroke="currentColor">
         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
       </svg>
       <span class=" md:inline ml-2">Tambah </span> 
       <span class="md:hidden ml-2">Kegiatan</span>
+         <div wire:loading wire:target='tambahForm'
+                    class="h-3 w-3 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                </div>
     </button>
-
-  </div>
-</div>
-
-</div>
-         <div class=" mx-auto p-2">
-    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-auto">
-        <!-- ✅ CARD UTAMA -->
-      
-        
-        <!-- Duplicate the card as needed -->
-    </div>
+  
+  @endif
+    
+</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white dark:bg-gray-800">
+            @foreach ($kegiatanSurvei as $e)
+                  <tr>
+                <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-600 border-gray-200 dark:border-gray-600 font-bold text-md">
+                    {{ $e->kegiatan }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap border-b  text-blue-600 border-gray-200 dark:border-gray-600">
+                    {{ $e->alias }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap border-b  text-blue-600 border-gray-200 dark:border-gray-600">
+                    {{ $e->created_at }}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap border-b text-red-800 bg-red-200 text-center text-md border-gray-200 dark:border-gray-600">
+                    Belum diselesaikan
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap border-b text-blue-600 border-gray-200 dark:border-gray-600">
+                    <button
+                        class="inline-flex items-center justify-center px-2 py-1 border border-transparent rounded-full shadow-sm text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 6H5.25A2.25 2.25 0 0 0 3 8.25v10.5A2.25 2.25 0 0 0 5.25 21h10.5A2.25 2.25 0 0 0 18 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                        </svg>
+                        <p class="ml-1">Detail</p>
+                    </button>
+                </td>
+            </tr>
+            @endforeach
+          
+        </tbody>
+    </table>
 </div>
 
 <!-- ✅ ANIMASI SLIDE DOWN -->

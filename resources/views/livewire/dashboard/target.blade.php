@@ -181,7 +181,7 @@
                                         <p class="text-gray-500 text-xs md:text-sm dark:text-gray-400">
                                             {{ $item->target }}
                                         </p>
-                                    </div>
+                                    </div>  
                                 </td>
                                 <td class="py-3">
                                     <div class="flex items-center">
