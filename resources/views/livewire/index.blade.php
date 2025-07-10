@@ -54,11 +54,15 @@
                         @if (request()->routeIs('progres-ipek'))
                             <livewire:dashboard.progres-ipek>
                         @endif
-                        @if (request()->routeIs('manajemen-survei') || request()->routeIs('manajemen-petugas') || request()->routeIs('manajemen-administrasi'))
-                            <x-underconstruction />
-                        @endif
+              
                         @if (request()->routeIs('reminder'))
                             <livewire:whatsapp-reminder.reminder />
+                        @endif
+                        @if (request()->routeIs('manajemen-survei'))
+                            <livewire:dashboard.manajemen-survei />
+                        @endif
+                        @if (request()->routeIs('manajemen-petugas') || request()->routeIs('manajemen-administrasi'))
+                            <x-underconstruction />
                         @endif
                     @endif
 
