@@ -32,9 +32,16 @@ class ManajemenSurvei extends Component
     public $search = '';
    public $selectedKegiatan = null;
 public $showDetail = false;
-
+ public $querySearchKegiatan = '';
 
     // fungsi lain seperti tambahForm, simpan, getRules...
+public function updatingSearch()
+{
+    $this->resetPage();
+}
+
+
+
 
 public function lihatDetail($id)
 {
@@ -119,6 +126,11 @@ public function lihatDetail($id)
 
     session()->flash('success', 'Kegiatan berhasil dihapus.');
 }
+  public function setIdKegiatan($id, $kegiatan)
+    {
+        $this->id_kegiatan = $id;
+        $this->querySearchKegiatan = $kegiatan;
+    }
 public function editKegiatan($id)
 {
     $data = KegiatanSurvei::findOrFail($id);
@@ -151,12 +163,20 @@ public function resetForm()
 
 public function render()
     {
+         if($this->querySearchKegiatan) {
+            $listKegiatan = KegiatanSurvei::
+                whereLike('kegiatan','%'. $this->querySearchKegiatan . '%')
+                ->get();
+        } else {
+            $listKegiatan = KegiatanSurvei::get();
+        }
         $kegiatanSurvei = KegiatanSurvei::query()
             ->where('kegiatan', 'like', '%' . $this->search . '%')
             ->paginate($this->perPage);
 
         return view('livewire.dashboard.manajemen-survei', [
-            'kegiatanSurvei' => $kegiatanSurvei
+            'kegiatanSurvei' => $kegiatanSurvei,
+             'listKegiatan' => $listKegiatan
         ]);
     }
 }
