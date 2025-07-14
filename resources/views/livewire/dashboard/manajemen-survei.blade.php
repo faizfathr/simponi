@@ -10,8 +10,7 @@
 <div class="w-full max-w-3xl mb-2 px-4">
   <div class="flex flex-col md:flex-row md:items-center gap-4">
 
-    <!-- 🔍 Input Pencarian -->
-<div class="relative w-full">
+    <div class="relative w-full">
   <span class="absolute top-1/2 left-4 -translate-y-1/2">
     <svg class="fill-gray-500 dark:fill-gray-400" width="20" height="20" viewBox="0 0 20 20" fill="none"
       xmlns="http://www.w3.org/2000/svg">
@@ -20,11 +19,9 @@
     </svg>
   </span>
 
-  <!-- 💡 Tambahan: wire:model tetap tanpa ubah style -->
-  <input type="text" wire:model.debounce.500ms='search' placeholder="Cari kegiatan..."
+  <input type="text" wire:model.live.debounce.500ms='search' placeholder="Cari kegiatan..."
     class="h-11 w-full rounded-lg border border-gray-200 bg-white py-2.5 pr-20 pl-12 text-sm text-gray-800 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-300" />
 
-  <!-- ⌘K badge -->
   <div
     class="absolute top-1/2 right-4 -translate-y-1/2 flex items-center gap-0.5 text-xs text-gray-500 bg-gray-50 border border-gray-200 px-[6px] py-[2px] rounded-md">
     <span>⌘</span><span>K</span>
@@ -80,31 +77,54 @@
      x-transition:leave-end="opacity-0 scale-95"
      style="overflow-y: auto;">
     <div class="bg-white rounded-2xl shadow-xl w-full max-w-3xl mt-20 md:my-16 p-6 md:p-8">
-        <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6">
+        <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6 border-b border-gray-200 pb-1">
             {{ $action === 'Edit' ? 'Edit Kegiatan' : 'Tambah Kegiatan' }}
         </h2>
 
         <form class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700">
-            @foreach ([
-                ['label' => 'Nama Kegiatan', 'model' => 'kegiatan', 'type' => 'text'],
-                ['label' => 'Alias', 'model' => 'alias', 'type' => 'text'],
-                ['label' => 'ID Kegiatan (list_kegiatan)', 'model' => 'id_kegiatan', 'type' => 'text'],
-                ['label' => 'Tahun', 'model' => 'tahun', 'type' => 'number'],
-                ['label' => 'Waktu (bulan)', 'model' => 'waktu', 'type' => 'number'],
-                ['label' => 'Target', 'model' => 'target', 'type' => 'number'],
-                ['label' => 'Tanggal Mulai', 'model' => 'tanggal_mulai', 'type' => 'date'],
-                ['label' => 'Tanggal Selesai', 'model' => 'tanggal_selesai', 'type' => 'date'],
-            ] as $field)
-                <div class="flex flex-col">
-                    <label class="block font-medium mb-1 text-sm">{{ $field['label'] }}</label>
-                    <input type="{{ $field['type'] }}"
-                           wire:model="{{ $field['model'] }}"
-                           class="w-full rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-600/50 shadow-sm bg-white ring-1 ring-gray-200 p-2 text-sm" />
-                    @error($field['model'])
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                    @enderror
-                </div>
-            @endforeach
+             <div x-data="{ open: false }" @click.away="open = false" class="relative">
+                
+              
+    <input type="text" wire:model.live.debounce.300ms="querySearchKegiatan" @focus="open = true"
+        placeholder="Cari kegiatan survei..."
+        class="w-full h-10 rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-600/50 shadow-sm bg-white ring-1 ring-gray-200 p-2 text-sm focus:border-brand-300 focus:ring-3 focus:outline-none ">
+
+    <!-- Dropdown -->
+    <ul x-show="open" x-transition
+        class="absolute z-20 mt-1 w-full max-h-60 overflow-auto rounded-lg bg-white dark:bg-dark-900 border border-gray-300 dark:border-gray-700 shadow-lg text-sm">
+        @forelse ($listKegiatan as $item)
+            <li wire:click.prevent="setIdKegiatan('{{ $item->id }}', '{{ $item->kegiatan }}')"
+                @click="open = false"
+                class="cursor-pointer px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-800 dark:text-gray-200">
+                {{ $item->kegiatan }}
+            </li>
+        @empty
+            <li class="px-4 py-2 text-gray-500 dark:text-gray-400">Tidak ditemukan.</li>
+        @endforelse
+    </ul>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    @foreach ([
+        ['label' => 'Alias', 'model' => 'alias', 'type' => 'text'],
+        ['label' => 'ID Kegiatan', 'model' => 'id_kegiatan', 'type' => 'text'],
+        ['label' => 'Tahun', 'model' => 'tahun', 'type' => 'number'],
+        ['label' => 'Waktu (bulan)', 'model' => 'waktu', 'type' => 'number'],
+        ['label' => 'Target', 'model' => 'target', 'type' => 'number'],
+        ['label' => 'Tanggal Mulai', 'model' => 'tanggal_mulai', 'type' => 'date'],
+        ['label' => 'Tanggal Selesai', 'model' => 'tanggal_selesai', 'type' => 'date'],
+    ] as $field)
+        <div class="flex flex-col">
+            <label class="block font-medium mb-1 text-sm">{{ $field['label'] }}</label>
+            <input type="{{ $field['type'] }}"
+                   wire:model="{{ $field['model'] }}"
+                   class="w-full rounded-lg focus:border-blue-500 focus:ring focus:ring-blue-600/50 shadow-sm bg-white ring-1 ring-gray-200 p-2 text-sm" />
+            @error($field['model'])
+                <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+            @enderror
+        </div>
+    @endforeach
+</div>
 
             <!-- Periode -->
             <div class="flex flex-col">
