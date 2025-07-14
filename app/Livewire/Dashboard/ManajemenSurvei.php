@@ -1,126 +1,164 @@
 <?php
 
-    namespace App\Livewire\Dashboard;
+namespace App\Livewire\Dashboard;
 
-    use App\Models\KegiatanSurvei;
-    use Carbon\Carbon;
-    use Livewire\Component;
-    use App\Models\ListKegiatan;
-    use Livewire\WithPagination;
-    use App\Models\KegiatanSurvei as KegiatanSurveiModel;
-    use Illuminate\Validation\Rule;
-    use Livewire\WithoutUrlPagination;
-    use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
+use App\Models\KegiatanSurvei;
+use App\Models\ListKegiatan;
+use Illuminate\Validation\Rule;
+use Livewire\Component;
+use Livewire\WithPagination;
+use Livewire\WithoutUrlPagination;
 
-    class ManajemenSurvei extends Component
+class ManajemenSurvei extends Component
+{
+    use WithPagination, WithoutUrlPagination;   
+    public $perPage = 10;
+    public $openForm = false;
+    public $kegiatan = '';
+    public $alias = '';
+    public $id_kegiatan = '';
+    public $periode = '';
+    public $ketWaktu = '';
+    public $infoMessage = '';
+    public $status = '';
+    public $target = 0;
+    public $tahun = 2025;
+    public $waktu = '';
+    public $tanggal_mulai = null;
+    public $tanggal_selesai = null;
+    public $id = null;
+    public $action = 'Tambah';
+    public $search = '';
+   public $selectedKegiatan = null;
+public $showDetail = false;
+
+
+    // fungsi lain seperti tambahForm, simpan, getRules...
+
+public function lihatDetail($id)
+{
+    $this->selectedKegiatan = KegiatanSurvei::find($id);
+    $this->showDetail = true;
+}
+
+   public function getRules()
+{
+    return [
+        'kegiatan' => 'required|string|max:255',
+        'alias' => 'required|string|max:255',
+
+        'tahun' => 'required|integer|min:2000|max:' . now()->addYear()->year,
+        'periode' => ['required', Rule::in(['1', '2', '3', '4'])],
+        'waktu' => 'required|integer|min:1|max:12',
+        'target' => 'required|integer|min:0',
+        'tanggal_mulai' => 'nullable|date',
+        'tanggal_selesai' => 'nullable|date|after_or_equal:tanggal_mulai',
+    ];
+}
+
+    public function tambahForm()
     {
-        use WithPagination, WithoutUrlPagination;
-    public $id, $kegiatan;
-        public bool $showNotif = FALSE;
-        public string $id_kegiatan, $periode = "", $action = 'Tambah', $ketWaktu = '', $message = '', $status = '', $qSearch = '', $querySearchKegiatan = '';
-        public $tanggal_mulai = null, $tanggal_selesai = null;
-        public int $tahun = 2025, $waktu, $target = 0, $perPage = 10;
-        public bool $openForm = FALSE, $openWarningDelete = FALSE;
-        public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-
-        public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
-
-        public array $romawiFont = ["I", "II", "III", "IV"];
-        public $kegiatanSurvei;
-        
-        
-        
-        public function mount()
-    {
-        $this->kegiatanSurvei = \App\Models\KegiatanSurvei::all(); // ambil data dari model Survei
+        $this->openForm = true;
+        $this->reset([
+            'kegiatan', 'alias', 'id', 'action', 'tanggal_mulai',
+            'tanggal_selesai', 'waktu', 'target', 'tahun',
+            'periode', 'ketWaktu', 'id_kegiatan'
+        ]);
     }
-    public function submitForm()
-        {
-            if ($this->action === 'Tambah') $this->insert();
-            else $this->update();
-        }
-        public function insert()
-        {
+   public function simpan()
+{
+    $this->validate($this->getRules());
 
-            $validator = Validator::make([
-                'tahun' => $this->tahun,
-                'target' => $this->target,
-                'id_kegiatan' => $this->id_kegiatan ?? 'NULL',
-            ], [
-                'tahun' => 'required|integer',
-                'target' => 'required|integer|min:1',
-                'id_kegiatan' => [
-                    'required',
-                    'exists:kegiatan_survei,id',
-                    Rule::unique('list_kegiatan', 'id_kegiatan')
-                        ->where(fn($query) => $query->where('tahun', $this->tahun ?? 'NULL')),
-                ],
-            ], [
-                'tahun.required' => 'Tahun harus diisi',
-                'target.required' => 'Target harus diisi',
-                'target.min' => 'Target harus lebih dari 0',
-                'id_kegiatan.required' => 'Kegiatan harus dipilih',
-                'id_kegiatan.exists' => 'Kegiatan tidak ditemukan',
-                'id_kegiatan.unique' => 'Target untuk kegiatan ini sudah ada pada tahun yang sama',
-            ]);
+    if ($this->action === 'Edit' && $this->id) {
+        $data = KegiatanSurvei::findOrFail($this->id);
 
-            $validator->validate();
-            $surveiTarget = KegiatanSurvei::where('id', $this->id_kegiatan)->first();
-            $this->periode = $surveiTarget->periode;
-            if ($this->periode == 1) {
-                $this->loopTask(12);
-            } elseif ($this->periode == 2) {
-                $this->loopTask(4);
-            } elseif ($this->periode == 3) {
-                $this->loopTask(3);
-            } else {
-                $this->loopTask(1);
-            }
-            $this->openForm = FALSE;
-            $this->message = "Target berhasil ditambahkan";
-            $this->status = "Berhasil";
-            $this->showNotif =  TRUE;
-        }
+        $data->update([
+            'kegiatan' => $this->kegiatan,
+            'alias' => $this->alias,
+            'id_kegiatan' => $this->id_kegiatan,
+            'tahun' => $this->tahun,
+            'periode' => $this->periode,
+            'waktu' => $this->waktu,
+            'target' => $this->target,
+            'tanggal_mulai' => $this->tanggal_mulai ? Carbon::parse($this->tanggal_mulai)->format('Y-m-d') : null,
+            'tanggal_selesai' => $this->tanggal_selesai ? Carbon::parse($this->tanggal_selesai)->format('Y-m-d') : null,
+        ]);
 
-    private function loopTask($intervalTask)
-        {
-            $time = 1;
-            while ($time <= $intervalTask) {
-                ListKegiatan::create([
-                    'id_kegiatan' => $this->id_kegiatan,
-                    'tahun' => $this->tahun,
-                    'waktu' => $time,
-                    'target' => $this->target,
-                    'tanggal_mulai' => Carbon::make($this->tanggal_mulai),
-                    'tanggal_selesai' => Carbon::make($this->tanggal_selesai),
-                    'created_at' => Carbon::now(),
-                    'udpated_at' => Carbon::now(),
-                ]);
-                $time++;
-            }
-        }
+        session()->flash('success', 'Kegiatan berhasil diperbarui.');
+    } else {
+        // Create baru ke tabel ListKegiatan
+        ListKegiatan::create([
+            'kegiatan' => $this->kegiatan,
+            'alias' => $this->alias,
+            'id_kegiatan' => $this->id_kegiatan,
+            'tahun' => $this->tahun,
+            'periode' => $this->periode,
+            'waktu' => $this->waktu,
+            'target' => $this->target,
+            'tanggal_mulai' => $this->tanggal_mulai ? Carbon::parse($this->tanggal_mulai)->format('Y-m-d') : null,
+            'tanggal_selesai' => $this->tanggal_selesai ? Carbon::parse($this->tanggal_selesai)->format('Y-m-d') : null,
+        ]);
 
-        public function tambahForm()
+        session()->flash('success', 'Kegiatan berhasil ditambahkan.');
+    }
+    $this->openForm = false;
+    $this->resetForm();
+}
+
+    public function confirmDelete($id)
+{
+    $kegiatan = KegiatanSurvei::findOrFail($id);
+    $kegiatan->delete();
+
+    // Jika data yang dihapus sedang dilihat, reset detail
+    if ($this->selectedKegiatan && $this->selectedKegiatan->id == $id) {
+        $this->selectedKegiatan = null;
+        $this->showDetail = false;
+    }
+
+    session()->flash('success', 'Kegiatan berhasil dihapus.');
+}
+public function editKegiatan($id)
+{
+    $data = KegiatanSurvei::findOrFail($id);
+
+    $this->id = $data->id;
+    $this->kegiatan = $data->kegiatan;
+    $this->alias = $data->alias;
+    $this->id_kegiatan = $data->id_kegiatan;
+    $this->tahun = $data->tahun;
+    $this->periode = $data->periode;
+    $this->waktu = $data->waktu;
+    $this->target = $data->target;
+    $this->tanggal_mulai = $data->tanggal_mulai;
+    $this->tanggal_selesai = $data->tanggal_selesai;
+
+    $this->action = 'Edit';
+    $this->showDetail = false;
+    $this->openForm = true;
+}
+public function resetForm()
 {
     $this->reset([
-        'id', 'kegiatan', 'id_kegiatan', 'periode', 'tanggal_mulai',
-        'tanggal_selesai', 'target', 'openWarningDelete', 'action', 'openForm'
+        'id', 'kegiatan', 'alias', 'id_kegiatan', 'tahun',
+        'periode', 'waktu', 'target', 'tanggal_mulai',
+        'tanggal_selesai', 'openForm', 'action'
     ]);
-    
-    $this->resetValidation();
-    $this->openForm = true;
 
-    // Ambil ulang data kegiatan survei
-    $this->kegiatanSurvei = \App\Models\KegiatanSurvei::all();
+    $this->action = 'Tambah';
+}
+
+public function render()
+    {
+        $kegiatanSurvei = KegiatanSurvei::query()
+            ->where('kegiatan', 'like', '%' . $this->search . '%')
+            ->paginate($this->perPage);
+
+        return view('livewire.dashboard.manajemen-survei', [
+            'kegiatanSurvei' => $kegiatanSurvei
+        ]);
+    }
 }
 
 
-
-
-
-        public function render()
-        {
-            return view('livewire.dashboard.manajemen-survei');
-        }
-
-    }

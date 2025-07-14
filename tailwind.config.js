@@ -13,6 +13,10 @@ export default {
     ],
     theme: {
         extend: {
+             maxHeight: {
+      'screen': '100vh',
+      '90vh': '90vh',
+    },
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
