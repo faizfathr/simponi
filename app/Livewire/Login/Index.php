@@ -21,12 +21,21 @@ class Index extends Component
     {
         $this->validate(
             [
-                'username' => 'required',
+                   'username' => ['required', function ($attribute, $value, $fail) {
+                if (!Auth::attempt(['username' => $value, 'password' => $this->password])) {
+                    $user = Auth::user();
+                    if (!$user) {
+                        $fail('Username tidak dikenali.');
+                    } else if ($user && $user->password != bcrypt($this->password)) {
+                        $fail('Password salah, coba lagi.');
+                    }
+                }
+            }],
                 'password' => 'required'
             ],
             [
-                'username.required' => 'username wajib diisi',
-                'password.required' => 'password wajib diisi',
+                'username.required' => 'Username wajib diisi.',
+                'password.required' => 'Password wajib diisi.',
             ]
     
     );

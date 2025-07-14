@@ -4,9 +4,10 @@ namespace App\Livewire\Dashboard;
 
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
-
+use App\Livewire\Dashboard\ManajemenSurvei;
 class Header extends Component
 {
+    public $openForm = false;
     public function render()
     {
         return view('livewire.dashboard.header');
