@@ -1,0 +1,281 @@
+[33mcommit 6a2b346841414377a68dd8232500c1c037eb09b8[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed Jul 9 15:23:35 2025 +0700
+
+    fitur hide columns
+
+[33mcommit 3d1b2e279367c88a377e1652466b18c2699f51be[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu Jun 19 17:16:09 2025 +0700
+
+    perbaikan UX tabel detail
+
+[33mcommit 35a51108c4bf59a92b955b0921b180a17aa2f91a[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri Jun 13 16:38:43 2025 +0700
+
+    revisi sidebar
+
+[33mcommit d06857461930ff96047c9580a5caa697e0bf982f[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri Jun 13 15:42:13 2025 +0700
+
+    fix fitur reminder
+
+[33mcommit db80a4551711c013ec2487f33ab9b38d8a3b58bb[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Tue Jun 10 13:53:12 2025 +0700
+
+    dev feathure reminder
+
+[33mcommit e92dd738d8a37edab4ea054133e25baaeb22198e[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Sat Jun 7 18:39:35 2025 +0700
+
+    revisi uji coba
+
+[33mcommit 194f91ddf98f7361af403f31de52f4c4f125795a[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu Jun 5 16:02:02 2025 +0700
+
+    revisi uji coba
+
+[33mcommit 3de64e1e6f7824b254c83126ab2bd6cde16b0123[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu Jun 5 07:24:34 2025 +0700
+
+    perbaikan tampilan dan notif login/logout
+
+[33mcommit 9c10ed874fb862653fc38df2fb36b5b80e634e16[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Tue Jun 3 08:02:51 2025 +0700
+
+    (finish) fitur editable detail progres
+
+[33mcommit 1b633f9e02988d4dab71a9d020870448af45592b[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon Jun 2 16:50:33 2025 +0700
+
+    editable progres detailed fix
+
+[33mcommit 0efc123a097c39a212cbfe3fcac72da91afdb8d3[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon Jun 2 10:46:40 2025 +0700
+
+    editable konten progres detail
+
+[33mcommit 82062ee7288b0bf2c56166315719710e519b5ec4[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Sun Jun 1 20:26:25 2025 +0700
+
+    fixing darkmode issue
+
+[33mcommit f84a5920c2291ef1cd0d996e21aa47222ba2cb0c[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu May 29 09:23:10 2025 +0700
+
+    perbaikan navigasi link
+
+[33mcommit 0f7aa48eb9869542ef14570871f75fa2d6b317b8[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed May 28 16:52:01 2025 +0700
+
+    perbaikan tampilan production
+
+[33mcommit be909238f228f4e53983adae62ee9f16b5d1bf0f[m
+Merge: e58288fa 90ae912f
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed May 28 07:27:45 2025 +0700
+
+    Merge branch 'main' of https://github.com/faizfathr/simponi
+
+[33mcommit e58288faf86ef1440a957655ef9e50f33da13505[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed May 28 07:19:24 2025 +0700
+
+    perbaikan ke production
+
+[33mcommit 90ae912f6dc306673f94adca439d2cd0c6b7c98c[m[33m ([m[1;31mserver/main[m[33m)[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Tue May 27 11:18:59 2025 +0700
+
+    perbaikan subsektor seeder
+
+[33mcommit 12dd2d3936eb379ee0de4ab6d3951625f44a4451[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon May 26 14:47:29 2025 +0700
+
+    link issue fixed
+
+[33mcommit 7c59aa626b7c42a3b5e33c385fd1bb8e3b15c6a8[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon May 26 10:47:41 2025 +0700
+
+    final app v1
+
+[33mcommit cabeb2a8c718ad9242688d0d51de0d9258eb045a[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri May 23 15:57:06 2025 +0700
+
+    fixing upload bug
+
+[33mcommit 60f367ed1d8f6b2478ca24c8d60cfca9034e5a3e[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu May 22 10:21:51 2025 +0700
+
+    fix bug import file
+
+[33mcommit 4dba0b7168c16825e54fa379ea25b4d9110799da[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Thu May 22 07:00:24 2025 +0700
+
+    fix bug import
+
+[33mcommit 2a0537a00ecb23079d731a259990a12a1cbb157e[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed May 21 16:04:18 2025 +0700
+
+    fixing bug import
+
+[33mcommit 23682b5474f4aa4ff1062fc5f687e596681cfe2d[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Wed May 21 14:27:42 2025 +0700
+
+    developing fitur jadwal
+
+[33mcommit 9792a8f651681c60aad0cc51b34b67eaaf734430[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Tue May 20 14:25:04 2025 +0700
+
+    tampilan dashboard
+
+[33mcommit 8006a42cdbdb2ad1ccf668f029fd27051091dd92[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Tue May 20 09:18:24 2025 +0700
+
+    developing live search
+
+[33mcommit fd475b39370142d5b5886841053282625d85192d[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon May 19 14:11:23 2025 +0700
+
+    fitur notifikasi
+
+[33mcommit f482d7d7a75b9eaf6b2f8a927376641dda2967d9[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Mon May 19 11:13:38 2025 +0700
+
+    update grafik monitoring
+
+[33mcommit f550f3945dbc5c044750e4b63150e89ef7a13a2e[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri May 16 16:37:22 2025 +0700
+
+    proses fitur monitoring
+
+[33mcommit fd9e2750572a712099f42d6d3f13580a5b7744eb[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri May 16 09:02:32 2025 +0700
+
+    first upload
+
+[33mcommit 6569cac4e2670b91868d79f6cbd87b94a7fd6725[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri May 16 09:01:46 2025 +0700
+
+    first upload
+
+[33mcommit c3f5d451e59d05acde937f25626c9e6ca326bcc2[m
+Author: faizfathr <faizfathurr@gmail.com>
+Date:   Fri May 16 08:47:27 2025 +0700
+
+    first upload
+
+[33mcommit 91b409649007e77bb6f42f0db31641e2a2f9fd13[m
+Author: Taylor Otwell <taylor@laravel.com>
+Date:   Tue Jan 21 09:03:57 2025 -0600
+
+    update filesystem config
+
+[33mcommit f15301d18db084e131a0ce8d3e434ae521f00ee3[m
+Author: TheCodeholic <zurasekhniashvili@gmail.com>
+Date:   Wed Jan 15 00:03:16 2025 +0400
+
+    Preserve X-Xsrf-Token header from .htaccess (#6520)
+    
+    * Preserve X-Xsrf-Token header from .htaccess
+    
+    Preserve X-Xsrf-Token header for session based authentication when building API in Laravel
+    
+    * Update .htaccess
+    
+    * Update .htaccess
+    
+    ---------
+    
+    Co-authored-by: Taylor Otwell <taylor@laravel.com>
+
+[33mcommit d4e9385fbbe4f25411554708d678ebe4b7747351[m
+Author: taylorotwell <463230+taylorotwell@users.noreply.github.com>
+Date:   Tue Jan 14 15:59:58 2025 +0000
+
+    Update CHANGELOG
+
+[33mcommit f9bedb320cac1c77d78052c1355ea37709cd464b[m
+Author: Julius Kiekbusch <contact@julius-kiekbusch.de>
+Date:   Fri Jan 10 21:53:27 2025 +0100
+
+    Fix tailwindclass (#6518)
+
+[33mcommit cb7ab6170b7b71174743f5556a599c97cee067ad[m
+Author: Trevor Varwig <varcorb@gmail.com>
+Date:   Thu Jan 9 14:14:56 2025 -0600
+
+    fix css whitespace invalid-calc (#6517)
+
+[33mcommit 658a49a19e98a6059a543be7564d39dc2e6970e0[m
+Author: Mathias Grimm <mathiasgrimm@gmail.com>
+Date:   Tue Jan 7 21:04:38 2025 -0300
+
+    Adding PHP 8.4 to the tests matrix (#6516)
+
+[33mcommit f08e4f8bc529ba913b6cdb6a8e3bc7657189d7dc[m
+Author: Tim Joosten <Tjoosten@users.noreply.github.com>
+Date:   Mon Jan 6 15:52:53 2025 +0100
+
+    Update .gitignore to not ignore auth.json lan file. (#6515)
+
+[33mcommit 657070ea8a95ec269d0ed4c801cead04976a871a[m
+Author: taylorotwell <taylorotwell@users.noreply.github.com>
+Date:   Tue Dec 17 18:27:38 2024 +0000
+
+    Update CHANGELOG
+
+[33mcommit eb8085cf77bc5165d1af0b90bd9cdfb406d65299[m
+Author: Mior Muhammad Zaki <crynobone@gmail.com>
+Date:   Fri Dec 13 21:57:40 2024 +0800
+
+    [11.x] Update `config/mail.php` with supported configuration (#6506)
+    
+    Signed-off-by: Mior Muhammad Zaki <crynobone@gmail.com>
+
+[33mcommit a39cb7cf585798485e3876acf3c6e84ab3f64f1e[m
+Author: taylorotwell <taylorotwell@users.noreply.github.com>
+Date:   Tue Dec 10 16:20:39 2024 +0000
+
+    Update CHANGELOG
+
+[33mcommit 0993d09dc8206d0933628074036427344be16fc5[m
+Author: Tim MacDonald <hello@timacdonald.me>
+Date:   Tue Dec 3 09:11:41 2024 +1100
+
+    Upgrade to Vite 6 (#6498)
+
+[33mcommit 8b67958f49054f3e6c9b61d2e0b0a1e5323f30f4[m
+Author: Pavel <DvDty@users.noreply.github.com>
+Date:   Thu Nov 21 16:54:46 2024 +0200
+
+    Narrow down array types (#6497)
+
+[33mcommit 980ef58fdda4db1fca4b1c8f36cf404f69d8ab2f[m
+Author: taylorotwell <taylorotwell@u

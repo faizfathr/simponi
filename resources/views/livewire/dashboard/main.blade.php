@@ -189,7 +189,7 @@ setTimeout(() => loading = false, 500)"
                         @if (($kegiatanBerjalanItem->realisasi / $kegiatanBerjalanItem->target) * 100 < 100)
                             <div>
                                 <div class="flex justify-between text-sm text-gray-700 dark:text-gray-100 mb-1">
-                                    <span>{{ $kegiatanBerjalanItem->joinKegiatan->kegiatan }}</span>
+                                    <span>{{ $kegiatanBerjalanItem->joinKegiatan?->kegiatan }}</span>
                                     <span>{{ number_format(((int) $kegiatanBerjalanItem->realisasi / $kegiatanBerjalanItem->target) * 100, 1) }}%
                                     </span>
                                 </div>

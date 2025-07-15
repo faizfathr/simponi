@@ -25,13 +25,15 @@ class ManajemenSurvei extends Component
     public $target = 0;
     public $tahun = 2025;
     public $waktu = '';
+    public $sektor = '';
+    public $subsektor = '';
     public $tanggal_mulai = null;
     public $tanggal_selesai = null;
     public $id = null;
     public $action = 'Tambah';
     public $search = '';
-   public $selectedKegiatan = null;
-public $showDetail = false;
+    public $selectedKegiatan = null;
+    public $showDetail = false;
 
 
     // fungsi lain seperti tambahForm, simpan, getRules...
@@ -47,7 +49,6 @@ public function lihatDetail($id)
     return [
         'kegiatan' => 'required|string|max:255',
         'alias' => 'required|string|max:255',
-
         'tahun' => 'required|integer|min:2000|max:' . now()->addYear()->year,
         'periode' => ['required', Rule::in(['1', '2', '3', '4'])],
         'waktu' => 'required|integer|min:1|max:12',
@@ -130,10 +131,8 @@ public function editKegiatan($id)
     $this->tahun = $data->tahun;
     $this->periode = $data->periode;
     $this->waktu = $data->waktu;
-    $this->target = $data->target;
-    $this->tanggal_mulai = $data->tanggal_mulai;
-    $this->tanggal_selesai = $data->tanggal_selesai;
-
+    $this->sektor = $data->sektor;
+    $this->subsektor = $data->subsektor;
     $this->action = 'Edit';
     $this->showDetail = false;
     $this->openForm = true;
@@ -151,9 +150,8 @@ public function resetForm()
 
 public function render()
     {
-        $kegiatanSurvei = KegiatanSurvei::query()
-            ->where('kegiatan', 'like', '%' . $this->search . '%')
-            ->paginate($this->perPage);
+        $kegiatanSurvei = KegiatanSurvei::whereLike('kegiatan', '%' . $this->search . '%')
+            ->get();
 
         return view('livewire.dashboard.manajemen-survei', [
             'kegiatanSurvei' => $kegiatanSurvei
