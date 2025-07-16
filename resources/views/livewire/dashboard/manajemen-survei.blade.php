@@ -1,7 +1,7 @@
 <div
   x-data="{
     openForm: $wire.entangle('openForm'),
-    action: $wire.entangle('action'),
+     action: '{{ $action }}',
     openWarningDelete: $wire.entangle('openWarningDelete'),
     showNotif: $wire.entangle('showNotif'),
     showDetail: $wire.entangle('showDetail'),
@@ -93,6 +93,7 @@
             <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
                     <th
+                   
                         class="px-6 text-left text-xs leading-4  text-gray-500 dark:text-gray-300 uppercase tracking-wider text-md font-bold">
                         Kegiatan Survei
                     </th>
@@ -120,20 +121,22 @@
                             </button>
                         @endif
                         <!-- Modal Tambah/Edit Kegiatan -->
-                        <div x-show="openForm"
-                            class="fixed pt-24 md:pt-0 inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
-                            x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
-                            x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
-                            x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-                            style="overflow-y: auto;">
+                      <div x-show="openForm"
+    class="fixed pt-24 md:pt-0 inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
+    x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
+    x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
+    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
+    style="overflow-y: auto;">
                             <div @click.outside="openForm = !openForm"
                                 class="bg-white rounded-2xl shadow-xl w-full max-w-3xl mt-20 md:my-16 p-6 md:p-8">
                                 <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6">
                                     {{ $action === 'Edit' ? 'Edit Kegiatan' : 'Tambah Kegiatan' }}
                                 </h2>
 
-                        <form wire:submit.prevent="simpan" class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700"   @click.outside="openForm = false">
-
+                        <form wire:submit.prevent="simpan" 
+                        class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700"   >
+                            <input type="hidden" wire:model.lazy="action">
+                            <input type="hidden" wire:model="id">
                                 @foreach ([['label' => 'Nama Kegiatan', 'model' => 'kegiatan', 'type' => 'text'], ['label' => 'Alias', 'model' => 'alias', 'type' => 'text'], ['label' => 'Subsektor', 'model' => 'subsektor', 'type' => 'number']] as $field)
     <div class="flex flex-col">
         <label for="{{ $field['model'] }}" class="block font-medium mb-1 text-sm">
@@ -163,7 +166,7 @@
                                         </select>
                                         @error('periode')
                                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                        @enderror
+                                        @enderror   
                                     </div>
                                     <!-- Subsektor -->
                                     <div class="flex flex-col">
@@ -178,18 +181,18 @@
                                             <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                                         @enderror
                                     </div>
-                                </form>
-
-                                <!-- Tombol aksi -->
-                                <div class="flex justify-end mt-8 space-x-3">
-                                    <button wire:click="simpan" type="submit" @click="openForm = false"
+                                    
+                                    <!-- Tombol aksi -->
+                                    <div class="flex justify-end mt-8 space-x-3">
+                                        <button  type="submit"  
                                         class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm">
                                         {{ $action === 'Edit' ? 'Update' : 'Simpan' }}
                                     </button>
                                     <button wire:click="$set('openForm', false)"
-                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm" @click="openForm = false">
+                                        class="bg-gray-200 hover:bg-gray-300 text-gray-700 px-5 py-2.5 rounded-lg text-sm font-medium transition shadow-sm" >
                                         Batal
-                                    </button>
+                                    </button>   
+                                </form>
                                 </div>
                             </div>
                         </div>

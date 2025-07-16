@@ -61,6 +61,9 @@
                         @if (request()->routeIs('manajemen-survei'))
                             <livewire:dashboard.manajemen-survei />
                         @endif
+                        @if (request()->routeIs('manajemen-petugas'))
+                            <livewire:dashboard.petugas />
+                        @endif
                         @if (request()->routeIs('manajemen-administrasi'))
                             <x-underconstruction />
                         @endif
