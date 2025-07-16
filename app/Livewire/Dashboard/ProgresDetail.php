@@ -9,7 +9,6 @@ use Livewire\Attributes\On;
 use App\Models\ListKegiatan;
 use Livewire\WithFileUploads;
 use App\Models\MonitoringKegiatan;
-use Illuminate\Http\Request;
 
 class ProgresDetail extends Component
 {
@@ -22,6 +21,17 @@ class ProgresDetail extends Component
     public array $monitoring, $allItem;
     public string $id_tabel,  $message = '', $status = '';
     public int $tahun, $waktu;
+
+    // filter 
+    public array $filter = [
+        'pcl' => '',
+        'pml' => '',
+        'status' => '',
+        'sampel' => [],
+        'proses' => '',
+        'pcl' => '',
+        'pml' => '',
+    ];
 
     public array $bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
@@ -56,6 +66,21 @@ class ProgresDetail extends Component
                 ['tahun', '=', $event->tahun],
                 ['waktu', '=', $event->waktu],
             ])
+                ->when($this->filter['pcl'], function ($query) {
+                    return $query->where('pcl', $this->filter['pcl']);
+                })
+                ->when($this->filter['pml'], function ($query) {
+                    return $query->where('pml', $this->filter['pml']);
+                })
+                ->when($this->filter['status'], function ($query) {
+                    return $query->where('status', $this->filter['status']);
+                })
+                ->when(!empty($this->filter['sampel']), function ($query) {
+                    foreach ($this->filter['sampel'] as $sampel) {
+                        $query->where('ket_sampel', 'like', '%' . $sampel . '%');
+                    }
+                    return $query;
+                })
                 ->get()
                 ->map(function ($item) {
                     $item->sampel_body = explode(';', $item->ket_sampel);
@@ -172,5 +197,10 @@ class ProgresDetail extends Component
     public function bindingSampelBody($row, $index, $value)
     {
         $this->allItem[$row]['ket_sampel'][$index] = $value;
+    }
+
+    public function filterData()
+    {
+        $this->render();
     }
 }

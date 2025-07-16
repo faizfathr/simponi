@@ -31,6 +31,14 @@
 }" x-init="setTimeout(() => loading = false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
+        <div class="flex-1 mb-4">
+            <h1 class="text-xl font-semibold text-gray-800 dark:text-white">
+                {{ $event->kegiatan }} ({{ $tahun }}) - {{ $waktu }}
+            </h1>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+                Jadwal: <span x-text="formatJadwal(event.tgl_mulai, event.tgl_selesai)"></span>
+            </p>
+        </div>
         <div class="flex items-center gap-x-2 mb-2 w-full">
             <a href="#" @click.prevent="history.back()"
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
@@ -104,7 +112,6 @@
         <div class="max-w-full overflow-x-auto custom-scrollbar h-[80vh]" x-data="{
             columns: {
                 no: true,
-                jadwal: true,
                 proses: true,
                 status: true,
                 pcl: true,
@@ -130,7 +137,8 @@
                                 <span class="text-xs">Pilih Kolom</span>
                             </button>
                             <button
-                                class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2">
+                                class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2"
+                                wire:click.prevent="filterData">
                                 <!-- SVG Palu & Tang -->
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -138,6 +146,9 @@
                                         d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                                 </svg>
                                 <span class="text-xs">Terapkan Filter</span>
+                                <div wire:loading wire:target='filterData'
+                                    class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
+                                </div>
                             </button>
                         </div>
 
@@ -160,13 +171,6 @@
                                     <span>{{ $item }}</span>
                                 </label>
                             @endforeach
-
-                            <!-- Kolom Jadwal -->
-                            <label class="flex items-center gap-2">
-                                <input type="checkbox" x-model="columns.jadwal"
-                                    class="accent-brand-500 rounded focus:ring-0" />
-                                <span>Jadwal</span>
-                            </label>
 
                             <!-- Kolom Proses -->
                             @foreach ($prosess_header as $key => $item)
@@ -200,7 +204,7 @@
                         </div>
                     </div>
                 </div>
-                <table class="min-w-full custom-scrollbar h-auto overflow-y-auto">
+                <table class="min-w-full custom-scrollbar h-auto overflow-y-auto z-0">
                     <!-- table header start -->
                     <!-- Filter Row -->
                     <thead class="sticky top-[50px]  z-10 bg-gray-200 dark:bg-gray-800">
@@ -217,10 +221,6 @@
                                     {{ $itemSampel }}
                                 </th>
                             @endforeach
-
-                            <th x-show="columns.jadwal"
-                                class="px-5 py-3 sm:px-6 text-center text-xs font-medium text-gray-500 dark:text-gray-400">
-                                Jadwal</th>
 
                             @foreach ($prosess_header as $itemProses)
                                 <th x-show="columns.proses{{ $loop->index }}"
@@ -244,26 +244,22 @@
                         <!-- Baris Input Filter -->
                         <tr class="border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900">
                             <th class="px-5 py-2 sm:px-6" x-show="columns.no">
-                                <input type="text" placeholder="No"
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
+                                <input type="text"
+                                    class="w-10 text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
                             </th>
 
                             @foreach ($sampel_header as $item)
                                 <th x-show="columns.sampel{{ $loop->index }}" class="px-5 py-2 sm:px-6">
-                                    <input type="text" placeholder="{{ $item }}"
+                                    <input type="text" wire:model="filter.sampel.{{ $loop->index }}"
                                         class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
                                 </th>
                             @endforeach
 
-                            <th x-show="columns.jadwal" class="px-5 py-2 sm:px-6">
-                                <input type="text" placeholder="Cari Jadwal"
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
-                            </th>
-
                             @foreach ($prosess_header as $item)
                                 <th x-show="columns.proses{{ $loop->index }}" class="px-5 py-2 sm:px-6">
                                     <select
-                                        class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                        class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
+                                        wire:model="filter.proses">
                                         <option value="">{{ $item }}</option>
                                         <option value="1">✓</option>
                                         <option value="0">✗</option>
@@ -272,7 +268,7 @@
                             @endforeach
 
                             <th x-show="columns.status" class="px-5 py-2 sm:px-6">
-                                <select
+                                <select wire:model="filter.status"
                                     class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
                                     <option value="">Status</option>
                                     <option value="0">Belum</option>
@@ -283,7 +279,8 @@
 
                             <th x-show="columns.pcl" class="px-5 py-2 sm:px-6">
                                 <select
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
+                                    wire:model='filter.pcl'>
                                     <option value="">PCL</option>
                                     @foreach ($pcl as $p)
                                         <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -293,7 +290,8 @@
 
                             <th x-show="columns.pml" class="px-5 py-2 sm:px-6">
                                 <select
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
+                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
+                                    wire:model='filter.pml'>
                                     <option value="">PML</option>
                                     @foreach ($pml as $p)
                                         <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -328,11 +326,6 @@
                                                 class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 rounded-lg border border-gray-300 bg-transparent px-4 py-1 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 max-w-max" />
                                         </td>
                                     @endforeach
-                                    <td x-show="columns.jadwal" class="px-0.5 py-2 whitespace-nowrap">
-                                        <p class="text-gray-500 text-xs dark:text-gray-400">
-                                            {{ is_null($event->tanggal_mulai) || is_null($event->tanggal_selesai) ? 'Tanggal Belum diatur' : (date('m', strtotime($event->tanggal_mulai)) === date('m', strtotime($event->tanggal_selesai)) ? date('d', strtotime($event->tanggal_mulai)) . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai)) : date('d', strtotime($event->tanggal_mulai)) . ' ' . $bulan[(int) date('m', strtotime($event->tanggal_mulai))] . date(' - d ', strtotime($event->tanggal_selesai)) . $bulan[(int) date('m', strtotime($event->tanggal_selesai))] . date(' Y', strtotime($event->tanggal_selesai))) }}
-                                        </p>
-                                    </td>
                                     @foreach ($allItem[$row]['prosess'] as $key => $itemProsesBody)
                                         <td x-show="columns.proses{{ $key }}" class="px-0.5 py-2">
                                             <div x-data="{ checkboxToggle{{ $monitoring['id'] }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
@@ -379,7 +372,7 @@
                                     </td>
                                     <td x-show="columns.pcl" class="px-0.5">
                                         <select wire:model='allItem.{{ $row }}.pcl'
-                                            class="dark:bg-dark-900  shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                            class="dark:bg-dark-900  shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                             <option
                                                 class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
                                                 --- Petugas ---
@@ -395,7 +388,7 @@
                                     <td x-show="columns.pml" class="px-0.5">
                                         <div class="flex items-center">
                                             <select wire:model='allItem.{{ $row }}.pml'
-                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
                                                 <option
                                                     class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
                                                     --- Petugas ---
@@ -428,12 +421,23 @@
     </div>
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <button wire:click.prevent='updateProgres'
+            id="saveButton"
             class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
             <span>Simpan</span>
             <div wire:loading wire:target='updateProgres'
                 class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
             </div>
         </button>
+        @once
+            <script>
+                document.addEventListener('keydown', function(e) {
+                    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+                        e.preventDefault();
+                        document.getElementById('saveButton').click();
+                    }
+                });
+            </script>    
+        @endonce
     @endif
     <div x-show="openForm"
         class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
