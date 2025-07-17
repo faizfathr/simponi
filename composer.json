@@ -10,10 +10,9 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
-     
         "laravel/framework": "^11.31",
         "laravel/tinker": "^2.9",
-        "livewire/livewire": "*",
+        "livewire/livewire": "^3.6",
         "maatwebsite/excel": "*",
         "symfony/console": "*"
     },

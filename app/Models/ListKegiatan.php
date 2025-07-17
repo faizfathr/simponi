@@ -11,17 +11,17 @@ class ListKegiatan extends Model
 
     protected $fillable = [
         'id_kegiatan',
-        'tahun',
+        'id',
+        'kegiatan',
+        'alias',
         'periode',
-        'waktu',
-        'target',
-        'tanggal_mulai', 
-        'tanggal_selesai',
+        'sektor',
+        'subsektor',
     ];
 
     protected $primaryKey = 'id';
 
-    public function joinKegiatan()
+    public function joinKegiatan()  
     {
         return $this->belongsTo(KegiatanSurvei::class, 'id_kegiatan','id');
     }
