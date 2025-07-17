@@ -12,7 +12,14 @@ class Reminder extends Component
 {
     public string $no_tujuan = '', $pesan, $pesanNotif = 'selamat', $statusNotif = 'berhasil';
     public bool $openForm = false, $showNotif = false;
+    public $info;
     public $scheduled_at;
+
+    public function mount()
+    {
+        $fonnte = new FonteService;
+        $this->info = $fonnte->getInfo();
+    }
 
     public function render()
     {
@@ -47,11 +54,11 @@ class Reminder extends Component
             'updated_at' => carbon::now(),
         ]);
 
-        $fonte = new FonteService;
-        $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
-            ->setTimezone('UTC')
-            ->timestamp;
-        $fonte->sendMessage($this->no_tujuan, $this->pesan, (string) $this->scheduled_at);
+        // $fonte = new FonteService;
+        // $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
+        //     ->setTimezone('UTC')
+        //     ->timestamp;
+        // $fonte->sendMessage($this->no_tujuan, $this->pesan, (string) $this->scheduled_at);
         $this->openForm = FALSE;
         $this->showNotif = TRUE;
         $this->pesanNotif = "Reminder berhasil dibuat!";

@@ -4,10 +4,15 @@
         showNotif: @entangle('showNotif')
     }" x-init="setTimeout(() => loading = false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $pesanNotif }}" status="{{ $statusNotif }}" />
-    <button @click="openForm = true"
-        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow">
-        + Jadwal Baru
-    </button>
+    <div class="flex items-center justify-between mb-4">
+        <button @click="openForm = true"
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow">
+            + Jadwal Baru
+        </button>
+        <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300 shadow">
+            Sisa Kuota: {{ $info }} 
+        </span>
+    </div>
     <h2 class="text-xl font-semibold text-gray-800 dark:text-white">📜 History Pengiriman Jadwal</h2>
 
     <div class="overflow-x-auto">
@@ -83,7 +88,7 @@
                             Tujuan</label>
                         <input type="text" wire:model="no_tujuan" @focus="showList = true"
                             placeholder="628xxx,628xxx..."
-                            class="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring focus:ring-brand-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white" />
+                            class="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring focus:ring-brand-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white "/>
                         @error('no_tujuan')
                             <span class="text-xs text-red-800">{{ $message }}</span>
                         @enderror
@@ -92,12 +97,12 @@
                     <!-- Search Box (hanya muncul saat showList) -->
                     <div x-show="showList" x-transition>
                         <input type="text" x-model="search" placeholder="Cari nama kontak..."
-                            class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:ring focus:ring-blue-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white mb-2">
+                            class="w-full rounded-lg  px-3 py-2 text-sm focus:ring focus:ring-blue-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white mb-2">
                     </div>
 
                     <!-- Daftar Kontak -->
                     <div x-show="showList" x-transition
-                        class="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-gray-300 bg-white shadow dark:border-gray-700 dark:bg-gray-900 divide-y">
+                        class="absolute z-50 mt-1 max-h-48 w-full overflow-y-scroll rounded-lg  bg-white shadow dark:border-gray-700 dark:bg-gray-900 divide-y">
                         <template x-for="kontak in filteredKontak" :key="kontak.nomor">
                             <div @click="tambahNomor(kontak.nomor)"
                                 class="cursor-pointer px-4 py-2 text-sm hover:bg-blue-100 dark:hover:bg-blue-900 dark:text-white">
