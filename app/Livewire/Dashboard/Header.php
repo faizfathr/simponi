@@ -9,12 +9,12 @@ class Header extends Component
 {
     public $openForm = false;
     public function render()
-    {
+    {   
         return view('livewire.dashboard.header');
     }
 
     public function logout()
-    {
+    {   
         Auth::logout();
         session()->invalidate();
         session()->regenerateToken();

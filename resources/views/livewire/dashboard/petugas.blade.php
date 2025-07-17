@@ -1,67 +1,104 @@
-    <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-6"  x-init="setTimeout(() => loading = false, 500)">
-    <div class="flex justify-between items-center mb-4">
-        
-        <h2 class="text-xl font-semibold text-slate-700 dark:text-gray-100">Petugas</h2>
-        
-        <div class="flex items-center gap-2">
-            <input  wire:model.live.debounce.500ms='search' type="text" placeholder="Cari..." class="p-2 rounded-md bg-gray-100 text-gray-800 focus:ring-2 focus:ring-brand-500">
-            <button class="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600 flex items-center gap-2" wire:click='tambahForm'>
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+<div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 " x-data="{ openForm: @entangle('openForm'), showNotif: $wire.entangle('showNotif'), message: @entangle('message'), status: @entangle('status') }">
+    {{-- HEADER --}}
+    <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
+    <div class="flex flex-col items-start mb-6">
+        <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Petugas-petugas</h2>
+        <hr class="w-full my-2 border-gray-300 dark:border-gray-600">
+        <div class="flex items-center gap-3 w-full mt-2">
+            <input wire:model.live.debounce.500ms="search" type="text" placeholder="Cari nama petugas..."
+                class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 shadow-inner focus:ring-4 focus:ring-blue-300 transition w-2/4">
+            <button type="button" wire:click="tambahForm"
+                class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg shadow-md flex items-center gap-2 transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
+                    stroke-width="1.5" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
                 Tambah
             </button>
         </div>
     </div>
-         {{-- <!-- Modal Tambah/Edit Petugas -->
-    <div x-show="openForm"
-        class="fixed pt-24 md:pt-0 inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4"
-        x-transition:enter="ease-out duration-300" x-transition:enter-start="opacity-0 scale-95"
-        x-transition:enter-end="opacity-100 scale-100" x-transition:leave="ease-in duration-200"
-        x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
-        style="overflow-y: auto;">
-        <div @click.outside="openForm = !openForm"
-            class="bg-white rounded-2xl shadow-xl w-full max-w-3xl mt-20 md:my-16 p-6 md:p-8">
-            <h2 class="text-xl md:text-2xl font-semibold text-gray-800 mb-6">
-                {{ $action === 'Edit' ? 'Edit Petugas' : 'Tambah Petugas' }}
+
+    {{-- MODAL --}}
+    <div x-show="openForm" x-transition x-cloak
+        class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4"
+        style="overflow-y:auto">
+        <div @click.outside="openForm = false"
+            class="bg-white dark:bg-gray-900 rounded-lg shadow-2xl p-10 w-full max-w-4xl mt-20 relative">
+            <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8 border-b pb-4">
+                Tambah Petugas
             </h2>
 
-            <form wire:submit.prevent="simpan" 
-                class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-700">
-                <input type="hidden" wire:model.lazy="action">
-                <input type="hidden" wire:model="id">
-                @foreach ([['label' => 'Nama', 'model' => 'nama', 'type' => 'text'], ['label' => 'No. Rekening', 'model' => 'no_rek', 'type' => 'text'], ['label' => 'Status', 'model' => 'status', 'type' => 'text']] as $field)
-                <div class="flex flex-col">
-                    <label for="{{ $field['model'] }}" class="block font-medium mb-1 text-sm">
-                        {{ $field['label'] }}
-                    </label>
-                    <input
-                        type="{{ $field['type'] }}"
-                        wire:model="{{ $field['model'] }}">
+            <form wire:submit.prevent="simpanData" class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {{-- Input Nama --}}
+                <div>
+                    <label for="nama" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Nama</label>
+                    <input type="text" id="nama" wire:model.defer="nama"
+                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
+                    @error('nama') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
-                @endforeach --}}
-                      
-    <table class="w-full text-left text-gray-800 dark:text-gray-300 overflow-scroll">
-        <thead class="bg-gray-50 dark:bg-gray-700">
+
+                {{-- Input No. Rekening --}}
+                <div>
+                    <label for="no_rek"
+                        class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">No. Rekening</label>
+                    <input type="text" id="no_rek" wire:model.defer="no_rek"
+                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
+                    @error('no_rek') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                {{-- Status --}}
+                <div class="md:col-span-2">
+                    <label for="statusDb"
+                        class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Status</label>
+                    <select wire:model.defer="statusDb"
+                        class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
+                        <option value="">Pilih Status</option>
+                        <option value="0">Pegawai</option>
+                        <option value="1">Kemitraan</option>
+                    </select>
+                    @error('statusDb') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                </div>
+
+                {{-- Tombol Aksi --}}
+                <div class="md:col-span-2 flex justify-end gap-4 mt-6">
+                    <button type="submit"
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg shadow-lg transition">
+                        Simpan
+                    </button>
+                    <button type="button" @click="openForm = false"
+                        class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {{-- TABEL --}}
+    <table class="w-full mt-4 text-left text-sm text-gray-900 dark:text-gray-200">
+        <thead class="bg-gray-100 dark:bg-gray-700">
             <tr>
-                <th class="py-3 px-4">ID Petugas</th>
-                <th class="py-3 px-4">Nama</th>
-                <th class="py-3 px-4">No. Rekening</th>
-                <th class="py-3 px-4">Status</th>
-                <th class="py-3 px-4">Kegiatan</th>
+                <th class="py-3 px-5">ID</th>
+                <th class="py-3 px-5">Nama</th>
+                <th class="py-3 px-5">No. Rekening</th>
+                <th class="py-3 px-5">Status</th>
+                <th class="py-3 px-5">Kegiatan</th>
             </tr>
         </thead>
         <tbody>
-            @foreach ($listPetugas as $item)
-            <tr class="border-b border-gray-200 dark:border-gray-700">
-                <td class="py-2 px-4">{{ $item->id }}</td>
-                <td class="py-2 px-4">{{ $item->nama }}</td>
-                <td class="py-2 px-4">{{ $item->no_rek }}</td>
-                <td class="py-2 px-4">{{ $item->status === 0 ? 'Pegawai' : 'Kemitraan'}}</td>
-                <td class="py-2 px-4">-</td>
-            </tr>
-             @endforeach
-          
+            @forelse ($listPetugas as $item)
+                <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                    <td class="py-3 px-5">{{ $item->id }}</td>
+                    <td class="py-3 px-5">{{ $item->nama }}</td>
+                    <td class="py-3 px-5">{{ $item->no_rek }}</td>
+                    <td class="py-3 px-5">{{ $item->status === 0 ? 'Pegawai' : 'Kemitraan' }}</td>
+                    <td class="py-3 px-5">-</td>
+                </tr>
+            @empty
+                <tr>
+                    <td colspan="5" class="text-center py-6 text-gray-500">Belum ada data petugas.</td>
+                </tr>
+            @endforelse
         </tbody>
     </table>
 </div>
