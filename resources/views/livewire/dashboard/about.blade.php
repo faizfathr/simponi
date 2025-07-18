@@ -219,8 +219,8 @@ setTimeout(() => loading = false, 500)"
             </div>
 
             <!-- Navigasi panah -->
-            <div class="swiper-button-next text-slate-600"></div>
-            <div class="swiper-button-prev text-slate-600"></div>
+            <div class="swiper-button-next" style="color: #fff;"></div>
+            <div class="swiper-button-prev" style="color: #fff;"></div>
 
             <!-- Navigasi bulatan bawah -->
             <div class="swiper-pagination mt-4"></div>
