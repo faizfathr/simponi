@@ -25,7 +25,7 @@ Route::get('/manajemen-survei', Home::class)->name('manajemen-survei');
 Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
 
 Route::get('/manajemen-administrasi', Home::class)->name('manajemen-administrasi');
-Route::get('/tentang', Home::class)->name('about');
+Route::get('/about', Home::class)->name('about');
  
 Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BPS'])->group(function(){
     Route::get('/target', Home::class)->name('target');
