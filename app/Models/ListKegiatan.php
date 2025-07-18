@@ -17,6 +17,13 @@ class ListKegiatan extends Model
         'periode',
         'sektor',
         'subsektor',
+        'tahun',
+        'waktu',
+        'target',
+        'tanggal_mulai',
+        'tanggal_selesai',
+        'created_at',
+        'updated_at',
     ];
 
     protected $primaryKey = 'id';

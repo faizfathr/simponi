@@ -15,4 +15,14 @@ class Mitra extends Model
     public $incrementing = false;
 
     protected $fillable = ['id', 'nama', 'no_rek', 'status'];
+
+    public function getKegiatanPml()
+    {
+        return $this->hasMany(MonitoringKegiatan::class, 'pml', 'id');
+    }
+
+    public function getKegiatanPcl()
+    {
+        return $this->hasMany(MonitoringKegiatan::class, 'pcl', 'id');
+    }
 }

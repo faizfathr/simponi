@@ -10,16 +10,10 @@ use Livewire\Component;
 
 class Reminder extends Component
 {
-    public string $no_tujuan = '', $pesan, $pesanNotif = 'selamat', $statusNotif = 'berhasil';
+    public string $no_tujuan = '', $pesan = "Pesan \n📅 Tanggal:  ", $pesanNotif = 'selamat', $statusNotif = 'berhasil', $headerPesan = '🔔 Hai aku SIMPONI BPS Kota Singkawang, sistem reminder andalanmu!, Jangan lupa kamu punya agenda sebagai berikut.', $footerPesan = "Tetap semangat dan terus berkolaborasi 😊, Terimakasih.\n-Tim Statistik Produksi.";
     public bool $openForm = false, $showNotif = false;
     public $info;
     public $scheduled_at;
-
-    public function mount()
-    {
-        $fonnte = new FonteService;
-        $this->info = $fonnte->getInfo();
-    }
 
     public function render()
     {
@@ -33,6 +27,7 @@ class Reminder extends Component
         $this->validate(
             [
                 'no_tujuan' => 'required|min:11',
+                'headerPesan' => 'required|string|min:5',
                 'pesan' => 'required|min:5',
                 'scheduled_at' => 'required|date|after:now'
             ],
@@ -40,25 +35,28 @@ class Reminder extends Component
                 'no_tujuan.required' => 'Nomor tujuan harus diisi',
                 'no_tujuan.min' => 'Nomor tujuan minimal 11 digit',
                 'pesan.required' => 'Pesan harus diisi',
-                'pesana.min' => 'Pesan minimal 5 kata',
+                'pesan.min' => 'Pesan minimal 5 kata',
+                'headerPesan.required' => 'Header pesan harus diisi',
+                'headerPesan.min' => 'Header pesan minimal 5 kata',
                 'scheduled_at.required' => 'Tanggal reminder harus diisi',
                 'scheduled_at.date' => 'Isian harus berupa tanggal yang valid',
                 'scheduled_at.after' => 'Tanggal reminder harus lebih dari waktu sekarang',
             ]
         );
+        $mergedPesan = $this->headerPesan . "\n" . $this->pesan . "\n" . $this->footerPesan;
         ReminderHistory::insert([
-            'pesan' => $this->pesan,
+            'pesan' => (string) $mergedPesan,
             'no_tujuan' => $this->no_tujuan,
             'scheduled_at' => $this->scheduled_at,
             'created_at' => Carbon::now(),
             'updated_at' => carbon::now(),
         ]);
 
-        // $fonte = new FonteService;
-        // $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
-        //     ->setTimezone('UTC')
-        //     ->timestamp;
-        // $fonte->sendMessage($this->no_tujuan, $this->pesan, (string) $this->scheduled_at);
+        $fonte = new FonteService;
+        $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
+            ->setTimezone('UTC')
+            ->timestamp;
+        $fonte->sendMessage($this->no_tujuan, $mergedPesan, (string) $this->scheduled_at);
         $this->openForm = FALSE;
         $this->showNotif = TRUE;
         $this->pesanNotif = "Reminder berhasil dibuat!";

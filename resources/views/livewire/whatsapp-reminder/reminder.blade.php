@@ -4,15 +4,10 @@
         showNotif: @entangle('showNotif')
     }" x-init="setTimeout(() => loading = false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $pesanNotif }}" status="{{ $statusNotif }}" />
-    <div class="flex items-center justify-between mb-4">
-        <button @click="openForm = true"
-            class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow">
-            + Jadwal Baru
-        </button>
-        <span class="inline-flex items-center gap-2 px-3 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800 dark:bg-indigo-900 dark:text-indigo-300 shadow">
-            Sisa Kuota: {{ $info }} 
-        </span>
-    </div>
+    <button @click="openForm = true"
+        class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium px-4 py-2 rounded-xl shadow">
+        + Jadwal Baru
+    </button>
     <h2 class="text-xl font-semibold text-gray-800 dark:text-white">📜 History Pengiriman Jadwal</h2>
 
     <div class="overflow-x-auto">
@@ -31,7 +26,15 @@
                 @foreach ($history as $historyItem)
                     <tr>
                         <td class="px-4 py-3 font-mono text-blue-600 dark:text-blue-400 break-words max-w-36">
-                            {{ $historyItem->joinKontaK?->nama ?? $historyItem->no_tujuan }}</td>
+                            @php
+                                echo $historyItem->joinKontak?->nomor
+                                    ? $historyItem->joinKontak->nama
+                                    : collect(explode(',', $historyItem->no_tujuan))->map(function ($nomor) use ($daftarKontak) {
+                                        $kontak = collect($daftarKontak)->firstWhere('nomor', $nomor);
+                                        return $kontak ? $kontak['nama'] : $nomor;
+                                    })->implode(',');
+                            @endphp
+                        </td>
                         <td class="px-4 py-3">{{ $historyItem->pesan }}</td>
                         <td class="px-4 py-3">{{ $historyItem->scheduled_at }}</td>
                         <td class="px-4 py-3">
@@ -88,7 +91,7 @@
                             Tujuan</label>
                         <input type="text" wire:model="no_tujuan" @focus="showList = true"
                             placeholder="628xxx,628xxx..."
-                            class="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring focus:ring-brand-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white "/>
+                            class="w-full mt-1 rounded-lg border border-gray-300 px-4 py-2 text-sm focus:ring focus:ring-brand-200 dark:bg-gray-900 dark:border-gray-700 dark:text-white " />
                         @error('no_tujuan')
                             <span class="text-xs text-red-800">{{ $message }}</span>
                         @enderror
@@ -115,7 +118,24 @@
                         </div>
                     </div>
                 </div>
-
+                <div x-data="{ editHeader: false }">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Header Pesan</label>
+                    <textarea rows="2"
+                        :disabled="!editHeader"
+                        wire:model='headerPesan'
+                        class="mt-1 w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm px-4 py-2.5"
+                    ></textarea>
+                    @error('headerPesan')
+                        <span class="text-xs text-red-800">{{ $message }}</span>
+                    @enderror
+                    <div class="flex items-center gap-2 mb-2">
+                        <input type="checkbox" id="editHeader" x-model="editHeader"
+                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                        <label for="editHeader" class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                            Edit Header Pesan
+                        </label>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">📝 Pesan</label>
                     <textarea rows="4" wire:model='pesan'
@@ -125,7 +145,24 @@
                         <span class="text-xs text-red-800">{{ $message }}</span>
                     @enderror
                 </div>
-
+                <div x-data="{ editFooter: false }">
+                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Footer Pesan</label>
+                    <textarea rows="2"
+                        :disabled="!editFooter"
+                        wire:model='footerPesan'
+                        class="mt-1 w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-white rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-sm px-4 py-2.5"
+                    ></textarea>
+                    @error('footerPesan')
+                        <span class="text-xs text-red-800">{{ $message }}</span>
+                    @enderror
+                    <div class="flex items-center gap-2 mb-2">
+                        <input type="checkbox" id="editFooter" x-model="editFooter"
+                            class="rounded border-gray-300 text-blue-600 shadow-sm focus:ring-blue-500">
+                        <label for="editFooter" class="text-sm text-gray-700 dark:text-gray-300 cursor-pointer">
+                            Edit Footer Pesan
+                        </label>
+                    </div>
+                </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jadwal Kirim</label>
                     <input type="datetime-local" wire:model='scheduled_at'

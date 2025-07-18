@@ -5,20 +5,19 @@ namespace App\Livewire\Dashboard;
 use Livewire\Component;
 use App\Models\Mitra;
 use Illuminate\Validation\Rule;
-// use Illuminate\Database\Eloquent\Model; // Removed unused import
 
 class Petugas extends Component
 {
     public $nama;
     public $no_rek;
     public $id;
-    public $statusDb ;
+    public $statusDb;
     public $search = '';
-  public $openForm = false;
+    public $openForm = false;
 
     public $status = '';
-    public $message = '';   
-    public $showNotif = false; // This will control the notification visibility
+    public $message = '';
+    public $showNotif = false;
     public $action = '';
 
     public function getRules()
@@ -55,35 +54,39 @@ class Petugas extends Component
             'statusDb.required' => 'Status harus diisi',
             'statusDb.in' => 'Status harus pegawai atau kemitraan',
         ]);
-do {
-    $count = Mitra::where('status', $this->statusDb)->count();
-    $generateId = $this->statusDb == 1
-        ? 61720000 + $count + 1 
-        : 340000 + $count + 1;
-} while (Mitra::find($generateId));
+        do {
+            $count = Mitra::where('status', $this->statusDb)->count();
+            $generateId = $this->statusDb == 1
+                ? 61720000 + $count + 1
+                : 340000 + $count + 1;
+        } while (Mitra::find($generateId));
 
-Mitra::create([
-    'id' => $generateId,
-    'nama' => $this->nama,
-    'no_rek' => $this->no_rek,
-    'status' => $this->statusDb,
-]);
+        Mitra::create([
+            'id' => $generateId,
+            'nama' => $this->nama,
+            'no_rek' => $this->no_rek,
+            'status' => $this->statusDb,
+        ]);
 
 
         $this->message = "Pegawai berhasil ditambahkan";
-    $this->status = 'success';
-    $this->showNotif = true;
+        $this->status = 'success';
+        $this->showNotif = true;
 
-    $this->openForm = false;
-    $this->resetForm();
+        $this->openForm = false;
+        $this->resetForm();
 
-    $this->search = '';
+        $this->search = '';
     }
 
     public function tambahForm()
     {
         $this->reset([
-            'nama', 'no_rek', 'id', 'action', 'statusDb'
+            'nama',
+            'no_rek',
+            'id',
+            'action',
+            'statusDb'
         ]);
         $this->action = 'tambah';
         $this->openForm = true;
@@ -92,10 +95,16 @@ Mitra::create([
     public function resetForm()
     {
         $this->reset([
-            'nama', 'no_rek', 'id', 'action', 'statusDb'
+            'nama',
+            'no_rek',
+            'id',
+            'action',
+            'statusDb'
         ]);
         $this->action = 'Tambah';
     }
+
+    
 
     public function render()
     {
@@ -113,4 +122,3 @@ Mitra::create([
         ]);
     }
 }
-
