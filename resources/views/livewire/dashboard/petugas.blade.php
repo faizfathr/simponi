@@ -1,4 +1,4 @@
-<div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 " x-data="{ openForm: @entangle('openForm'), showNotif: $wire.entangle('showNotif'), message: @entangle('message'), status: @entangle('status') }">
+<div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 " x-data="{ openForm: @entangle('openForm'), showNotif: $wire.entangle('showNotif'), message: @entangle('message'), status: @entangle('status') }"x-init="setTimeout(() => loading = false, 500)">
     {{-- HEADER --}}
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     <div class="flex flex-col items-start mb-6">
