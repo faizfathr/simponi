@@ -90,7 +90,7 @@ setTimeout(() => loading = false, 500)"
         <div class="flex items-center justify-between">
             <!-- Logo BPS -->
             <div class="flex items-center gap-2">
-                <img src="{{ asset('img/bps.png') }}" alt="Logo BPS Singkawang" class="h-8 md:h-16 w-auto">
+                <img src="{{ asset('img/bps.webp') }}" alt="Logo BPS Singkawang" class="h-8 md:h-16 w-auto">
                 <div
                     class="flex flex-col font-bold font-[arial] text-xs md:text-sm text-slate-700 dark:text-white italic">
                     <span>Badan Pusat Statistik</span>
@@ -101,7 +101,7 @@ setTimeout(() => loading = false, 500)"
 
             <!-- Logo SIMPONI -->
             <div class="flex flex-col items-center gap-2">
-                <img src="{{ asset('/logo/logo.png') }}" alt="Logo SIMPONI" class="h-8 md:h-20 w-auto">
+                <img src="{{ asset('/logo/logo.webp') }}" alt="Logo SIMPONI" class="h-8 md:h-20 w-auto">
                 <span class="text-xs md:text-lg text-slate-700 dark:text-white font-bold">SIMPONI</span>
             </div>
         </div>
@@ -157,28 +157,28 @@ setTimeout(() => loading = false, 500)"
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <!-- Anggota 1 -->
             <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/elysa.png" alt="Foto"
+                <img src="/img/anggota/elysa.webp" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm dark:text-white">Elysa, SST</p>
                 <p class="text-xs text-gray-600 dark:text-gray-100">Ketua Tim Statistik Produksi</p>
             </div>
             <!-- Anggota 2 -->
             <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/maudy.png" alt="Foto"
+                <img src="/img/anggota/maudy.webp" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm dark:text-white">Maudy Sazty Nataya, A.Md.Stat.</p>
                 <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Terampil</p>
             </div>
             <!-- Anggota 3 -->
             <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/faiz.png" alt="Foto"
+                <img src="/img/anggota/faiz.webp" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm dark:text-white">Faiz Fathur Rahman, A.Md.Stat.</p>
                 <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Terampil</p>
             </div>
             <!-- Anggota 4 -->
             <div class="dark:bg-gray-700 bg-brand-50 p-3 rounded-xl text-center">
-                <img src="/img/anggota/harmanto.png" alt="Foto"
+                <img src="/img/anggota/harmanto.webp" alt="Foto"
                     class="object-top h-40 mx-auto rounded-full mb-2 object-cover">
                 <p class="font-semibold text-sm dark:text-white">Harmanto</p>
                 <p class="text-xs text-gray-600 dark:text-gray-100">Statistisi Penyelia</p>
@@ -194,25 +194,25 @@ setTimeout(() => loading = false, 500)"
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_1.jpeg" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_1.webp" class="rounded-xl object-cover w-full h-72"
                         alt="Kegiatan 1" />
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_2.jpeg" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_2.webp" class="rounded-xl object-cover w-full h-72"
                         alt="Kegiatan 2" />
                 </div>
                 <!-- Slide 3 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_3.jpeg" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_3.webp" class="rounded-xl object-cover w-full h-72"
                         alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_4.jpeg" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_4.webp" class="rounded-xl object-cover w-full h-72"
                         alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_5.jpeg" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_5.webp" class="rounded-xl object-cover w-full h-72"
                         alt="Kegiatan 3" />
                 </div>
                 <!-- Tambahkan slide lainnya jika perlu -->
