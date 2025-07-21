@@ -34,16 +34,20 @@
                     <label for="nama" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Nama</label>
                     <input type="text" id="nama" wire:model.defer="nama"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
-                    @error('nama') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error('nama')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- Input No. Rekening --}}
                 <div>
-                    <label for="no_rek"
-                        class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">No. Rekening</label>
+                    <label for="no_rek" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">No.
+                        Rekening</label>
                     <input type="text" id="no_rek" wire:model.defer="no_rek"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
-                    @error('no_rek') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error('no_rek')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- Status --}}
@@ -56,7 +60,9 @@
                         <option value="0">Pegawai</option>
                         <option value="1">Kemitraan</option>
                     </select>
-                    @error('statusDb') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                    @error('statusDb')
+                        <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 {{-- Tombol Aksi --}}
@@ -87,12 +93,36 @@
         </thead>
         <tbody>
             @forelse ($listPetugas as $item)
-                <tr class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
+                <tr
+                    class="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800 transition">
                     <td class="py-3 px-5">{{ $item->id }}</td>
                     <td class="py-3 px-5">{{ $item->nama }}</td>
                     <td class="py-3 px-5">{{ $item->no_rek }}</td>
                     <td class="py-3 px-5">{{ $item->status === 0 ? 'Pegawai' : 'Kemitraan' }}</td>
-                    <td class="py-3 px-5">-</td>
+                    <td class="py-3 px-5">
+                        @php
+                            $kegiatanPml = collect($item->getKegiatanPml)
+                                ->map(fn($kegiatan) => $kegiatan->joinKegiatan?->alias)
+                                ->unique()
+                                ->filter();
+
+                            $kegiatanPcl = collect($item->getKegiatanPcl)
+                                ->map(fn($kegiatan) => $kegiatan->joinKegiatan?->alias)
+                                ->unique()
+                                ->filter();
+                        @endphp
+
+                        @foreach ($kegiatanPml as $alias)
+                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 mb-1">
+                                {{ $alias }}
+                            </span>
+                        @endforeach
+                        @foreach ($kegiatanPcl as $alias)
+                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mb-1">
+                                {{ $alias }}
+                            </span>
+                        @endforeach
+                    </td>
                 </tr>
             @empty
                 <tr>
@@ -102,4 +132,3 @@
         </tbody>
     </table>
 </div>
-
