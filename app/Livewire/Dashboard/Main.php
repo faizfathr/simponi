@@ -6,7 +6,7 @@ use App\Models\ListKegiatan;
 use App\Models\Mitra;
 use App\Models\MonitoringKegiatan;
 use Livewire\Component;
-
+use Illuminate\Support\Facades\Log;
 class Main extends Component
 {
 

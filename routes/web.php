@@ -9,7 +9,7 @@ use App\Livewire\Index as Home;
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/livewire/update', $handle);
 });
-
+    
 Route::get('/', Home::class)->name('home');
 
 Route::get('/monitoring-pertanian', Home::class)->name('monitoring-pertanian');

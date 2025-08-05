@@ -1,18 +1,26 @@
 <div class="text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025, loading: true }" x-init="setTimeout(() => loading = false, 500)"
     x-effect="
-        if(tahunKegiatan) {
-            fetch('/resource/aggregatProgres', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
-                },
-                body: JSON.stringify({ tahun: tahunKegiatan })
-            })
-            .then((response)=> response.json())
-            .then((response)=> {
-                mainChart('progresChart', response)
-            });
+       if (tahunKegiatan) {
+    fetch('/resource/aggregatProgres', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+        },
+        body: JSON.stringify({ tahun: tahunKegiatan })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        return response.json();
+    })
+    .then(data => {
+        // Pastikan data adalah array
+        if (!Array.isArray(data)) throw new Error('Data bukan array!');
+        mainChart('progresChart', data);
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
+    });
         }
     ">
     @if (session('login-valid'))

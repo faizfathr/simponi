@@ -1,54 +1,27 @@
 <div>
     <div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025 }" x-init="$nextTick(() => {
-    if (window.swiperInstance) {
-        window.swiperInstance.destroy(true, true);
-    }
-
-    const swiperEl = document.querySelector('.swiperCardKegiatan');
-    if (!swiperEl) return;
-
-    window.swiperInstance = new Swiper('.swiperCardKegiatan', {
-        loop: true,
-        spaceBetween: 20,
-        centeredSlides: true,
-        grabCursor: true,
-        autoplay: {
-            delay: 3000,
-            disableOnInteraction: false,
+   if (tahunKegiatan) {
+    fetch('/resource/aggregatProgres', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
         },
-        breakpoints: {
-            320: { slidesPerView: 1 },
-            640: { slidesPerView: 1.2 },
-            768: { slidesPerView: 2 },
-            1024: { slidesPerView: 2.5 },
-        },
-        navigation: {
-            nextEl: '.swiper-button-next',
-            prevEl: '.swiper-button-prev',
-        },
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
+        body: JSON.stringify({ tahun: tahunKegiatan })
+    })
+    .then(response => {
+        if (!response.ok) throw new Error('HTTP error ' + response.status);
+        return response.json();
+    })
+    .then(data => {
+        mainChart('progresChart', data.data); // hanya ambil bagian 'data'
+    })
+    .catch(error => {
+        console.error('Fetch error:', error);
     });
-});
-setTimeout(() => loading = false, 500)"
-    x-watch="tahunKegiatan"
-    x-effect="
-        if(tahunKegiatan) {
-            fetch('/resource/aggregatProgres', {
-                method: 'POST',
-                headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
-                    },
-                body: JSON.stringify({ tahun: tahunKegiatan })
-            })
-            .then((response)=> response.json())
-            .then((response)=> {
-                mainChart('progresChart', response)
-            });
-        }">
+}
+})">
+        
     <style>
         .swiper-button-next,
         .swiper-button-prev {

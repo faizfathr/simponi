@@ -172,3 +172,4 @@
         <script src="/js/halfDonutChart-progres.js"></script>
     </div>
 </div>
+
