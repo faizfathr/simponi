@@ -164,7 +164,15 @@
         @endforeach
 
     </div>
-    <div class="grid gap-2">
+    <div class="bg-white dark:bg-gray-900 h-screen">
+
+        <div class="grid gap-2">
+            @if (count($contentsNonYearly) == 0)
+            <div class="flex mt-10 justify-center h-full">
+                <p class="text-gray-500 dark:text-gray-400">Tidak ada data kegiatan yang tersedia.</p>
+            </div>
+            
+        @endif
         @foreach ($contentsNonYearly as $content)
             <div
                 class="overflow-hidden rounded-2xl border border-gray-200 bg-white  dark:border-gray-800 dark:bg-white/[0.03] p-4 relative">
@@ -204,7 +212,8 @@
                     </div>
                 </div>
             </div>
-        @endforeach 
+            @endforeach 
+        </div>
         <script src="/js/barChart-progres.js"></script>
         <script src="/js/halfDonutChart-progres.js"></script>
     </div>
