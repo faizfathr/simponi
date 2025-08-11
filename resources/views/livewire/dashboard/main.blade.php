@@ -1,7 +1,9 @@
-    <div class="text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025 }" 
-  x-watch:tahunKegiatan="fetchData()"
+    <div class="text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025  }" 
+
         x-effect="
         if (tahunKegiatan) {
+           
+            // Fetch data for the chart based on the selected year
         fetch('/resource/aggregatProgres', {
             method: 'POST',
             headers: {
@@ -21,9 +23,7 @@
         })
         .catch(error => {
             console.error('Fetch error:', error);
-        }).then(() => {
-            loading = false;
-            });
+        })
         }
         "
         x-init="setTimeout(() => loading = false, 500)">
