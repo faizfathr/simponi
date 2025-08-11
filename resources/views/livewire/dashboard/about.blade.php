@@ -1,5 +1,6 @@
 <div>
-    <div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025 }" x-init="$nextTick(() => {
+    <div class=" text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025 }" x-effect="
+       
    if (tahunKegiatan) {
     fetch('/resource/aggregatProgres', {
         method: 'POST',
@@ -19,8 +20,8 @@
     .catch(error => {
         console.error('Fetch error:', error);
     });
-}
-})">
+} 
+" x-init=" setTimeout(()=>loading=false, 500)">
         
     <style>
         .swiper-button-next,
@@ -44,7 +45,7 @@
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
     </style>
-    @if (session('login-valid'))
+    @if (session('login-valid'))    
         <div x-data="{ showNotif: true }">
             <x-dashboard.notification showNotif="showNotif" message="Selamat datang {{ Auth::user()->nama }}"
                 status="Login Berhasil" />
@@ -162,7 +163,6 @@
     <!-- Dokumentasi Kegiatan -->
     <section class="dark:bg-gray-700 dark:border-slate-900 bg-white p-6 rounded-2xl shadow-lg border border-brand-50">
         <h2 class="dark:text-gray-100 text-xl font-semibold text-slate-700 mb-4">Dokumentasi Kegiatan</h2>
-
         <div class="swiper swiperCardKegiatan">
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
@@ -224,6 +224,24 @@
 
     @once
         <script src="{{ asset('js/mainChart.js') }}"></script>
+        <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const swiper = new Swiper('.swiperCardKegiatan', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            slidesPerView: 1,
+            spaceBetween: 20,
+        });
+    });
+</script>
+
     @endonce
     </div>
 </div>

@@ -57,12 +57,12 @@
             </div>
             <div class="mb-3">
                 @php
-                    $target = 25;
+                    $target = 13;
                     $realisasi = 12;
                     $persentase = number_format(($realisasi / $target) * 100, 1);
                 @endphp
-                <h1 class="text-gray-700 dark:text-gray-100 font-semibold text-3xl">56%</h1>
-                <span class="text-gray-700 dark:text-gray-100 font-medium text-xs">Realisasi: 12 dari 25 target</span>
+                <h1 class="text-gray-700 dark:text-gray-100 font-semibold text-3xl">{{ $persentase }}%</h1>
+                <span class="text-gray-700 dark:text-gray-100 font-medium text-xs">Realisasi: {{ $realisasi }} dari {{ $target }} target</span>
                 <div class="w-full bg-gray-200 dark:bg-gray-600 h-4 rounded-full">
                     <div class="h-4 rounded-full transition-all duration-300 flex overflow-hidden">
                         @if ($persentase <= 30)
@@ -86,7 +86,7 @@
                     Submitted PCL
                 </span>
                 <span class="inline-block px-3 py-1 rounded-md bg-brand-100 text-brand-700 text-xs font-semibold bg-green-400 dark:bg-green-600 text-white">
-                    Aproved PML
+                    Approved PML
                 </span>
             </div>
         </div>
