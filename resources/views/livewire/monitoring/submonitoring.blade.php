@@ -173,46 +173,63 @@
             </div>
             
         @endif
-        @foreach ($contentsNonYearly as $content)
-            <div
-                class="overflow-hidden rounded-2xl border border-gray-200 bg-white  dark:border-gray-800 dark:bg-white/[0.03] p-4 relative">
-                <div class="flex flex-col items-center justify-center text-center relative">
-                    <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90 m-0">
-                        {{ $content->kegiatan }}
-                    </h3>
+   @foreach ($contentsNonYearly as $content)
+<div 
+    x-data="{ openDropDown: false }" 
+    class="rounded-2xl border border-gray-200 bg-white dark:border-gray-800 dark:bg-white/[0.03] p-4 pb-0 relative"
+>
+    <div class="flex flex-col items-center text-center relative">
+        <h3 class="text-lg font-semibold text-gray-800 dark:text-white/90 m-0">
+            {{ $content->kegiatan }}
+        </h3>
 
-                    <div x-data="{ openDropDown: false }" class="absolute right-4 top-1/2 -translate-y-1/2 h-fit">
-                        <button @click="openDropDown = !openDropDown"
-                            :class="openDropDown ? 'text-gray-700 dark:text-white' :
-                                'text-gray-400 hover:text-gray-700 dark:hover:text-white'">
-                            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
-                                    d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
-                                    fill="" />
-                            </svg>
-                        </button>
-                        <div x-show="openDropDown" @click.outside="openDropDown = false"
-                            class="absolute right-0 z-40 w-40 p-2 space-y-1 bg-white border border-gray-200 top-full rounded-2xl shadow-theme-lg dark:border-gray-800 dark:bg-gray-dark h-20 overflow-y-scroll">
-                            <button
-                                class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                2024
-                            </button>
-                            <button
-                                class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs hover:bg-gray-100 hover:text-gray-700 dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
-                                2025
-                            </button>
-                        </div>
-                    </div>
-                </div>
+        <!-- Tombol titik 3 di pojok kanan -->
+        <button 
+            @click="openDropDown = !openDropDown"
+            :class="openDropDown ? 'text-gray-700 dark:text-white' :
+                'text-gray-400 hover:text-gray-700 dark:hover:text-white'"
+            class="absolute right-4"
+        >
+            <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M10.2441 6C10.2441 5.0335 11.0276 4.25 11.9941 4.25H12.0041C12.9706 4.25 13.7541 5.0335 13.7541 6C13.7541 6.9665 12.9706 7.75 12.0041 7.75H11.9941C11.0276 7.75 10.2441 6.9665 10.2441 6ZM10.2441 18C10.2441 17.0335 11.0276 16.25 11.9941 16.25H12.0041C12.9706 16.25 13.7541 17.0335 13.7541 18C13.7541 18.9665 12.9706 19.75 12.0041 19.75H11.9941C11.0276 19.75 10.2441 18.9665 10.2441 18ZM11.9941 10.25C11.0276 10.25 10.2441 11.0335 10.2441 12C10.2441 12.9665 11.0276 13.75 11.9941 13.75H12.0041C12.9706 13.75 13.7541 12.9665 13.7541 12C13.7541 11.0335 12.9706 10.25 12.0041 10.25H11.9941Z"
+                    fill="" />
+            </svg>
+        </button>
 
-                <div class="max-w-full overflow-x-auto custom-scrollbar flex justify-center">
-                    <div class="flex justify-center w-full">
-                        <div id="{{ $content->id }}" class="h-full flex justify-center w-full"></div>
-                    </div>
-                </div>
-            </div>
-            @endforeach 
+        <!-- Dropdown dalam flow -->
+        <div 
+            x-show="openDropDown" 
+            x-transition
+            @click.outside="openDropDown = false"
+            class="mt-2 w-40 p-2 space-y-1 bg-white border border-gray-200 rounded-2xl shadow-theme-lg 
+                   dark:border-gray-800 dark:bg-gray-dark max-h-40 overflow-y-auto self-end"
+        >
+            <button
+                class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs 
+                       hover:bg-gray-100 hover:text-gray-700 
+                       dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                2024
+            </button>
+            <button
+                class="flex w-full px-3 py-2 font-medium text-left text-gray-500 rounded-lg text-theme-xs 
+                       hover:bg-gray-100 hover:text-gray-700 
+                       dark:text-gray-400 dark:hover:bg-white/5 dark:hover:text-gray-300">
+                2025
+            </button>   
+        </div>
+    </div>
+
+    <div class="max-w-full overflow-x-auto custom-scrollbar flex justify-center mt-4">
+        <div class="flex justify-center w-full">
+            <div id="{{ $content->id }}" class="h-full flex justify-center w-full"></div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+
         </div>
         <script src="/js/barChart-progres.js"></script>
         <script src="/js/halfDonutChart-progres.js"></script>
