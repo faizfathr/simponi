@@ -36,7 +36,7 @@
         </div>
     @endif
 
-    <div class="bg-orange-100 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 brightness-75">
+    <div class="bg-orange-100 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 brightness-75 x-index-1">
         <div class="flex items-center justify-between mb-4">
             <div class="flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-brand-500" fill="none" viewBox="0 0 24 24"
