@@ -164,7 +164,7 @@
         @endforeach
 
     </div>
-    <div class="bg-white dark:bg-gray-900 h-screen">
+    <div class=" dark:bg-gray-900 h-screen">
 
         <div class="grid gap-2">
             @if (count($contentsNonYearly) == 0)
