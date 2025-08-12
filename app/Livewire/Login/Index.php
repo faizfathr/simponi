@@ -21,6 +21,8 @@ class Index extends Component
     {
         $this->validate(
             [
+                
+                'password' => 'required',
                    'username' => ['required', function ($attribute, $value, $fail) {
                 if (!Auth::attempt(['username' => $value, 'password' => $this->password])) {
                     $user = Auth::user();
@@ -30,8 +32,7 @@ class Index extends Component
                         $fail('Password salah, coba lagi.');
                     }
                 }
-            }],
-                'password' => 'required'
+            }]
             ],
             [
                 'username.required' => 'Username wajib diisi.',
@@ -46,6 +47,9 @@ class Index extends Component
             return redirect()->route('home')->with('login-valid', 'Selamat datang, ' . Auth::user()->name);
         }
 
-        $this->addError('username', 'Username wajib diisi');
+        $this->addError('username', 'Username wajib diisi', );
+        $this->addError('password', 'Password wajib diisi', );
+        $this->username = '';
+        $this->password = '';
     }
 }

@@ -21,7 +21,21 @@
         console.error('Fetch error:', error);
     });
 } 
-" x-init=" setTimeout(()=>loading=false, 500)">
+" x-init=" setTimeout(()=>loading=false, 500);
+        new Swiper('.swiperCardKegiatan', {
+            loop: true,
+            navigation: {
+                nextEl: '.swiper-button-next',
+                prevEl: '.swiper-button-prev',
+            },
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            slidesPerView: 1,
+            spaceBetween: 20,
+        });
+        ">
         
     <style>
         .swiper-button-next,
