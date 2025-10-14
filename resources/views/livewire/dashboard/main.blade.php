@@ -27,56 +27,10 @@
                 message="Silahkan login kembali jika ingin menggunakan hak user" status="Logout Berhasil" />
         </div>
     @endif
-
-    <div class="bg-orange-100 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 brightness-75">
-        <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-                <svg xmlns="http://www.w3.org/2000/svg" class="size-6 text-brand-500" fill="none" viewBox="0 0 24 24"
-                    stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                        d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                <span class="text-lg font-semibold text-gray-800 dark:text-gray-100">Progres Kegiatan</span>
-            </div>
-            <a href="#"
-                class="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand-500 text-white text-sm font-medium hover:bg-brand-600 transition">
-                Lihat Detail
-            </a>
-        </div>
-        <div class="mb-3">
-            @php
-                $target = 25;
-                $realisasi = 12;
-                $persentase = number_format(($realisasi / $target) * 100, 1);
-            @endphp
-            <h1 class="text-gray-700 dark:text-gray-100 font-semibold text-3xl">56%</h1>
-            <span class="text-gray-700 dark:text-gray-100 font-medium text-xs">Realisasi: 12 dari 25 target</span>
-            <div class="w-full bg-gray-200 dark:bg-gray-600 h-4 rounded-full">
-                <div class="h-4 rounded-full transition-all duration-300 flex overflow-hidden">
-                    @if ($persentase <= 30)
-                        <div class="bg-red-500 h-4 rounded-l-full" style="width: {{ $persentase }}%;"></div>
-                        <div class="bg-red-100 h-4 rounded-r-full" style="width: {{ 100 - $persentase }}%;"></div>
-                    @elseif ($persentase <= 60)
-                        <div class="bg-yellow-400 h-4 rounded-l-full" style="width: {{ $persentase }}%;"></div>
-                        <div class="bg-yellow-100 h-4 rounded-r-full" style="width: {{ 100 - $persentase }}%;"></div>
-                    @else
-                        <div class="bg-green-500 h-4 rounded-l-full" style="width: {{ $persentase }}%;"></div>
-                        <div class="bg-green-100 h-4 rounded-r-full" style="width: {{ 100 - $persentase }}%;"></div>
-                    @endif
-                </div>
-            </div>
-        </div>
-        <div class="flex flex-wrap gap-2 mt-4">
-            <span class="inline-block px-3 py-1 rounded-md bg-brand-100 text-brand-700 text-xs font-semibold bg-red-400 dark:bg-red-600 text-white">
-                Pencacahan
-            </span>
-            <span class="inline-block px-3 py-1 rounded-md bg-brand-100 text-brand-700 text-xs font-semibold bg-orange-400 dark:bg-orange-600 text-white">
-                Submitted PCL
-            </span>
-            <span class="inline-block px-3 py-1 rounded-md bg-brand-100 text-brand-700 text-xs font-semibold bg-green-400 dark:bg-green-600 text-white">
-                Aproved PML
-            </span>
-        </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+        <x-dashboard.card-monitoring query="Tanaman Pangan"/>
+        <x-dashboard.card-monitoring query="Kerangka Sampel Area" />
+        <x-dashboard.card-monitoring query="Laporan Pemotongan Ternak Bulanan" />
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
 
@@ -179,5 +133,16 @@
 
     @once
         <script src="{{ asset('js/mainChart.js') }}"></script>
+        <script>
+            document.addEventListener('alpine:init', () => {
+                Alpine.store('ubinans', {
+                    items: [],
+                    setItems(data) {
+                        this.items = data;
+                        console.log('Ubinan items set:', this.items);
+                    }
+                });
+            });
+        </script>
     @endonce
 </div>

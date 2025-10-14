@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BP
 });
 
 Route::post('/resource/aggregatProgres', [DashboardController::class, 'aggregatProgres']);
+Route::post('/resource/getDataUbinan', [DashboardController::class, 'getDataUbinan']);
 
 Route::prefix('/dashboard')->group(function () {
     Route::post('/data', [DashboardController::class, 'data']);

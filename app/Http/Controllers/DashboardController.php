@@ -238,4 +238,29 @@ class DashboardController extends Controller
             ->get();
         return response()->json($listEventKegiatan);
     }
+
+    public function getDataUbinan()
+    {
+        $query = request()->input('query', 'Tanaman Pangan');
+        $data = MonitoringKegiatan::join('list_kegiatan', function ($join) {
+            $join->on('monitoring_kegiatan.id_tabel', '=', 'list_kegiatan.id_kegiatan')
+                ->on('monitoring_kegiatan.waktu', '=', 'list_kegiatan.waktu')
+                ->on('monitoring_kegiatan.tahun', '=', 'list_kegiatan.tahun');
+        })->join('kegiatan_survei', function ($join) {
+            $join->on('monitoring_kegiatan.id_tabel', '=', 'kegiatan_survei.id');
+        })->join('struktur_tabel_monitoring', function ($join) {
+            $join->on('monitoring_kegiatan.id_tabel', '=', 'struktur_tabel_monitoring.id');
+        })
+            ->where('monitoring_kegiatan.status', '=', 2)
+            ->where('kegiatan_survei.kegiatan', 'like', '%' . $query . '%')
+            ->selectRaw('
+                kegiatan_survei.kegiatan,
+                list_kegiatan.target,
+                struktur_tabel_monitoring.proses,
+                SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as realisasi
+            ')
+            ->groupBy('kegiatan_survei.kegiatan', 'list_kegiatan.target', 'proses')
+            ->get();
+        return response()->json($data);
+    }
 }

@@ -37,6 +37,7 @@ class Main extends Component
             })
             ->groupBy('monitoring_kegiatan.id_tabel', 'monitoring_kegiatan.tahun', 'monitoring_kegiatan.waktu', 'list_kegiatan.target')
             ->get();
+
         return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan'));
     }
 }
