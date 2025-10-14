@@ -60,8 +60,8 @@
                 <a
                 href="{{ $subItem['subLink'] }}" wire:navigate
                 class="menu-dropdown-item group block p-2 rounded-md {{ request()->url() === $subItem['subLink'] ? 'dark:bg-brand-500/[0.12] fill-primary text-primary bg-brand-50' : 'dark:hover:bg-gray-800 hover:bg-gray-200 text-gray-500' }}"
-                >
-                {{ $subItem['title'] }}
+                 >
+                     {{ $subItem['title'] }}
                 </a>
             </li>
         @endforeach

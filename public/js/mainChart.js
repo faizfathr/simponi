@@ -70,3 +70,4 @@ const mainChart = (idElemen = '#', data = []) => {
         apexChartsInstance[idElemen].render();
     }
 };
+window.mainChart = mainChart;

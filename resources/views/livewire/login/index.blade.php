@@ -9,13 +9,13 @@
         class="w-full max-w-xl px-6 pb-6 bg-white rounded-2xl border border-gray-200 dark:border-gray-800 dark:bg-white/[0.03]">
         <!-- Logo -->
         <div class="flex justify-center bg-brand-950 dark:bg-white/5 mb-2 rounded-lg">
-            <img class="w-52" src="{{ asset('/logo/simponi_full.png') }}" alt="Logo" />
+            <img class="w-52" src="{{ asset('logo/simponi_full.png') }}" alt="Logo" />
         </div>
 
         <!-- Tombol SSO -->
         <button
             class="w-full flex items-center justify-center gap-3 py-3 text-sm text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10 font-semibold mb-6">
-            <img class="w-12" src="{{ asset('img/bps.png') }}" alt="logo bps">
+            <img class="w-12" src="{{ asset('img/bps.webp') }}" alt="logo bps">
             Login dengan SSO
         </button>
 
@@ -52,7 +52,7 @@
                 </label>
                 <div x-data="{ showPassword: false }" class="relative">
                     <input :type="showPassword ? 'text' : 'password'" wire:model="password"
-                        placeholder="Masukkan password..."
+                        placeholder="Masukkan password..." 
                         class="h-11 w-full rounded-lg border border-gray-300 bg-transparent py-2.5 pl-4 pr-11 text-sm text-gray-800 shadow-sm placeholder:text-gray-400 focus:border-brand-300 focus:outline-none focus:ring-2 focus:ring-brand-500/30 dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30 dark:focus:border-brand-800" />
                     <span @click="showPassword = !showPassword"
                         class="absolute z-30 text-gray-500 -translate-y-1/2 cursor-pointer right-4 top-1/2 dark:text-gray-400">

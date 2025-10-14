@@ -9,7 +9,7 @@ use App\Livewire\Index as Home;
 Livewire::setUpdateRoute(function ($handle) {
     return Route::post('/livewire/update', $handle);
 });
-
+    
 Route::get('/', Home::class)->name('home');
 
 Route::get('/monitoring-pertanian', Home::class)->name('monitoring-pertanian');
@@ -26,6 +26,7 @@ Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
 
 Route::get('/manajemen-administrasi', Home::class)->name('manajemen-administrasi');
 Route::get('/about', Home::class)->name('about');
+Route::get('/edit-profile', Home::class)->name('edit-profile');
  
 Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BPS'])->group(function(){
     Route::get('/target', Home::class)->name('target');
