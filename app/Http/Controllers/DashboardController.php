@@ -166,8 +166,8 @@ class DashboardController extends Controller
         $survei = KegiatanSurvei::where('id', $idTabel)->first();
         $rowData = [];
 
-        $arrProses = explode(';', $template->proses);
-        $arrSampel = explode(';', $template->ket_sampel);
+        $arrProses = explode(',', $template->proses);
+        $arrSampel = explode(',', $template->ket_sampel);
         $rowData = [...$rowData, ...$arrSampel];
         $rowData = [...$rowData, ...$arrProses];
         array_push($rowData, $template->status, $template->pcl, $template->pml);
@@ -191,10 +191,10 @@ class DashboardController extends Controller
         $handle = fopen('php://temp', 'r+');
 
         // Tulis header ke dalam CSV
-        fputcsv($handle, $header, ";");
+        fputcsv($handle, $header, ",");
 
         // Tulis data ke dalam CSV
-        fputcsv($handle, $rowData, ";");
+        fputcsv($handle, $rowData, ",");
 
         // Pindahkan pointer file kembali ke awal
         rewind($handle);
@@ -239,9 +239,9 @@ class DashboardController extends Controller
         return response()->json($listEventKegiatan);
     }
 
-    public function getDataUbinan()
+    public function getDataResume()
     {
-        $query = request()->input('query', 'Tanaman Pangan');
+        $query = explode(",",request()->input('query'));
         $data = MonitoringKegiatan::join('list_kegiatan', function ($join) {
             $join->on('monitoring_kegiatan.id_tabel', '=', 'list_kegiatan.id_kegiatan')
                 ->on('monitoring_kegiatan.waktu', '=', 'list_kegiatan.waktu')
@@ -251,13 +251,16 @@ class DashboardController extends Controller
         })->join('struktur_tabel_monitoring', function ($join) {
             $join->on('monitoring_kegiatan.id_tabel', '=', 'struktur_tabel_monitoring.id');
         })
-            ->where('monitoring_kegiatan.status', '=', 2)
-            ->where('kegiatan_survei.kegiatan', 'like', '%' . $query . '%')
+            ->where('kegiatan_survei.kegiatan', 'like', '%' . $query[0] . '%')
+            ->where('list_kegiatan.waktu', trim($query[1]))
+            ->where('list_kegiatan.tahun', trim($query[2]))
             ->selectRaw('
                 kegiatan_survei.kegiatan,
                 list_kegiatan.target,
                 struktur_tabel_monitoring.proses,
-                SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as realisasi
+                SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as realisasi,
+                SUM(CASE WHEN monitoring_kegiatan.status = 0 THEN 1 ELSE 0 END) as belumSelesai,
+                SUM(CASE WHEN monitoring_kegiatan.status = 1 THEN 1 ELSE 0 END) as onProgres
             ')
             ->groupBy('kegiatan_survei.kegiatan', 'list_kegiatan.target', 'proses')
             ->get();

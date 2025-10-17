@@ -154,7 +154,7 @@ class ProgresDetail extends Component
 
         $path = $this->file->getRealPath();
         if (($handle = fopen($path, 'r')) !== false) {
-            while (($row = fgetcsv($handle, 1000, ";")) !== false) {
+            while (($row = fgetcsv($handle, 1000, ",")) !== false) {
                 $data[] = $row;
             }
             fclose($handle);

@@ -6,7 +6,7 @@
         <hr class="w-full my-2 border-gray-300 dark:border-gray-600">
         <div class="flex items-center gap-3 w-full mt-2">
             <input wire:model.live.debounce.500ms="search" type="text" placeholder="Cari nama petugas..."
-                class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 shadow-inner focus:ring-4 focus:ring-blue-300 transition w-2/4">
+                class="p-2 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-900 shadow-inner outline-none focus:ring-4 focus:ring-blue-300 transition w-2/4">
             <button type="button" wire:click="tambahForm"
                 class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded-lg shadow-md flex items-center gap-2 transition">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24"
@@ -68,8 +68,11 @@
                 {{-- Tombol Aksi --}}
                 <div class="md:col-span-2 flex justify-end gap-4 mt-6">
                     <button type="submit"
-                        class="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-lg shadow-lg transition">
+                        class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-3">
                         Simpan
+                        <div wire:loading wire:target="simpanData"
+                            class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                        </div>
                     </button>
                     <button type="button" @click="openForm = false"
                         class="bg-gray-300 hover:bg-gray-400 text-gray-700 px-6 py-3 rounded-lg transition">
@@ -113,12 +116,14 @@
                         @endphp
 
                         @foreach ($kegiatanPml as $alias)
-                            <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 mb-1">
+                            <span
+                                class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300 mb-1">
                                 {{ $alias }}
                             </span>
                         @endforeach
                         @foreach ($kegiatanPcl as $alias)
-                            <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mb-1">
+                            <span
+                                class="inline-block bg-green-100 text-green-800 text-xs font-semibold mr-1 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300 mb-1">
                                 {{ $alias }}
                             </span>
                         @endforeach

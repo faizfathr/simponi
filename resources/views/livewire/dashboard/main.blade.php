@@ -27,10 +27,10 @@
                 message="Silahkan login kembali jika ingin menggunakan hak user" status="Logout Berhasil" />
         </div>
     @endif
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-        <x-dashboard.card-monitoring query="Tanaman Pangan"/>
-        <x-dashboard.card-monitoring query="Kerangka Sampel Area" />
-        <x-dashboard.card-monitoring query="Laporan Pemotongan Ternak Bulanan" />
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2">
+        @foreach ($kegiatan as $kegiatanItem)
+            <x-dashboard.card-monitoring query="{{ $kegiatanItem?->joinKegiatan->kegiatan }},{{ $kegiatanItem?->waktu}},{{ $kegiatanItem?->tahun }},{{ $kegiatanItem?->joinKegiatan->periode}}"/>
+        @endforeach
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
 
@@ -133,16 +133,5 @@
 
     @once
         <script src="{{ asset('js/mainChart.js') }}"></script>
-        <script>
-            document.addEventListener('alpine:init', () => {
-                Alpine.store('ubinans', {
-                    items: [],
-                    setItems(data) {
-                        this.items = data;
-                        console.log('Ubinan items set:', this.items);
-                    }
-                });
-            });
-        </script>
     @endonce
 </div>

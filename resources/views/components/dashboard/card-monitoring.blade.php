@@ -1,9 +1,16 @@
 @aware([
-    'query' => 'Tanaman Pangan',
+    'query' => '',
 ])
 
+@php
+    $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+    $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
+    $romawiFont = ["I", "II", "III", "IV"];
+    $format = explode(',', $query);
+@endphp
+
 <div x-data="{ items: []}"
-    x-effect="fetch('/resource/getDataUbinan', {
+    x-effect="fetch('/resource/getDataResume', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -38,11 +45,13 @@
     <template x-for="item in items" :key="item.id">
         <div
             class="bg-orange-100/50 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 hover:scale-105 transition-all duration-150">
-            <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center justify-between mb-1">
                 <div class="flex flex-col">
                     <span class="text-sm md:text-lg font-semibold text-gray-800 dark:text-gray-100 "
                         x-text="item.kegiatan"></span>
-                    <span class="text-xs text-gray-800 dark:text-gray-100">Subround II - (2025)</span>
+                    <span class="text-xs text-gray-800 dark:text-gray-100">
+                        {{ $ketPeriode[$format[3]-1]}} {{ ($format[1] > 4 && $format[3]-1 !== 1) ? $listBulan[$format[1]-1] : $romawiFont[$format[3]] }} - ({{ $format[2] }})
+                    </span>
                 </div>
                 <a href="#"
                     class="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand-500 text-white text-xs font-medium hover:bg-brand-600 transition">
@@ -85,13 +94,21 @@
                 </div>
             </div>
             <div class="flex items-center w-[100%] gap-2 mt-4">
-                <template x-for="proses in item.proses ? item.proses.split(';') : []" :key="proses">
-                    <div>
-                        <span
-                            class="inline-block px-3 py-1 rounded-md text-white text-[0.6rem] md:text-xs font-semibold bg-orange-300"
-                            x-text="proses + ': '"></span>
-                    </div>
-                </template>
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-md text-white text-[0.6rem] md:text-xs font-semibold bg-slate-500">
+                        Belum Mulai: <span x-text="item.belumSelesai"></span>
+                    </span>
+                </div>
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-md text-white text-[0.6rem] md:text-xs font-semibold bg-orange-500">
+                        On Progres: <span x-text="item.onProgres">
+                    </span>
+                </div>
+                <div>
+                    <span class="inline-block px-3 py-1 rounded-md text-white text-[0.6rem] md:text-xs font-semibold bg-green-500">
+                        Clean: <span x-text="item.realisasi">
+                    </span>
+                </div>
             </div>
         </div>
     </template>
