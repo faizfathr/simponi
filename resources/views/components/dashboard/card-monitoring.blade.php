@@ -53,7 +53,8 @@
                         {{ $ketPeriode[$format[3]-1]}} {{ ($format[1] > 4 && $format[3]-1 !== 1) ? $listBulan[$format[1]-1] : $romawiFont[$format[3]] }} - ({{ $format[2] }})
                     </span>
                 </div>
-                <a href="#"
+                <a href="{{ route('resume-detail', ['id' => $format[4], 'year' => $format[2], 'waktu'=>$format[1]]) }}"
+                    wire:navigate
                     class="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand-500 text-white text-xs font-medium hover:bg-brand-600 transition">
                     Lihat Detail
                 </a>

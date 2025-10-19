@@ -29,7 +29,7 @@
     @endif
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-2">
         @foreach ($kegiatan as $kegiatanItem)
-            <x-dashboard.card-monitoring query="{{ $kegiatanItem?->joinKegiatan->kegiatan }},{{ $kegiatanItem?->waktu}},{{ $kegiatanItem?->tahun }},{{ $kegiatanItem?->joinKegiatan->periode}}"/>
+            <x-dashboard.card-monitoring query="{{ $kegiatanItem?->joinKegiatan->kegiatan }},{{ $kegiatanItem?->waktu}},{{ $kegiatanItem?->tahun }},{{ $kegiatanItem?->joinKegiatan->periode}},{{ $kegiatanItem?->id_kegiatan }}"/>
         @endforeach
     </div>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">

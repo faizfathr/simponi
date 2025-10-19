@@ -26,6 +26,7 @@ class Main extends Component
                     monitoring_kegiatan.id_tabel,
                     monitoring_kegiatan.tahun,
                     monitoring_kegiatan.waktu,
+                    list_kegiatan.id_kegiatan as id_kegiatan,
                     list_kegiatan.target,
                     SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as realisasi
                 ')

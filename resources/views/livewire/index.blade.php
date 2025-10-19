@@ -30,7 +30,7 @@
             <!-- ===== Main Content Start ===== -->
             <main>
                 <div class="p-4 mx-auto max-w-(--breakpoint-2xl) md:p-6  dark:bg-gray-900">
-                    @if ($idPage)
+                    @if ($idPage && !request()->routeIs('resume-detail'))
                         @livewire('dashboard.progres-detail', ['id' => $idPage], key($idPage))
                     @else
                         @if (request()->routeIs('home'))
@@ -69,6 +69,9 @@
                         @endif
                         @if (request()->routeIs('manajemen-administrasi'))
                             <x-underconstruction />
+                        @endif
+                        @if(request()->routeIs('resume-detail'))
+                            @livewire("monitoring.resume-detail", ['id' => $idPage, 'year' => $tahun, 'waktu' => $waktu], key($idPage))
                         @endif
                     @endif
 

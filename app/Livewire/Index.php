@@ -11,10 +11,14 @@ class Index extends Component
     public bool $showNotif = false;
     public string $message = '';
     public $idPage = null;
+    public $tahun = null;
+    public $waktu = null;
 
-    public function mount($id = null)
+    public function mount($id = null, $year = null, $waktu = null)
     {
         $this->idPage = $id;
+        $this->tahun = $year;
+        $this->waktu = $waktu;
     }
 
     #[Layout('components.main-layout')]
@@ -32,4 +36,5 @@ class Index extends Component
         $this->showNotif = $action;
         $this->message = $message;
     }
+
 }
