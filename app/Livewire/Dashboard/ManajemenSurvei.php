@@ -104,14 +104,19 @@ public function simpan()
                 'sektor' => $this->sektor,
                 'subsektor' => $this->subsektor,
             ]);
-            
             $this->message = "Kegiatan berhasil ditambahkan";
             $this->status = "success";
         }
         $this->search = '';  
-     $this->openForm = false;
-$this->resetForm();
 $this->showNotif = true;
+$this->openForm = false;
+
+$this->resetForm();
+
+// kirim event ke browser
+$this->dispatch('formClosed');
+$this->dispatch('notifShowed', message: $this->message, status: $this->status);
+
 
 
     }

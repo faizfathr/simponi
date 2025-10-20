@@ -14,7 +14,6 @@ class Petugas extends Component
     public $statusDb;
     public $search = '';
     public $openForm = false;
-
     public $status = '';
     public $message = '';
     public $showNotif = false;
@@ -54,6 +53,21 @@ class Petugas extends Component
             'statusDb.required' => 'Status harus diisi',
             'statusDb.in' => 'Status harus pegawai atau kemitraan',
         ]);
+        if ($this->action == 'Edit') {
+                logger('UPDATE DIPANGGIL');
+            $petugas = Mitra::findOrFail($this->id);
+            $petugas->update([
+                'nama' => $this->nama,
+                'no_rek' => $this->no_rek,
+                'status' => $this->statusDb,
+            ]);
+
+                   $this->message = "Petugas berhasil diperbaharui";
+            $this->status = "success";
+    session()->flash('success', 'Petugas berhasil diperbarui.');
+  
+            return;
+        } else{
         do {
             $count = Mitra::where('status', $this->statusDb)->count();
             $generateId = $this->statusDb == 1
@@ -71,12 +85,12 @@ class Petugas extends Component
 
         $this->message = "Pegawai berhasil ditambahkan";
         $this->status = 'success';
-        $this->showNotif = true;
-
-        $this->openForm = false;
-        $this->resetForm();
-
-        $this->search = '';
+   
+    }
+    $this->search = '';  
+     $this->openForm = false;
+$this->resetForm();
+$this->showNotif = true;
     }
 
     public function tambahForm()
@@ -104,7 +118,16 @@ class Petugas extends Component
         $this->action = 'Tambah';
     }
 
-    
+    public function editPetugas($id)
+    {
+        $petugas = Mitra::findOrFail($id);
+        $this->id = $petugas->id;
+        $this->nama = $petugas->nama;
+        $this->no_rek = $petugas->no_rek;
+        $this->statusDb = $petugas->status;
+        $this->action = 'Edit';
+        $this->openForm = true;
+    }
 
     public function render()
     {

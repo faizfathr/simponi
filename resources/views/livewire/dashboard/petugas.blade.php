@@ -1,4 +1,9 @@
-<div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 " x-data="{ openForm: @entangle('openForm'), showNotif: $wire.entangle('showNotif'), message: @entangle('message'), status: @entangle('status') }"x-init="setTimeout(() => loading = false, 500)">
+<div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 "x-data="{
+    openForm: $wire.entangle('openForm'),
+    action: '{{ $action }}',
+    openWarningDelete: $wire.entangle('openWarningDelete'),
+    showNotif: $wire.entangle('showNotif'),
+    showDetail: $wire.entangle('showDetail'), }"x-init="setTimeout(() => loading = false, 500)">
     {{-- HEADER --}}
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     <div class="flex flex-col items-start mb-6">
@@ -25,13 +30,14 @@
         <div @click.outside="openForm = false"
             class="bg-white dark:bg-gray-900 rounded-lg shadow-2xl p-10 w-full max-w-4xl mt-20 relative">
             <h2 class="text-3xl font-bold text-center text-gray-900 dark:text-white mb-8 border-b pb-4">
-                Tambah Petugas
+                {{ $action === 'Edit' ? 'Edit Kegiatan' : 'Tambah Kegiatan' }}
             </h2>
 
             <form wire:submit.prevent="simpanData" class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {{-- Input Nama --}}
                 <div>
                     <label for="nama" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Nama</label>
+                        <input type="hidden" wire:model.lazy="action">
                     <input type="text" id="nama" wire:model.defer="nama"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
                     @error('nama')
@@ -42,7 +48,7 @@
                 {{-- Input No. Rekening --}}
                 <div>
                     <label for="no_rek" class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">No.
-                        Rekening</label>
+                        Rekening</label>    <input type="hidden" wire:model.lazy="action">
                     <input type="text" id="no_rek" wire:model.defer="no_rek"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
                     @error('no_rek')
@@ -53,7 +59,7 @@
                 {{-- Status --}}
                 <div class="md:col-span-2">
                     <label for="statusDb"
-                        class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Status</label>
+                        class="block mb-2 font-semibold text-gray-700 dark:text-gray-300">Status</label>    <input type="hidden" wire:model.lazy="action">
                     <select wire:model.defer="statusDb"
                         class="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-gray-100 dark:bg-gray-800 focus:ring focus:ring-blue-300 px-5 py-3 text-gray-900 dark:text-white">
                         <option value="">Pilih Status</option>
@@ -69,7 +75,7 @@
                 <div class="md:col-span-2 flex justify-end gap-4 mt-6">
                     <button type="submit"
                         class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg transition flex items-center gap-3">
-                        Simpan
+                 {{ $action === 'Edit' ? 'Update' : 'Simpan' }}
                         <div wire:loading wire:target="simpanData"
                             class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
                         </div>
@@ -92,6 +98,7 @@
                 <th class="py-3 px-5">No. Rekening</th>
                 <th class="py-3 px-5">Status</th>
                 <th class="py-3 px-5">Kegiatan</th>
+                <th class="py-3 px-5">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -128,7 +135,19 @@
                             </span>
                         @endforeach
                     </td>
+                    <td><button wire:click="editPetugas('{{ $item->id }}')"
+                                class="inline-flex items-center px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg text-sm font-medium transition shadow-sm"
+                                type="button">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6" />
+                                </svg>
+                                Edit
+                            </button></td>
+
                 </tr>
+
             @empty
                 <tr>
                     <td colspan="5" class="text-center py-6 text-gray-500">Belum ada data petugas.</td>
