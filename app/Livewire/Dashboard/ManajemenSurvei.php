@@ -108,15 +108,9 @@ public function simpan()
             $this->status = "success";
         }
         $this->search = '';  
-$this->showNotif = true;
-$this->openForm = false;
-
+     $this->openForm = false;
 $this->resetForm();
-
-// kirim event ke browser
-$this->dispatch('formClosed');
-$this->dispatch('notifShowed', message: $this->message, status: $this->status);
-
+$this->showNotif = true;
 
 
     }

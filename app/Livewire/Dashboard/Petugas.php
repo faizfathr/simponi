@@ -18,7 +18,7 @@ class Petugas extends Component
     public $message = '';
     public $showNotif = false;
     public $action = '';
-
+    public $openWarningDelete = false;
     public function getRules()
     {
         return [
@@ -91,6 +91,14 @@ class Petugas extends Component
      $this->openForm = false;
 $this->resetForm();
 $this->showNotif = true;
+$this->showNotif = true;
+$this->openForm = false;
+
+$this->resetForm();
+
+// kirim event ke browser
+$this->dispatch('formClosed');
+$this->dispatch('notifShowed', message: $this->message, status: $this->status);
     }
 
     public function tambahForm()
@@ -128,7 +136,25 @@ $this->showNotif = true;
         $this->action = 'Edit';
         $this->openForm = true;
     }
+    public function deletePetugas($id){
+        Mitra::findOrFail($id)->delete();
 
+        $this->openWarningDelete = false;
+        $this->message = 'Kegiatan berhasil dihapus.';
+        $this->status = 'Berhasil';
+        $this->showNotif = true;
+
+        session()->flash('success', 'Data kegiatan berhasil dihapus');
+    
+    }
+    public function confirmDelete($id){
+        $this->id = $id;
+        $data = Mitra::findOrFail($id);
+        $this->nama = $data->nama;
+        $this->no_rek = $data->no_rek;
+                $this->statusDb = $data->status;
+        $this->openWarningDelete = true;
+    }
     public function render()
     {
         $listPetugas = $this->search
