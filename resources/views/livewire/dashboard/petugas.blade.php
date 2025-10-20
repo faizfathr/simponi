@@ -31,8 +31,7 @@
                         </h4>
 
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            anda akan menghapus {{ $this->kegiatan ?? '' }} di {{ $this->periode ?? '' }}
-                            {{ $this->ketWaktu ?? '' }} ?
+                            anda akan menghapus {{ $this->nama ?? '' }}
                         </p>
                         <div class="flex gap-x-2 mt-2">
                             <button wire:click="deletePetugas('{{ $this->id }}')"
