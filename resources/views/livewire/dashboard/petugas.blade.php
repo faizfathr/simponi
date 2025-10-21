@@ -144,7 +144,7 @@
                 <th class="py-3 px-5">No. Rekening</th>
                 <th class="py-3 px-5">Status</th>
                 <th class="py-3 px-5">Kegiatan</th>
-                <th class="py-3 px-5">Aksi</th>
+                <th class="py-3 px-5 text-center">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -181,19 +181,19 @@
                             </span>
                         @endforeach
                     </td>
-                    <td><button wire:click="editPetugas('{{ $item->id }}')"
-                                class="inline-flex items-center px-4 py-2 bg-orange-400 hover:bg-orange-500 text-white rounded-lg text-sm font-medium transition shadow-sm"
+                    <td ><button wire:click="editPetugas('{{ $item->id }}')"
+                                class="inline-flex items-center px-2 py-1 m-3 bg-orange-400 hover:bg-orange-500 text-white rounded-lg text-xs font-medium transition shadow-sm"
                                 type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-1" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M15.232 5.232l3.536 3.536M9 13l6.586-6.586a2 2 0 112.828 2.828L11.828 15.828a2 2 0 01-2.828 0L9 13zm-6 6h6" />
                                 </svg>
-                                Edit
+                                Sunting
                             </button>
                              <button wire:click="confirmDelete('{{ $item->id }}')"
-                                class="inline-flex items-center px-4 py-2 bg-red-400 hover:bg-red-500 text-white rounded-lg text-sm font-medium transition shadow-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 mr-2" fill="none"
+                                class="inline-flex items-center px-2 py-1 m-3 bg-red-400 hover:bg-red-500 text-white rounded-lg text-xs font-medium transition shadow-sm">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 mr-1" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                         d="M6 18L18 6M6 6l12 12" />

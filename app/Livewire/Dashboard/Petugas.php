@@ -36,7 +36,7 @@ class Petugas extends Component
                 'required',
                 'numeric',
                 'digits:8',
-                Rule::unique('mitra', 'no_rek')->where(function ($query) {
+                Rule::unique('mitra', 'no_rek') ->ignore($this->id)->where(function ($query) {
                     return $query->where('status', $this->statusDb);
                 }),
             ],
@@ -66,7 +66,7 @@ class Petugas extends Component
             $this->status = "success";
     session()->flash('success', 'Petugas berhasil diperbarui.');
   
-            return;
+   
         } else{
         do {
             $count = Mitra::where('status', $this->statusDb)->count();
