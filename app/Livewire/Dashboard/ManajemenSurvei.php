@@ -104,7 +104,6 @@ public function simpan()
                 'sektor' => $this->sektor,
                 'subsektor' => $this->subsektor,
             ]);
-            
             $this->message = "Kegiatan berhasil ditambahkan";
             $this->status = "success";
         }
