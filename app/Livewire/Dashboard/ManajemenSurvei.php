@@ -169,9 +169,19 @@ $this->showNotif = true;
     {
     
         $kegiatanSurvei = KegiatanSurvei::where('kegiatan', 'like', '%' . $this->search . '%')->get();
+        $subKegiatan = KegiatanSurvei::distinct()->pluck('subsektor')->sort()->values();
+        $subKegiatanNama = [
+            "STATISTIK INDUSTRI",
+            "STATISTIK PERTAMBANGAN DAN PENGGALIAN, ENERGI, DAN KONSTRUKSI",
+            "STATISTIK TANAMAN PANGAN, HORTIKULTURA, DAN PERKEBUNAN",
+            "STATISTIK HORTIKULTURA DAN PERKEBUNAN",
+            "STATISTIK PETERNAKAN, PERIKANAN, DAN KEHUTANAN",
+        ];
 
         return view('livewire.dashboard.manajemen-survei', [
-            'kegiatanSurvei' => $kegiatanSurvei
+            'kegiatanSurvei' => $kegiatanSurvei,
+            'subKegiatan' => $subKegiatan,
+            'subKegiatanNama' => $subKegiatanNama,
         ]);
     }
 }
