@@ -154,9 +154,24 @@ class ProgresDetail extends Component
 
         $path = $this->file->getRealPath();
         if (($handle = fopen($path, 'r')) !== false) {
-            while (($row = fgetcsv($handle, 1000, ",")) !== false) {
+            // Ambil satu baris pertama sebagai sampel
+            $firstLine = fgets($handle);
+
+            // Hitung jumlah koma dan titik koma
+            $commaCount = substr_count($firstLine, ',');
+            $semicolonCount = substr_count($firstLine, ';');
+
+            // Pilih delimiter dengan jumlah terbanyak
+            $delimiter = $semicolonCount > $commaCount ? ';' : ',';
+
+            // Kembalikan posisi file ke awal
+            rewind($handle);
+
+            // Baca seluruh CSV dengan delimiter yang terdeteksi
+            while (($row = fgetcsv($handle, 1000, $delimiter)) !== false) {
                 $data[] = $row;
             }
+
             fclose($handle);
         }
 
