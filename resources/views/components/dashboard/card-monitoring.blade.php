@@ -44,7 +44,7 @@
 
     <template x-for="item in items" :key="item.id">
         <div
-            class="bg-orange-100/50 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 hover:scale-105 transition-all duration-150">
+            class="bg-orange-100/50 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 hover:scale-95 transition-all duration-150">
             <div class="flex items-center justify-between mb-1">
                 <div class="flex flex-col">
                     <span class="text-sm md:text-lg font-semibold text-gray-800 dark:text-gray-100 "
