@@ -55,6 +55,7 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/downloadTemplate/{idTabel}', [DashboardController::class, 'downloadTabel']);
     Route::get('/downloadDirektori', [DashboardController::class, 'downloadDirektori']);
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
+    Route::post('/dataByStatus', [DashboardController::class, 'getDataByStatus']);
 });
 
 Route::get('/download/GUIDEBOOK SIMPONI.pdf', function () {

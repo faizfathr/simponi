@@ -35,7 +35,7 @@ class Main extends Component
                     ->on('monitoring_kegiatan.waktu', '=', 'list_kegiatan.waktu')
                     ->on('monitoring_kegiatan.tahun', '=', 'list_kegiatan.tahun');
             })
-            ->groupBy('monitoring_kegiatan.id_tabel', 'monitoring_kegiatan.tahun', 'monitoring_kegiatan.waktu', 'list_kegiatan.target')
+            ->groupBy('monitoring_kegiatan.id_tabel', 'monitoring_kegiatan.tahun', 'monitoring_kegiatan.waktu', 'list_kegiatan.target', 'list_kegiatan.id_kegiatan')
             ->get();
 
         return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan'));

@@ -4,7 +4,6 @@ namespace App\Livewire\Monitoring;
 
 use App\Models\KegiatanSurvei;
 use App\Models\MonitoringKegiatan;
-use Google\Service\ServiceConsumerManagement\Monitoring;
 use Livewire\Component;
 
 class ResumeDetail extends Component
@@ -38,6 +37,24 @@ class ResumeDetail extends Component
             ->where('waktu', $this->waktu)
             ->groupBy('pcl')
             ->get();
-        return view('livewire.monitoring.resume-detail', compact('survei', 'resumePetugas'));
+        $rekapPetugas = MonitoringKegiatan::selectRaw('
+            COUNT(DISTINCT pcl) as pcl,
+            COUNT(DISTINCT pml) as pml
+            
+        ')
+            ->where('id_tabel', $this->id)
+            ->where('tahun', $this->tahun)
+            ->where('waktu', $this->waktu)
+            ->first();
+        $listSampel = MonitoringKegiatan::where('id_tabel', $this->id)
+            ->where('tahun', $this->tahun)
+            ->where('waktu', $this->waktu)
+            ->select('ket_sampel', 'status')
+            ->get()
+            ->groupBy('status')
+            ->map(function ($items) {
+                return $items->pluck('ket_sampel');
+            });
+        return view('livewire.monitoring.resume-detail', compact('survei', 'resumePetugas', 'rekapPetugas', 'listSampel'));
     }
 }

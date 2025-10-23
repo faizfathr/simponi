@@ -266,4 +266,22 @@ class DashboardController extends Controller
             ->get();
         return response()->json($data);
     }
+
+    public function getDataByStatus(Request $request)
+    {
+        $tahun = $request->tahun;
+        $waktu = $request->waktu;
+        $id = $request->id;
+
+        $dataByStatus = MonitoringKegiatan::where('id_tabel', $id)
+            ->where('tahun', $tahun)
+            ->where('waktu', $waktu)
+            ->selectRaw('
+                SUM(CASE WHEN monitoring_kegiatan.status = 0 THEN 1 ELSE 0 END) as belum_mulai,
+                SUM(CASE WHEN monitoring_kegiatan.status = 1 THEN 1 ELSE 0 END) as on_progres,
+                SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as selesai
+            ')
+            ->get();
+        return response()->json($dataByStatus);
+    }
 }
