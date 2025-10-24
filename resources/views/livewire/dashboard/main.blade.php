@@ -169,8 +169,14 @@
     @once
         <script src="{{ asset('js/mainChart.js') }}"></script>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const swiper = new Swiper('.swiperCardMonitoring', {
+            document.addEventListener("livewire:navigated", () => {
+                // Hancurkan instance Swiper lama
+                if (window.swiperCardMonitoring && window.swiperCardMonitoring.destroy) {
+                    window.swiperCardMonitoring.destroy(true, true);
+                }
+
+                // Re-inisialisasi Swiper
+                window.swiperCardMonitoring = new Swiper('.swiperCardMonitoring', {
                     loop: true,
                     navigation: {
                         nextEl: '.swiper-button-next',
@@ -183,14 +189,25 @@
                     slidesPerView: 1,
                     spaceBetween: 20,
                     breakpoints: {
-                        768: { // md: (>=768px)
+                        768: {
                             slidesPerView: 2
                         },
-                        1024: { // lg: (>=1024px)
+                        1024: {
                             slidesPerView: 3
-                        }
-                    }
+                        },
+                    },
+                    preventClicks: false,
+                    preventClicksPropagation: false,
+                    grabCursor: true,
+                    simulateTouch: true,
+                    touchStartPreventDefault: false,
+                    allowTouchMove: true,
                 });
+
+                // Jika kamu juga pakai ApexCharts, re-render di sini
+                if (typeof window.initApexCharts === 'function') {
+                    window.initApexCharts();
+                }
             });
         </script>
     @endonce
