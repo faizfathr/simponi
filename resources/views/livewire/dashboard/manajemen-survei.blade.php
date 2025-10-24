@@ -99,6 +99,10 @@
                         class="px-6 text-left text-xs leading-4 font-bold text-md text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Jenis Periode
                     </th>
+                    <th
+                        class="px-6 text-left text-xs leading-4 font-bold text-md text-gray-500 dark:text-gray-300 uppercase tracking-wider">
+                        Aksi
+                    </th>
                     <th class="px-6"> <!-- ➕ Tombol Tambah Data -->
                         @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
                             <button
@@ -198,8 +202,8 @@
             <tbody class="bg-white dark:bg-gray-800">
                 @foreach ($subKegiatan as $sk)
                     <tr>
-                        <td class="bg-orange-400 text-white font-bold w-full px-6">{{ $subKegiatanNama[$sk-1] }}
-                        </td>
+                        <td class="bg-orange-400 text-white font-bold w-full px-6">{{ $subKegiatanNama[$sk-1] }}</td>
+                        <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
@@ -219,10 +223,15 @@
                                     class="px-6 py-1.5 whitespace-no-wrap border-b  text-gray-700 border-gray-200 dark:border-gray-600">
                                     {{ $e->periode === 1 ? 'Bulanan' : ($e->periode === 2 ? 'Triwulan' : ($e->periode === 3 ? 'Subround' : 'Tahun')) }}
                                 </td>
+                                <td class="whitespace-nowrap">
+                                    <a href="/manajemen-survei/struktur-tabel/{{ $e->id }}" class="bg-green-500 text-white px-1.5 py-1 rounded-md text-xs" wire:navigate>
+                                        <Span>Struktur Tabel</Span>
+                                    </a>
+                                </td>
                                 <td
                                     class="px-6 py-1.5 whitespace-no-wrap border-b text-gray-700 border-gray-200 dark:border-gray-600">
                                     <button wire:click="lihatDetail('{{ $e->id }}')"
-                                        class="inline-flex items-center justify-center px-2 py-0.5 border border-transparent rounded-full shadow-sm text-xs font-medium text-white bg-brand-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                        class="inline-flex items-center justify-center px-2 py-0.5 border border-transparent rounded-md shadow-sm text-xs font-medium text-white bg-brand-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-4 h-4">
                                             <path stroke-linecap="round" stroke-linejoin="round"

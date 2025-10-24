@@ -20,7 +20,11 @@ Route::get('/login', Index::class)->name('login');
 
 Route::get('/kalender', Home::class)->name('kalender');
 
-Route::get('/manajemen-survei', Home::class)->name('manajemen-survei');
+Route::prefix('/manajemen-survei')->group(function () {
+    Route::get('/', Home::class)->name('manajemen-survei');
+    Route::get('/struktur-tabel/{id}', Home::class)->name('manajemen-survei.struktur-tabel');
+
+});
 
 Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
 
