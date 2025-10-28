@@ -181,25 +181,29 @@
             <div class="swiper-wrapper">
                 <!-- Slide 1 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_1.webp" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_1.webp" class="rounded-xl object-cover w-full h-full"
                         alt="Kegiatan 1" />
                 </div>
                 <!-- Slide 2 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_2.webp" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_2.webp" class="rounded-xl object-cover w-full h-full
+                    "
                         alt="Kegiatan 2" />
                 </div>
                 <!-- Slide 3 -->
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_3.webp" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_3.webp" class="rounded-xl object-cover w-full h-full
+                    "
                         alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_4.webp" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_4.webp" class="rounded-xl object-cover w-full h-full
+                    "
                         alt="Kegiatan 3" />
                 </div>
                 <div class="swiper-slide">
-                    <img src="/img/kegiatan/kegiatan_5.webp" class="rounded-xl object-cover w-full h-72"
+                    <img src="/img/kegiatan/kegiatan_5.webp" class="rounded-xl object-cover w-full h-full
+                    "
                         alt="Kegiatan 3" />
                 </div>
                 <!-- Tambahkan slide lainnya jika perlu -->
