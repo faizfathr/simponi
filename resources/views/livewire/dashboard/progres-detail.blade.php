@@ -136,20 +136,6 @@
 
                                 <span class="text-xs">Pilih Kolom</span>
                             </button>
-                            <button
-                                class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2"
-                                wire:click.prevent="filterData">
-                                <!-- SVG Palu & Tang -->
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-4">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
-                                </svg>
-                                <span class="text-xs">Terapkan Filter</span>
-                                <div wire:loading wire:target='filterData'
-                                    class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent">
-                                </div>
-                            </button>
                         </div>
 
                         <!-- Dropdown Kolom Checkbox -->
@@ -250,7 +236,7 @@
 
                             @foreach ($sampel_header as $item)
                                 <th x-show="columns.sampel{{ $loop->index }}" class="px-5 py-2 sm:px-6">
-                                    <input type="text" wire:model="filter.sampel.{{ $loop->index }}"
+                                    <input type="text" wire:model.live.debounce.250ms="filter.sampel.{{ $loop->index }}"
                                         class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
                                 </th>
                             @endforeach
@@ -259,7 +245,7 @@
                                 <th x-show="columns.proses{{ $loop->index }}" class="px-5 py-2 sm:px-6">
                                     <select
                                         class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
-                                        wire:model="filter.proses">
+                                        wire:model.live.debounce.250ms="filter.proses.{{ $loop->index }}">
                                         <option value="">{{ $item }}</option>
                                         <option value="1">✓</option>
                                         <option value="0">✗</option>
@@ -268,7 +254,7 @@
                             @endforeach
 
                             <th x-show="columns.status" class="px-5 py-2 sm:px-6">
-                                <select wire:model="filter.status"
+                                <select wire:model.live.debounce.250ms="filter.status"
                                     class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
                                     <option value="">Status</option>
                                     <option value="0">Belum</option>
@@ -280,7 +266,7 @@
                             <th x-show="columns.pcl" class="px-5 py-2 sm:px-6">
                                 <select
                                     class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
-                                    wire:model='filter.pcl'>
+                                    wire:model.live='filter.pcl'>
                                     <option value="">PCL</option>
                                     @foreach ($pcl as $p)
                                         <option value="{{ $p->id }}">{{ $p->nama }}</option>
@@ -291,7 +277,7 @@
                             <th x-show="columns.pml" class="px-5 py-2 sm:px-6">
                                 <select
                                     class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
-                                    wire:model='filter.pml'>
+                                    wire:model.live='filter.pml'>
                                     <option value="">PML</option>
                                     @foreach ($pml as $p)
                                         <option value="{{ $p->id }}">{{ $p->nama }}</option>

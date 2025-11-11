@@ -214,8 +214,4 @@ class ProgresDetail extends Component
         $this->allItem[$row]['ket_sampel'][$index] = $value;
     }
 
-    public function filterData()
-    {
-        $this->render();
-    }
 }
