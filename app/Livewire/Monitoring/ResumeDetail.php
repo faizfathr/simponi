@@ -3,6 +3,7 @@
 namespace App\Livewire\Monitoring;
 
 use App\Models\KegiatanSurvei;
+use App\Models\ListKegiatan;
 use App\Models\MonitoringKegiatan;
 use Livewire\Component;
 
@@ -55,6 +56,10 @@ class ResumeDetail extends Component
             ->map(function ($items) {
                 return $items->pluck('ket_sampel');
             });
-        return view('livewire.monitoring.resume-detail', compact('survei', 'resumePetugas', 'rekapPetugas', 'listSampel'));
+        $idKegiatan = ListKegiatan::where('id_kegiatan', $this->id)
+            ->where('tahun', $this->tahun)
+            ->where('waktu', $this->waktu)
+            ->first();
+        return view('livewire.monitoring.resume-detail', compact('survei', 'resumePetugas', 'rekapPetugas', 'listSampel', 'idKegiatan'));
     }
 }

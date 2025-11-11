@@ -43,7 +43,7 @@ Route::middleware(['auth', 'role:admin,Staf Stat. Produksi,Kepala BPS,Pegawai BP
     
     Route::get('/progres-ipek', Home::class)->name('progres-ipek');
     
-    Route::get('/detail-monitorin/{id}', Home::class)->name('detail-monitoring');
+    Route::get('/detail-monitoring/{id}', Home::class)->name('detail-monitoring');
     
     Route::get('/dashboard/logout', [DashboardController::class, 'logout']);
 

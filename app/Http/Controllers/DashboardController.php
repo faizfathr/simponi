@@ -191,10 +191,10 @@ class DashboardController extends Controller
         $handle = fopen('php://temp', 'r+');
 
         // Tulis header ke dalam CSV
-        fputcsv($handle, $header, ",");
+        fputcsv($handle, $header, ";");
 
         // Tulis data ke dalam CSV
-        fputcsv($handle, $rowData, ",");
+        fputcsv($handle, $rowData, ";");
 
         // Pindahkan pointer file kembali ke awal
         rewind($handle);

@@ -31,6 +31,11 @@
 
             <!-- Left Box -->
             <div class="md:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
+                @if (Auth::user())
+                    <a href="/detail-monitoring/{{ $idKegiatan->id }}" wire:navigate
+                        class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">Update
+                        kegiatan</a>
+                @endif
                 <div class="flex items-center justify-between md:flex-row flex-col">
                     <div class="flex items-center gap-4">
                         <div class="bg-gray-100 dark:bg-gray-700 p-4 rounded-xl">
@@ -91,12 +96,11 @@
                 </div>
             </div>
         </div>
-
         <div x-data="{
             open: 3,
             belum_mulai: (@js($listSampel[0] ?? ['Tidak ada sampel yang belum dimulai'])).map(item => item.split(';').join(' - ')),
             on_progres: (@js($listSampel[1] ?? ['Tidak ada sampel yang on progres'])).map(item => item.split(';').join(' - ')),
-            selesai: (@js($listSampel[2]) ?? ['Tidak ada sampel yang sudah selesai']).map(item => item.split(';').join(' - '))
+            selesai: (@js($listSampel[2] ?? null) ?? ['Tidak ada sampel yang sudah selesai']).map(item => item.split(';').join(' - '))
         }" class="space-y-4 my-4">
             <!-- Accordion: Belum Mulai -->
             <div class="border dark:border-gray-700 rounded-xl overflow-hidden">
@@ -200,41 +204,53 @@
         <div class="mt-8 bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-sm border dark:border-gray-700">
             <h3 class="text-lg font-semibold mb-4 text-gray-800 dark:text-gray-100">PROGRES LAPANGAN</h3>
             <div class="space-y-4">
-                @foreach ($resumePetugas as $petugas)
-                    <div class="flex gap-x-2 md:gap-x-4 items-center bg-slate-400/10 rounded-lg p-4 dark:bg-gray-700">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
-                            class="size-6">
-                            <path fill-rule="evenodd"
-                                d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        <div class="flex flex-col justify-between text-gray-800 dark:text-gray-100 min-w-fit ">
-                            <span class="text-sm font-semibold">{{ $petugas->joinPcl->nama }}</span>
-                            <span
-                                class="text-xs hidden md:block">{{ $petugas->joinPcl->status === 1 ? 'Mitra Lapangan' : 'Pegawai Organik' }}</span>
-                        </div>
-                        <div class="w-full px-4">
-                            <div
-                                class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mt-1 flex overflow-hidden">
-                                <div class="bg-gray-400 dark:bg-gray-500 h-4 rounded-md"
-                                    style="width: {{ ($petugas->belum_mulai / $petugas->total_target) * 100 }}%">
+                @if (!$resumePetugas[0]->pcl)
+                    <span>Petugas Belum di Assign</span>
+                @else
+                    @foreach ($resumePetugas as $petugas)
+                        <div
+                            class="flex gap-x-2 md:gap-x-4 items-center bg-slate-400/10 rounded-lg p-4 dark:bg-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                class="size-6">
+                                <path fill-rule="evenodd"
+                                    d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0ZM3.751 20.105a8.25 8.25 0 0 1 16.498 0 .75.75 0 0 1-.437.695A18.683 18.683 0 0 1 12 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 0 1-.437-.695Z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div class="flex flex-col justify-between text-gray-800 dark:text-gray-100 min-w-fit ">
+                                <span class="text-sm font-semibold">{{ $petugas->joinPcl?->nama }}</span>
+                                @if ($petugas->joinPcl)
+                                    <span class="text-xs hidden md:block">Petugas belum di assign</span>
+                                @else
+                                    <span
+                                        class="text-xs hidden md:block">{{ $petugas->joinPcl?->status === 1 ? 'Mitra Lapangan' : 'Pegawai Organik' }}</span>
+                                @endif
+                            </div>
+                            <div class="w-full px-4">
+                                <div
+                                    class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-4 mt-1 flex overflow-hidden">
+                                    <div class="bg-gray-400 dark:bg-gray-500 h-4 rounded-md"
+                                        style="width: {{ ($petugas->belum_mulai / $petugas->total_target) * 100 }}%">
+                                    </div>
+                                    <div class="bg-orange-500 h-4 rounded-md"
+                                        style="width: {{ ($petugas->on_progres / $petugas->total_target) * 100 }}%">
+                                    </div>
+                                    <div class="bg-green-500 h-4 rounded-md"
+                                        style="width: {{ ($petugas->selesai / $petugas->total_target) * 100 }}%">
+                                    </div>
                                 </div>
-                                <div class="bg-orange-500 h-4 rounded-md"
-                                    style="width: {{ ($petugas->on_progres / $petugas->total_target) * 100 }}%"></div>
-                                <div class="bg-green-500 h-4 rounded-md"
-                                    style="width: {{ ($petugas->selesai / $petugas->total_target) * 100 }}%"></div>
-                            </div>
 
-                            <div class="md:flex hidden justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
-                                <span>Belum Mulai: {{ $petugas->belum_mulai }}</span>
-                                <span>On Progres: {{ $petugas->on_progres }}</span>
-                                <span>Selesai: {{ $petugas->selesai }}</span>
+                                <div
+                                    class="md:flex hidden justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
+                                    <span>Belum Mulai: {{ $petugas->belum_mulai }}</span>
+                                    <span>On Progres: {{ $petugas->on_progres }}</span>
+                                    <span>Selesai: {{ $petugas->selesai }}</span>
+                                </div>
                             </div>
+                            <span
+                                class="text-lg font-semibold text-slate-700 dark:text-gray-100">{{ $petugas->selesai }}/{{ $petugas->total_target }}</span>
                         </div>
-                        <span
-                            class="text-lg font-semibold text-slate-700 dark:text-gray-100">{{ $petugas->selesai }}/{{ $petugas->total_target }}</span>
-                    </div>
-                @endforeach
+                    @endforeach
+                @endif
             </div>
         </div>
 
