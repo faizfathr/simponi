@@ -242,4 +242,15 @@ class ProgresDetail extends Component
         $this->status = 'Gagal';
         $this->showNotif = TRUE;
     }
+
+    public function deleteMonitorings($ids)
+    {
+        foreach ($ids as $key => $id) {
+            $ids[$key] = (int) $id;
+            MonitoringKegiatan::whereIn('id', $ids)->delete();
+        }
+        $this->message = 'Data monitoring berhasil dihapus';
+        $this->status = 'Berhasil';
+        $this->showNotif = TRUE;
+    }
 }

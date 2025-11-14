@@ -7,6 +7,8 @@
     monitorings: @js($monitorings),
     event: @js($event),
     listKegiatan: [],
+    checkedColumns: [],
+    checkedAll: false,
     formatJadwal(tglMulai, tglSelesai) {
         if (!tglMulai || !tglSelesai) return 'Tanggal Belum diatur';
 
@@ -53,8 +55,29 @@
         await @this.copyMonitoring(idTarget, tahunTarget, waktuTarget, tahun, waktu);
         this.showList = false;
         this.loadingIdList = null;
+    },
+    pushDelete(id) {
+        if (!this.checkedColumns.includes(id)) {
+            this.checkedColumns.push(id);
+        }
+    },
+    popDelete(id) {
+        const index = this.checkedColumns.indexOf(id);
+        if (index !== -1) {
+            this.checkedColumns.splice(index, 1);
+        }
+    },
+    async deleteSelected() {
+        if (this.checkedColumns.length === 0) {
+            return;
+        }
+        this.loadingIdList = 'delete';
+        await @this.deleteMonitorings(this.checkedColumns);
+        this.checkedColumns = [];
+        this.loadingIdList = null;
     }
-}" x-init="setTimeout(() => loading = false, 500)">
+}" x-init="setTimeout(() => loading = false, 500);
+$watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(item.id)) : monitorings.forEach(item => popDelete(item.id)))">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
         <div class="flex-1 mb-4">
@@ -147,11 +170,24 @@
             }
         }">
             @if ($idPage)
-                <div class="sticky flex items-center justify-between top-0 z-30 bg-white dark:bg-gray-900 px-4"
+                <div class="sticky flex items-center justify-between top-0 z-30 bg-white dark:bg-gray-900 px-2"
                     x-data="{ openColumnFilter: false }">
                     <div class="text-sm text-gray-700 dark:text-gray-300 relative w-fit p-2">
                         <!-- Toggle Button -->
                         <div class="flex gap-x-2">
+                            <button class="text-white p-2 rounded-lg flex items-center gap-x-2 bg-red-700"
+                                @click="deleteSelected()" :disabled="checkedColumns.length === 0"
+                                :class="checkedColumns.length > 0 ? 'brigthness-100' : 'brightness-75 cursor-not-allowed'">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-4">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+                                </svg>
+                                <span class="hidden md:block" x-text="'Hapus (' + checkedColumns.length + ')'"></span>
+                                <div x-show="loadingIdList === 'delete'"
+                                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                                </div>
+                            </button>
                             <button @click="openColumnFilter = !openColumnFilter"
                                 class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2">
                                 <!-- SVG Palu & Tang -->
@@ -267,8 +303,8 @@
                         <!-- Baris Input Filter -->
                         <tr class="border-b border-gray-100 dark:border-gray-700 bg-white dark:bg-gray-900">
                             <th class="px-5 py-2 sm:px-6" x-show="columns.no">
-                                <input type="text"
-                                    class="w-10 text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
+                                <input type="checkbox" @change="checkedAll = !checkedAll"
+                                    class="accent-brand-500 rounded focus:ring-0" />
                             </th>
 
                             @foreach ($sampel_header as $item)
@@ -336,9 +372,12 @@
                                     <td x-show="columns.no" class="px-6 py-2">
                                         <div class="flex items-center">
                                             <div class="flex items-center gap-3">
-                                                <span class="font-medium text-gray-800 text-xs dark:text-white/90">
-                                                    {{ $row + 1 }}
-                                                </span>
+                                                <input type="checkbox" :checked="checkedAll"
+                                                    @change="
+                                                        $event.target.checked
+                                                            ? pushDelete({{ $monitoring['id'] }})
+                                                            : popDelete({{ $monitoring['id'] }})
+                                                ">
                                             </div>
                                         </div>
                                     </td>
