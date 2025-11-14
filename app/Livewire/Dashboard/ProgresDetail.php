@@ -214,4 +214,32 @@ class ProgresDetail extends Component
         $this->allItem[$row]['ket_sampel'][$index] = $value;
     }
 
+    public function copyMonitoring($idTarget, $tahunTarget, $waktuTarget, $tahunNow, $waktuNow)
+    {
+        $monitoring = MonitoringKegiatan::where('id_tabel', $idTarget)
+            ->where('tahun', $tahunTarget)
+            ->where('waktu', $waktuTarget)
+            ->get();
+        foreach ($monitoring as $item) {
+            MonitoringKegiatan::create([
+                'id_tabel' => $item->id_tabel,
+                'tahun' => $tahunNow,
+                'waktu' => $waktuNow,
+                'ket_sampel' => $item->ket_sampel,
+                'proses' => str_repeat('0;', count(explode(';', $item->proses)) - 1) . '0',
+                'status' => 0,
+                'pcl' => $item->pcl,
+                'pml' => $item->pml,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now(),
+            ]);
+        }
+        if (count($monitoring) > 0) {
+            $this->message = 'Data monitoring berhasil dicopy';
+        } else{
+            $this->message = 'Tidak ada data monitoring yang dicopy';
+        }
+        $this->status = 'Gagal';
+        $this->showNotif = TRUE;
+    }
 }

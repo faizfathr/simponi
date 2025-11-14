@@ -2,8 +2,11 @@
     openForm: @entangle('openForm'),
     idTabel: @entangle('id_tabel'),
     showNotif: @entangle('showNotif'),
+    showList: false,
+    loadingIdList: null,
     monitorings: @js($monitorings),
     event: @js($event),
+    listKegiatan: [],
     formatJadwal(tglMulai, tglSelesai) {
         if (!tglMulai || !tglSelesai) return 'Tanggal Belum diatur';
 
@@ -28,6 +31,29 @@
             return `${hariMulai} ${bulan[bulanMulai]} - ${hariSelesai} ${bulan[bulanSelesai]} ${tahunSelesai}`;
         }
     },
+    getListKegiatan() {
+        fetch('/dashboard/listMonitoringById', {
+                method: 'POST',
+                credentials: 'same-origin',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                },
+                body: JSON.stringify({ id: this.idTabel })
+            })
+            .then(response => response.json())
+            .then(data => {
+                this.listKegiatan = data;
+                this.showList = true;
+            })
+            .catch(error => console.error('Fetch error:', error));
+    },
+    async copy(idTarget, tahunTarget, waktuTarget, tahun, waktu) {
+        this.loadingIdList = idTarget + '-' + tahunTarget + '-' + waktuTarget;
+        await @this.copyMonitoring(idTarget, tahunTarget, waktuTarget, tahun, waktu);
+        this.showList = false;
+        this.loadingIdList = null;
+    }
 }" x-init="setTimeout(() => loading = false, 500)">
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
@@ -121,7 +147,8 @@
             }
         }">
             @if ($idPage)
-                <div class="sticky top-0 z-30 bg-white dark:bg-gray-900" x-data="{ openColumnFilter: false }">
+                <div class="sticky flex items-center justify-between top-0 z-30 bg-white dark:bg-gray-900 px-4"
+                    x-data="{ openColumnFilter: false }">
                     <div class="text-sm text-gray-700 dark:text-gray-300 relative w-fit p-2">
                         <!-- Toggle Button -->
                         <div class="flex gap-x-2">
@@ -189,6 +216,16 @@
                             </label>
                         </div>
                     </div>
+                    <button @click="getListKegiatan()"
+                        class="flex items-center gap-2 p-2 text-sm font-medium text-green-500  hover:text-white transition rounded-lg bg-transparent border-2 border-green-500 hover:bg-green-500 w-fit">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M8.25 7.5V6.108c0-1.135.845-2.098 1.976-2.192.373-.03.748-.057 1.123-.08M15.75 18H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08M15.75 18.75v-1.875a3.375 3.375 0 0 0-3.375-3.375h-1.5a1.125 1.125 0 0 1-1.125-1.125v-1.5A3.375 3.375 0 0 0 6.375 7.5H5.25m11.9-3.664A2.251 2.251 0 0 0 15 2.25h-1.5a2.251 2.251 0 0 0-2.15 1.586m5.8 0c.065.21.1.433.1.664v.75h-6V4.5c0-.231.035-.454.1-.664M6.75 7.5H4.875c-.621 0-1.125.504-1.125 1.125v12c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V16.5a9 9 0 0 0-9-9Z" />
+                        </svg>
+                        <span class="text-xs">Salin sampel</span>
+
+                    </button>
                 </div>
                 <table class="min-w-full custom-scrollbar h-auto overflow-y-auto z-0">
                     <!-- table header start -->
@@ -236,7 +273,8 @@
 
                             @foreach ($sampel_header as $item)
                                 <th x-show="columns.sampel{{ $loop->index }}" class="px-5 py-2 sm:px-6">
-                                    <input type="text" wire:model.live.debounce.250ms="filter.sampel.{{ $loop->index }}"
+                                    <input type="text"
+                                        wire:model.live.debounce.250ms="filter.sampel.{{ $loop->index }}"
                                         class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500" />
                                 </th>
                             @endforeach
@@ -404,10 +442,10 @@
                 </table>
             @endif
         </div>
+
     </div>
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
-        <button wire:click.prevent='updateProgres'
-            id="saveButton"
+        <button wire:click.prevent='updateProgres' id="saveButton"
             class=" px-3 py-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600 flex gap-x-2 items-center">
             <span>Simpan</span>
             <div wire:loading wire:target='updateProgres'
@@ -422,9 +460,65 @@
                         document.getElementById('saveButton').click();
                     }
                 });
-            </script>    
+            </script>
         @endonce
     @endif
+    <div x-show="showList" @click="showList = false"
+        class="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+        <div @click.stop x-show="showList" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start="opacity-0 -translate-y-52" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-52"
+            class="bg-white dark:bg-slate-800 p-4 rounded-xl shadow-xl w-full max-w-lg max-h-[80vh] overflow-y-auto">
+
+            <h2 class="text-lg font-semibold text-slate-700 dark:text-white mb-3 border-b pb-2">
+                Pilih Kegiatan
+            </h2>
+
+            <template x-for="(list, index) in listKegiatan" :key="index">
+                <div
+                    class="flex items-center justify-between p-3 rounded-lg border mb-2 bg-white dark:bg-slate-900 dark:border-slate-700 hover:bg-slate-100 dark:hover:bg-slate-700 transition cursor-pointer">
+                    <!-- Teks kegiatan -->
+                    <div class="flex gap-1 items-center text-sm text-slate-700 dark:text-white">
+                        <div x-text="list.alias"></div>
+                        <span x-text="list.tahun"></span>
+                        <template x-if="list.periode === 1">
+                            <span>Bulan - </span>
+                        </template>
+                        <template x-if="list.periode === 2">
+                            <span>Triwulan - </span>
+                        </template>
+                        <template x-if="list.periode === 3">
+                            <span>Subround - </span>
+                        </template>
+                        <template x-if="list.periode === 4">
+                            <span>Tahun - </span>
+                        </template>
+                        <span x-text="list.waktu"></span>
+                    </div>
+
+                    <!-- Tombol copy -->
+                    <button
+                        @click="copy(list.id_kegiatan, list.tahun, list.waktu, {{ $tahun }}, {{ $waktu }})"
+                        class="text-blue-600 text-xs font-semibold ml-3 flex items-center gap-1 bg-transparent border border-blue-600 rounded-lg px-2 py-1 hover:bg-blue-600 hover:text-white transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                            stroke-width="1.5" stroke="currentColor" class="size-4">
+                            <path stroke-linecap="round" stroke-linejoin="round"
+                                d="M15.666 3.888A2.25 2.25 0 0 0 13.5 2.25h-3c-1.03 0-1.9.693-2.166 1.638m7.332 0c.055.194.084.4.084.612v0a.75.75 0 0 1-.75.75H9a.75.75 0 0 1-.75-.75v0c0-.212.03-.418.084-.612m7.332 0c.646.049 1.288.11 1.927.184 1.1.128 1.907 1.077 1.907 2.185V19.5a2.25 2.25 0 0 1-2.25 2.25H6.75A2.25 2.25 0 0 1 4.5 19.5V6.257c0-1.108.806-2.057 1.907-2.185a48.208 48.208 0 0 1 1.927-.184" />
+                        </svg>
+                        <span class="flex gap-x-2 items-center">
+                            Copy
+                            <div x-show="loadingIdList === (list.id_kegiatan + '-' + list.tahun + '-' + list.waktu)"
+                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-blue-600 border-t-transparent">
+                            </div>
+                        </span>
+                    </button>
+                </div>
+            </template>
+
+        </div>
+    </div>
+
     <div x-show="openForm"
         class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
         @livewire('progres.modal-form', ['id' => $idPage])

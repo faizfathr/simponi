@@ -8,6 +8,19 @@ class MonitoringKegiatan extends Model
 {
     protected $table = 'monitoring_kegiatan';
 
+    protected $fillable = [
+        'id_tabel',
+        'tahun',
+        'waktu',
+        'pcl',
+        'pml',
+        'status',
+        'ket_sampel',
+        'proses',
+        'created_at',
+        'updated_at',
+    ];
+
     public function joinPcl()
     {
         return $this->belongsTo(Mitra::class, 'pcl', 'id');

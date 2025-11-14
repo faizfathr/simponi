@@ -60,6 +60,7 @@ Route::prefix('/dashboard')->group(function () {
     Route::get('/downloadDirektori', [DashboardController::class, 'downloadDirektori']);
     Route::get('/listJadwal', [DashboardController::class, 'listJadwal']);
     Route::post('/dataByStatus', [DashboardController::class, 'getDataByStatus']);
+    Route::post('/listMonitoringById', [DashboardController::class, 'getListMonitoringById']);
 });
 
 Route::get('/download/GUIDEBOOK SIMPONI.pdf', function () {

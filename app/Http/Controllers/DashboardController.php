@@ -284,4 +284,13 @@ class DashboardController extends Controller
             ->get();
         return response()->json($dataByStatus);
     }
+
+    public function getListMonitoringById(Request $request)
+    {
+        $id = $request->id;
+        $data = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', 'kegiatan_survei.id')
+            ->where('id_kegiatan', $id)
+            ->get();
+        return response()->json($data);
+    }
 }
