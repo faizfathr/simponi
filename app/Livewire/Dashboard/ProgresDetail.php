@@ -52,19 +52,19 @@ class ProgresDetail extends Component
 
     public function render()
     {
-        $event = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', 'kegiatan_survei.id')
+        $events = ListKegiatan::join('kegiatan_survei', 'list_kegiatan.id_kegiatan', 'kegiatan_survei.id')
             ->join('struktur_tabel_monitoring', 'kegiatan_survei.id', 'struktur_tabel_monitoring.id')
             ->selectRaw('kegiatan_survei.id as id_progres, kegiatan_survei.*, list_kegiatan.*, struktur_tabel_monitoring.*, struktur_tabel_monitoring.id as id_tabel')
             ->where('list_kegiatan.id', $this->idPage)
             ->first();
         if ($this->idPage) {
-            $this->id_tabel = $event->id_tabel;
-            $this->tahun = $event->tahun;
-            $this->waktu = $event->waktu;
+            $this->id_tabel = $events->id_tabel;
+            $this->tahun = $events->tahun;
+            $this->waktu = $events->waktu;
             $monitorings = MonitoringKegiatan::where([
-                ['id_tabel', '=', $event->id_kegiatan],
-                ['tahun', '=', $event->tahun],
-                ['waktu', '=', $event->waktu],
+                ['id_tabel', '=', $events->id_kegiatan],
+                ['tahun', '=', $events->tahun],
+                ['waktu', '=', $events->waktu],
             ])
                 ->when($this->filter['pcl'], function ($query) {
                     return $query->where('pcl', $this->filter['pcl']);
@@ -73,7 +73,7 @@ class ProgresDetail extends Component
                     return $query->where('pml', $this->filter['pml']);
                 })
                 ->when($this->filter['status'], function ($query) {
-                    return $query->where('status', $this->filter['status']);
+                    return $query->where('status', (int) $this->filter['status']);
                 })
                 ->when(!empty($this->filter['sampel']), function ($query) {
                     foreach ($this->filter['sampel'] as $sampel) {
@@ -89,12 +89,12 @@ class ProgresDetail extends Component
                 })->toArray();
             $pcl = Mitra::where('status', 1)->get();
             $pml = Mitra::where('status', 0)->get();
-            $this->sampel_header = explode(';', $event->ket_sampel);
-            $this->prosess_header = explode(';', $event->proses);
+            $this->sampel_header = explode(';', $events->ket_sampel);
+            $this->prosess_header = explode(';', $events->proses);
             $this->allItem = $monitorings;
-            return view('livewire.dashboard.progres-detail', compact('event', 'monitorings', 'pcl', 'pml'));
+            return view('livewire.dashboard.progres-detail', compact('events', 'monitorings', 'pcl', 'pml'));
         } else {
-            return view('livewire.dashboard.progres-detail', compact('event'));
+            return view('livewire.dashboard.progres-detail', compact('events'));
         }
     }
 
@@ -207,11 +207,6 @@ class ProgresDetail extends Component
         $this->status = 'Berhasil';
         $this->showNotif = TRUE;
         $this->reset('file');
-    }
-
-    public function bindingSampelBody($row, $index, $value)
-    {
-        $this->allItem[$row]['ket_sampel'][$index] = $value;
     }
 
     public function copyMonitoring($idTarget, $tahunTarget, $waktuTarget, $tahunNow, $waktuNow)

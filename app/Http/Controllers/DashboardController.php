@@ -256,13 +256,14 @@ class DashboardController extends Controller
             ->where('list_kegiatan.tahun', trim($query[2]))
             ->selectRaw('
                 kegiatan_survei.kegiatan,
+                kegiatan_survei.subsektor,
                 list_kegiatan.target,
                 struktur_tabel_monitoring.proses,
                 SUM(CASE WHEN monitoring_kegiatan.status = 2 THEN 1 ELSE 0 END) as realisasi,
                 SUM(CASE WHEN monitoring_kegiatan.status = 0 THEN 1 ELSE 0 END) as belumSelesai,
                 SUM(CASE WHEN monitoring_kegiatan.status = 1 THEN 1 ELSE 0 END) as onProgres
             ')
-            ->groupBy('kegiatan_survei.kegiatan', 'list_kegiatan.target', 'proses')
+            ->groupBy('kegiatan_survei.kegiatan', 'list_kegiatan.target', 'proses', 'kegiatan_survei.subsektor')
             ->get();
         return response()->json($data);
     }

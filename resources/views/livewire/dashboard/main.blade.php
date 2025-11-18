@@ -64,7 +64,7 @@
         <div class="swiper-button-prev" style="color: #fb923c;"></div>
 
         <!-- Navigasi bulatan bawah -->
-        <div class="swiper-pagination mt-4"></div>
+        <div class="swiper-pagination mt-6"></div>
     </div>
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">

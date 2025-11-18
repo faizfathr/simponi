@@ -23,7 +23,7 @@
                 items = response;
             })">
     <template x-if="items.length === 0">
-        <div class="bg-orange-100/50 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 animate-pulse">
+        <div class="bg-orange-100/50 shadow-md rounded-2xl p-4 border-4 border-orange-500 animate-pulse">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex flex-col">
                     <span class="h-4 bg-gray-300 rounded w-24 mb-2"></span>
@@ -44,7 +44,8 @@
 
     <template x-for="item in items" :key="item.id">
         <div
-            class="bg-orange-100/50 shadow-md rounded-2xl p-4 mb-6 border-4 border-orange-500 hover:scale-95 transition-all duration-150">
+            :class="item.subsektor == 1 ? 'bg-primary border-primary' : item.subsektor == 2 ? 'bg-green-100/50 border-green-500' : item.subsektor == 3 ? 'bg-orange-100/50 border-orange-500' : item.subsektor == 4 ? 'bg-blue-100/50 border-blue-500' : 'bg-purple-100/50 border-purple-500'"
+            class="shadow-md rounded-2xl p-4 border-4 hover:scale-95 transition-all duration-150">
             <div class="flex items-center justify-between mb-1">
                 <div class="flex flex-col">
                     <span class="text-sm md:text-lg font-semibold text-gray-800 dark:text-gray-100 "

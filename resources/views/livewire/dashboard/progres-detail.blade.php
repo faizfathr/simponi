@@ -2,10 +2,11 @@
     openForm: @entangle('openForm'),
     idTabel: @entangle('id_tabel'),
     showNotif: @entangle('showNotif'),
+    openDelete: false,
     showList: false,
     loadingIdList: null,
     monitorings: @js($monitorings),
-    event: @js($event),
+    events: @js($events),
     listKegiatan: [],
     checkedColumns: [],
     checkedAll: false,
@@ -75,19 +76,34 @@
         await @this.deleteMonitorings(this.checkedColumns);
         this.checkedColumns = [];
         this.loadingIdList = null;
+        this.openDelete = false;
     }
 }" x-init="setTimeout(() => loading = false, 500);
 $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(item.id)) : monitorings.forEach(item => popDelete(item.id)))">
+    <style>
+        .btn-dashboard {
+            @apply inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-brand-500 rounded-lg shadow-theme-xs hover:bg-brand-600 transition select-none;
+        }
+
+        .loader-white {
+            @apply h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent;
+        }
+
+        .loader-green {
+            @apply h-4 w-4 animate-spin rounded-full border-2 border-success-500 border-t-transparent;
+        }
+    </style>
     <x-dashboard.notification showNotif="showNotif" message="{{ $message }}" status="{{ $status }}" />
+
+    <div class="flex-1 mb-4">
+        <h1 class="text-xl font-semibold text-gray-800 dark:text-white">
+            {{ $events->kegiatan }} ({{ $tahun }}) - {{ $waktu }}
+        </h1>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+            Jadwal: <span x-text="formatJadwal(events.tanggal_mulai, events.tanggal_selesai)"></span>
+        </p>
+    </div>
     @if (Auth::user() && intVal(Auth::user()?->id_role) === 3)
-        <div class="flex-1 mb-4">
-            <h1 class="text-xl font-semibold text-gray-800 dark:text-white">
-                {{ $event->kegiatan }} ({{ $tahun }}) - {{ $waktu }}
-            </h1>
-            <p class="text-xs text-gray-500 dark:text-gray-400">
-                Jadwal: <span x-text="formatJadwal(event.tgl_mulai, event.tgl_selesai)"></span>
-            </p>
-        </div>
         <div class="flex items-center gap-x-2 mb-2 w-full">
             <a href="#" @click.prevent="history.back()"
                 class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
@@ -109,7 +125,7 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                 </div>
             </button>
             <a href="/dashboard/downloadTemplate/{{ $id_tabel }}"
-                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <span class="mr-1 text-xs hidden md:block">Template</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4">
@@ -118,7 +134,7 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                 </svg>
             </a>
             <a href="/dashboard/downloadDirektori"
-                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+                class="inline-flex items-center p-2 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                 <span class="mr-1 text-xs hidden md:block">Direktori</span>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                     stroke="currentColor" class="size-4">
@@ -129,7 +145,7 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
             <form wire:submit.prevent='import'>
                 <div class="flex gap-x-2 items-center">
                     <div
-                        class="relative z-0 text-white transition rounded-lg bg-success-500 shadow-theme-xs hover:bg-success-600">
+                        class="relative z-0 text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                         <label for="template-input" class="text-xs flex gap-x-2 h-full p-2 cursor-pointer">Import
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                 stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -176,7 +192,7 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                         <!-- Toggle Button -->
                         <div class="flex gap-x-2">
                             <button class="text-white p-2 rounded-lg flex items-center gap-x-2 bg-red-700"
-                                @click="deleteSelected()" :disabled="checkedColumns.length === 0"
+                                @click="openDelete = true" :disabled="checkedColumns.length === 0"
                                 :class="checkedColumns.length > 0 ? 'brigthness-100' : 'brightness-75 cursor-not-allowed'">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-4">
@@ -184,9 +200,6 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                                         d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
                                 </svg>
                                 <span class="hidden md:block" x-text="'Hapus (' + checkedColumns.length + ')'"></span>
-                                <div x-show="loadingIdList === 'delete'"
-                                    class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
-                                </div>
                             </button>
                             <button @click="openColumnFilter = !openColumnFilter"
                                 class="flex items-center gap-2 cursor-pointer font-semibold text-white transition-all bg-slate-500 dark:bg-gray-800 rounded-lg p-2">
@@ -263,7 +276,7 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
 
                     </button>
                 </div>
-                <table class="min-w-full custom-scrollbar h-auto overflow-y-auto z-0">
+                <table class="min-w-full custom-scrollbar h-auto overflow-y-auto z-0" x-data="{ petugas: [...@js($pml), ...@js($pcl)], monitorings: @js($monitorings) }">
                     <!-- table header start -->
                     <!-- Filter Row -->
                     <thead class="sticky top-[50px]  z-10 bg-gray-200 dark:bg-gray-800">
@@ -331,41 +344,116 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                                 <select wire:model.live.debounce.250ms="filter.status"
                                     class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500">
                                     <option value="">Status</option>
-                                    <option value="0">Belum</option>
+                                    <option value="00">Belum</option>
                                     <option value="1">Progres</option>
                                     <option value="2">Selesai</option>
                                 </select>
                             </th>
 
                             <th x-show="columns.pcl" class="px-5 py-2 sm:px-6">
-                                <select
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
-                                    wire:model.live='filter.pcl'>
-                                    <option value="">PCL</option>
-                                    @foreach ($pcl as $p)
-                                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
-                                    @endforeach
-                                </select>
-                            </th>
+                                <div x-data="{
+                                    search: '',
+                                    showList: false,
+                                    displayPetugas: '',
+                                    pilih(p) {
+                                        this.displayPetugas = p.nama;
+                                        this.search = '';
+                                        this.showList = false;
+                                        $wire.set('filter.pcl', p.id, true);
+                                    },
+                                    get filteredPcl() {
+                                        return petugas.filter(p => p.nama.toLowerCase().includes(this.search.toLowerCase()));
+                                    }
+                                }" @click.away="showList = false" class="relative">
 
-                            <th x-show="columns.pml" class="px-5 py-2 sm:px-6">
-                                <select
-                                    class="w-full text-xs rounded-md border border-gray-300 dark:border-gray-600 dark:bg-gray-800 text-gray-700 dark:text-white px-2 py-1 focus:ring-brand-500 focus:border-brand-500"
-                                    wire:model.live='filter.pml'>
-                                    <option value="">PML</option>
-                                    @foreach ($pml as $p)
-                                        <option value="{{ $p->id }}">{{ $p->nama }}</option>
-                                    @endforeach
-                                </select>
+                                    <!-- Input (klik = show list) -->
+                                    <input :value="displayPetugas !== '' ? displayPetugas : search"
+                                        @focus="showList = true; search = ''"
+                                        @input="
+                                                search = $event.target.value;
+                                                if (search === '') {
+                                                    displayPetugas = '';
+                                                    $wire.set('filter.pcl', '', true);
+                                                }
+                                            "
+                                        placeholder="Filter petugas..."
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-white px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+
+                                    <input type="hidden" wire:model.live='filter.pcl' />
+
+                                    <!-- Dropdown -->
+                                    <div x-show="showList" x-transition
+                                        class="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
+
+                                        <template x-for="p in filteredPcl" :key="p.id">
+                                            <div @click="pilih(p)"
+                                                class="cursor-pointer px-3 py-2 text-sm hover:bg-blue-100 dark:hover:bg-blue-800 dark:text-white">
+                                                <span x-text="p.nama"></span>
+                                            </div>
+                                        </template>
+
+                                        <div x-show="filteredPcl.length === 0"
+                                            class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+                                            Tidak ditemukan.
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
+                            <th x-show="columns.pcl" class="px-5 py-2 sm:px-6">
+                                <div x-data="{
+                                    search: '',
+                                    showList: false,
+                                    displayPetugas: '',
+                                    pilih(p) {
+                                        this.displayPetugas = p.nama;
+                                        this.search = '';
+                                        this.showList = false;
+                                        $wire.set('filter.pml', p.id, true);
+                                    },
+                                    get filteredPcl() {
+                                        return petugas.filter(p => p.nama.toLowerCase().includes(this.search.toLowerCase()));
+                                    }
+                                }" @click.away="showList = false" class="relative">
+
+                                    <!-- Input (klik = show list) -->
+                                    <input :value="displayPetugas !== '' ? displayPetugas : search"
+                                        @focus="showList = true; search = ''"
+                                        @input="
+                                                search = $event.target.value;
+                                                if (search === '') {
+                                                    displayPetugas = '';
+                                                    $wire.set('filter.pml', '', true);
+                                                }
+                                            "
+                                        placeholder="Filter petugas..."
+                                        class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-white px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+
+                                    <input type="hidden" wire:model.live='filter.pml' />
+
+                                    <!-- Dropdown -->
+                                    <div x-show="showList" x-transition
+                                        class="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700 dark:bg-gray-900">
+
+                                        <template x-for="p in filteredPcl" :key="p.id">
+                                            <div @click="pilih(p)"
+                                                class="cursor-pointer px-3 py-2 text-sm hover:bg-blue-100 dark:hover:bg-blue-800 dark:text-white">
+                                                <span x-text="p.nama"></span>
+                                            </div>
+                                        </template>
+
+                                        <div x-show="filteredPcl.length === 0"
+                                            class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+                                            Tidak ditemukan.
+                                        </div>
+                                    </div>
+                                </div>
                             </th>
                         </tr>
                     </thead>
-
-
                     <!-- table header end -->
+
                     <!-- table body start -->
                     <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
-
                         @if ($monitorings)
                             @foreach ($monitorings as $row => $monitoring)
                                 <tr>
@@ -391,11 +479,10 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                                     @endforeach
                                     @foreach ($allItem[$row]['prosess'] as $key => $itemProsesBody)
                                         <td x-show="columns.proses{{ $key }}" class="px-0.5 py-2">
-                                            <div x-data="{ checkboxToggle{{ $monitoring['id'] }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }">
-                                                <label for="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
+                                            <div x-data="{ checkboxToggle{{ $monitoring['id'] }}{{ $key }}: {{ $itemProsesBody === '1' ? 'true' : 'false' }} }"> <label
+                                                    for="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
                                                     class="flex justify-center cursor-pointer select-none ">
-                                                    <div class="relative">
-                                                        <input
+                                                    <div class="relative"> <input
                                                             wire:model='allItem.{{ $row }}.prosess.{{ $key }}'
                                                             type="checkbox"
                                                             id="checkboxLabel{{ $monitoring['id'] }}{{ $key }}"
@@ -433,36 +520,114 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
                                             </p>
                                         </div>
                                     </td>
-                                    <td x-show="columns.pcl" class="px-0.5">
-                                        <select wire:model='allItem.{{ $row }}.pcl'
-                                            class="dark:bg-dark-900  shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
-                                            <option
-                                                class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
-                                                --- Petugas ---
-                                            </option>
-                                            @foreach ($pcl as $key => $p)
-                                                <option value="{{ $p->id }}"
-                                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                                                    {{ $p->nama }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                    <td x-show="columns.pcl" class="px-0.5" wire:key="pcl-{{ $monitoring['id'] }}">
+
+                                        <div x-data="{
+                                            search: '',
+                                            showList: false,
+                                            displayPetugas: '',
+                                        
+                                            pilih(p) {
+                                                this.displayPetugas = p.nama;
+                                                this.search = '';
+                                                this.showList = false;
+                                        
+                                                // cara yang stabil
+                                                $wire.allItem[{{ $row }}].pcl = p.id;
+                                            },
+                                        
+                                            get filteredPcl() {
+                                                return petugas.filter(p =>
+                                                    p.nama.toLowerCase().includes(this.search.toLowerCase())
+                                                );
+                                            },
+                                        
+                                            init() {
+                                                const initialId = @js($this->allItem[$row]['pcl'] ?? null);
+                                        
+                                                if (initialId) {
+                                                    const found = petugas.find(p => p.id == initialId);
+                                                    if (found) {
+                                                        this.displayPetugas = found.nama;
+                                                    }
+                                                }
+                                            },
+                                        }" x-init="init()"
+                                            @click.away="showList = false" class="relative">
+
+                                            <input :value="displayPetugas !== '' ? displayPetugas : search"
+                                                @focus="showList = true; search = ''"
+                                                @input="search = $event.target.value" placeholder="Cari petugas..."
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-white px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400  focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                            <div x-show="showList" x-transition
+                                                class="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg border border-gray-200 bg-white shadow dark:border-gray-700  dark:bg-gray-900">
+                                                <template x-for="p in filteredPcl" :key="p.id">
+                                                    <div @click="pilih(p)"
+                                                        class="cursor-pointer px-3 py-2 text-sm hover:bg-blue-100 dark:hover:bg-blue-800 dark:text-white">
+                                                        <span x-text="p.nama"></span>
+                                                    </div>
+                                                </template>
+
+                                                <div x-show="filteredPcl.length === 0"
+                                                    class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+                                                    Tidak ditemukan.
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
-                                    <td x-show="columns.pml" class="px-0.5">
-                                        <div class="flex items-center">
-                                            <select wire:model='allItem.{{ $row }}.pml'
-                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
-                                                <option
-                                                    class="text-gray-700 dark:bg-gray-900 dark:text-gray-400 hidden text-center">
-                                                    --- Petugas ---
-                                                </option>
-                                                @foreach ($pml as $key => $p)
-                                                    <option value="{{ $p->id }}"
-                                                        class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
-                                                        {{ $p->nama }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
+
+                                    <td x-show="columns.pml" class="px-0.5" wire:key="pml-{{ $monitoring['id'] }}">
+                                        <div x-data="{
+                                            search: '',
+                                            showList: false,
+                                            displayPetugas: '',
+                                            pilih(p) {
+                                                this.displayPetugas = p.nama;
+                                                this.search = '';
+                                                this.showList = false;
+                                                $wire.allItem[{{ $row }}].pml = p.id;
+                                            },
+                                            get filteredPml() {
+                                                return petugas.filter(p => p.nama.toLowerCase().includes(this.search.toLowerCase()));
+                                            },
+                                            init() {
+                                                const initialId = @js($this->allItem[$row]['pml'] ?? null);
+                                        
+                                                if (initialId) {
+                                                    const found = petugas.find(p => p.id == initialId);
+                                                    if (found) {
+                                                        this.displayPetugas = found.nama;
+                                                    }
+                                                }
+                                            },
+                                        }" x-init="init();"
+                                            @click.away="showList = false" class="relative">
+
+                                            <!-- Input (klik = show list) -->
+                                            <input :value="displayPetugas !== '' ? displayPetugas : search"
+                                                @focus="showList = true; search = ''"
+                                                @input="search = $event.target.value" placeholder="Cari petugas..."
+                                                class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 max-w-max appearance-none rounded-lg border border-gray-300 bg-white px-2 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
+                                            <!-- Dropdown -->
+                                            <div x-show="showList" x-transition
+                                                class="absolute z-50 mt-1 max-h-48 w-full overflow-y-auto rounded-lg 
+                                                    border border-gray-200 bg-white shadow dark:border-gray-700 
+                                                    dark:bg-gray-900">
+                                                <template x-for="p in filteredPml" :key="p.id">
+                                                    <div @click="pilih(p)"
+                                                        class="cursor-pointer px-3 py-2 text-sm 
+                                                            hover:bg-blue-100 dark:hover:bg-blue-800 
+                                                            dark:text-white">
+                                                        <span x-text="p.nama"></span>
+                                                    </div>
+                                                </template>
+
+                                                <div x-show="filteredPml.length === 0"
+                                                    class="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+                                                    Tidak ditemukan.
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </td>
                                 </tr>
@@ -558,6 +723,50 @@ $watch('checkedAll', value => value ? monitorings.forEach(item => pushDelete(ite
         </div>
     </div>
 
+    <!-- Modal Delete Confirmation -->
+    <div x-show="openDelete"
+        class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
+        <div x-show="openDelete" x-transition:enter="transition ease-out duration-300"
+            x-transition:enter-start ="opacity-0 -translate-y-52" x-transition:enter-end="opacity-100 translate-y-0"
+            x-transition:leave="transition ease-in duration-300" x-transition:leave-start="opacity-100 translate-y-0"
+            x-transition:leave-end="opacity-0 -translate-y-52" @click.outside = "openDelete = !openDelete"
+            class="rounded-xl border border-warning-500 bg-warning-50 p-4 dark:border-warning-500/30 dark:bg-warning-500/15">
+            <div class="flex items-start gap-3">
+                <div class="-mt-0.5 text-warning-500 dark:text-orange-400">
+                    <svg class="fill-current" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M3.6501 12.0001C3.6501 7.38852 7.38852 3.6501 12.0001 3.6501C16.6117 3.6501 20.3501 7.38852 20.3501 12.0001C20.3501 16.6117 16.6117 20.3501 12.0001 20.3501C7.38852 20.3501 3.6501 16.6117 3.6501 12.0001ZM12.0001 1.8501C6.39441 1.8501 1.8501 6.39441 1.8501 12.0001C1.8501 17.6058 6.39441 22.1501 12.0001 22.1501C17.6058 22.1501 22.1501 17.6058 22.1501 12.0001C22.1501 6.39441 17.6058 1.8501 12.0001 1.8501ZM10.9992 7.52517C10.9992 8.07746 11.4469 8.52517 11.9992 8.52517H12.0002C12.5525 8.52517 13.0002 8.07746 13.0002 7.52517C13.0002 6.97289 12.5525 6.52517 12.0002 6.52517H11.9992C11.4469 6.52517 10.9992 6.97289 10.9992 7.52517ZM12.0002 17.3715C11.586 17.3715 11.2502 17.0357 11.2502 16.6215V10.945C11.2502 10.5308 11.586 10.195 12.0002 10.195C12.4144 10.195 12.7502 10.5308 12.7502 10.945V16.6215C12.7502 17.0357 12.4144 17.3715 12.0002 17.3715Z"
+                            fill="" />
+                    </svg>
+                </div>
+
+                <div>
+                    <h4 class="mb-1 text-sm font-semibold text-gray-800 dark:text-white/90">
+                        Perhatian, anda akan menghapus sampel secara <b>Permanen</b>
+                    </h4>
+
+                    <p class="text-sm text-gray-500 dark:text-gray-400"
+                        x-text="'Anda yakin menghapus ' + checkedColumns.length + ' sampel?'"></p>
+                    <div class="flex gap-x-2 mt-2">
+                        <button @click="deleteSelected()"
+                            class="inline-flex items-center gap-2 px-4 py-1 text-sm font-medium text-white transition rounded-lg bg-red-500 shadow-theme-xs hover:bg-red-600 active:bg-red-500/50">
+                            Hapus
+                            <div x-show="loadingIdList === 'delete'"
+                                class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
+                            </div>
+                        </button>
+
+                        <button @click="openDelete = false"
+                            class="inline-flex items-center gap-2 rounded-lg bg-white px-4 py-1 text-sm font-medium text-gray-700 shadow-theme-xs ring-1 ring-inset ring-gray-300 transition hover:bg-gray-50 dark:bg-gray-800 dark:text-gray-400 dark:ring-gray-700 dark:hover:bg-white/[0.03]">
+                            batal
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal Form -->
     <div x-show="openForm"
         class="space-y-6 fixed inset-0 flex items-center justify-center bg-black/50 z-50 overflow-scroll scrollbar-hide">
         @livewire('progres.modal-form', ['id' => $idPage])

@@ -218,7 +218,7 @@
                             </svg>
                             <div class="flex flex-col justify-between text-gray-800 dark:text-gray-100 min-w-fit ">
                                 <span class="text-sm font-semibold">{{ $petugas->joinPcl?->nama }}</span>
-                                @if ($petugas->joinPcl)
+                                @if (!$petugas->joinPcl)
                                     <span class="text-xs hidden md:block">Petugas belum di assign</span>
                                 @else
                                     <span
