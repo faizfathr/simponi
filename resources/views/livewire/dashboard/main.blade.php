@@ -1,4 +1,4 @@
-<div class="text-gray-800 font-sans min-h-screen p-4 sm:p-6" x-data="{ tahunKegiatan: 2025 }" x-init="setTimeout(() => loading = false, 500)"
+<div class="text-gray-800 font-sans min-h-screen" x-data="{ tahunKegiatan: 2025 }" x-init="setTimeout(() => loading = false, 500)"
     x-effect="
         if(tahunKegiatan) {
             fetch('/resource/aggregatProgres', {

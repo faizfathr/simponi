@@ -29,7 +29,7 @@
             @endif
             <!-- ===== Main Content Start ===== -->
             <main>
-                <div class="p-1 mx-auto max-w-(--breakpoint-2xl)  dark:bg-gray-900">
+                <div class="p-4 sm:p-6 mx-auto max-w-(--breakpoint-2xl)  dark:bg-gray-900">
                     @if (request()->routeIs('detail-monitoring'))
                         @livewire('dashboard.progres-detail', ['id' => $idPage], key($idPage))
                     @endif

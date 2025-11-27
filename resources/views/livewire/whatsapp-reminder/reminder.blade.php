@@ -1,4 +1,4 @@
-<div class="p-6 bg-white dark:bg-gray-900 shadow-md rounded-2xl space-y-6 max-w-7xl mx-auto h-[80vh] overflow-y-scroll"
+<div class="p-6 bg-white dark:bg-gray-900 shadow-md rounded-2xl space-y-6 max-w-7xl mx-auto h-[80vh] overflow-y-scroll mt-4"
     x-data="{
         openForm: @entangle('openForm'),
         showNotif: @entangle('showNotif')
