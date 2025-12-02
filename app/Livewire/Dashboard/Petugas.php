@@ -19,6 +19,8 @@ class Petugas extends Component
     public $showNotif = false;
     public $action = '';
     public $openWarningDelete = false;
+   
+
     public function getRules()
     {
         return [

@@ -66,9 +66,107 @@
         <!-- Navigasi bulatan bawah -->
         <div class="swiper-pagination mt-6"></div>
     </div>
+{{-- tabel monitoring --}}
+<div class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+    <table class="table w-full border-collapse">
+        <thead class="bg-gray-50 dark:bg-gray-700">
 
+        {{-- BARIS 1 HEADER --}}
+        <tr>
+            <th rowspan="2" class="px-10 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                Kegiatan Survei
+            </th>
+
+            <th rowspan="2" class="px-4 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                Periode
+            </th>
+
+            @foreach ($bulan as $b)
+                <th colspan="2"
+                    class="px-4 py-2 text-center text-xs text-gray-700 dark:text-gray-200 font-bold uppercase tracking-wider border bg-orange-100 dark:bg-orange-900">
+                    {{ $b }}
+                </th>
+            @endforeach
+        </tr>
+
+        {{-- BARIS 2 HEADER --}}
+        <tr>
+            @foreach ($bulan as $b)
+                <th class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">T</th>
+                <th class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">R</th>
+            @endforeach
+        </tr>
+
+        </thead>
+
+        <tbody>
+
+        @foreach ($rekap as $kategori)
+
+            {{-- JUDUL KATEGORI --}}
+            <tr class="bg-orange-400 text-white">
+                <td colspan="{{ 2 + (count($bulan) * 2) }}"
+                    class="font-bold uppercase tracking-wider border px-3 py-2">
+                    {{ $kategori['judul'] }}
+                </td>
+            </tr>
+
+            {{-- LOOP SUBJUDUL YANG BANYAK --}}
+            @foreach ($kategori['subjudul'] as $sub)
+
+                {{-- SUBJUDUL --}}
+                <tr>
+                    <td colspan="{{ 2 + (count($bulan) * 2) }}"
+                        class="uppercase tracking-wider border text-xs bg-blue-100 px-3 py-2 font-bold">
+                        {{ $sub['nama'] }}
+                    </td>
+                </tr>
+
+                {{-- ITEM UTAMA --}}
+                @foreach ($sub['items'] as $item)
+                    <tr class="bg-gray-50 dark:bg-gray-700/40">
+                        <td class="border px-3 py-2 font-semibold">
+                            {{ $item['nama'] }}
+                        </td>
+
+                        <td class="border px-3 py-2 text-center">
+                            {{ $item['periode'] ?? '—' }}
+                        </td>
+
+                        @foreach ($bulan as $b)
+                            <td class="border h-8"></td>
+                            <td class="border h-8"></td>
+                        @endforeach
+                    </tr>
+
+                    {{-- CHILD --}}
+                    @foreach ($item['children'] as $child)
+                        <tr>
+                            <td class="border px-6 py-1">- {{ $child }}</td>
+
+                            <td class="border text-center">—</td>
+
+                            @foreach ($bulan as $b)
+                                <td class="border h-7"></td>
+                                <td class="border h-7"></td>
+                            @endforeach
+                        </tr>
+                    @endforeach
+
+                @endforeach
+
+            @endforeach
+
+        @endforeach
+
+        </tbody>
+    </table>
+
+</div>
+{{-- end tabel monitoring --}}
+
+           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
         <!-- Card 1: Kegiatan Bulan Ini -->
         <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
             <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3 flex gap-x-2 items-center">
