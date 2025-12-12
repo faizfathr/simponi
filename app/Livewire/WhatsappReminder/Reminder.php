@@ -43,7 +43,7 @@ class Reminder extends Component
                 'scheduled_at.after' => 'Tanggal reminder harus lebih dari waktu sekarang',
             ]
         );
-        $mergedPesan = $this->headerPesan . "\n" . $this->pesan . "\n" . $this->footerPesan;
+        $mergedPesan = $this->headerPesan . "\n" . "\n" . $this->pesan . "\n" . "\n" . $this->footerPesan;
         ReminderHistory::insert([
             'pesan' => (string) $mergedPesan,
             'no_tujuan' => $this->no_tujuan,
@@ -56,7 +56,8 @@ class Reminder extends Component
         $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
             ->setTimezone('UTC')
             ->timestamp;
-        $fonte->sendMessage($this->no_tujuan, $mergedPesan, (string) $this->scheduled_at);
+        $responses = $fonte->sendMessage($this->no_tujuan, $mergedPesan, (string) $this->scheduled_at);
+        dd($responses);
         $this->openForm = FALSE;
         $this->showNotif = TRUE;
         $this->pesanNotif = "Reminder berhasil dibuat!";

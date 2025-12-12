@@ -2,10 +2,12 @@
 
 namespace App\Livewire\Dashboard;
 
-use App\Models\ListKegiatan;
 use App\Models\Mitra;
-use App\Models\MonitoringKegiatan;
 use Livewire\Component;
+use App\Models\ListKegiatan;
+use App\Models\KegiatanSurvei;
+use App\Models\MonitoringKegiatan;
+
 class Main extends Component
 { 
 public array $bulan = [
@@ -340,8 +342,6 @@ public array $rekap = [
     ],
 
 ];
-
-
     public function render()
     {
         $mitra = collect([
@@ -370,7 +370,16 @@ public array $rekap = [
             })
             ->groupBy('monitoring_kegiatan.id_tabel', 'monitoring_kegiatan.tahun', 'monitoring_kegiatan.waktu', 'list_kegiatan.target', 'list_kegiatan.id_kegiatan')
             ->get();
+        $kegiatanSurvei = KegiatanSurvei::get();
+        $subKegiatan = KegiatanSurvei::distinct()->pluck('subsektor')->sort()->values();
+        $subKegiatanNama = [
+            "STATISTIK INDUSTRI",
+            "STATISTIK PERTAMBANGAN DAN PENGGALIAN, ENERGI, DAN KONSTRUKSI",
+            "STATISTIK TANAMAN PANGAN, HORTIKULTURA, DAN PERKEBUNAN",
+            "STATISTIK HORTIKULTURA DAN PERKEBUNAN",
+            "STATISTIK PETERNAKAN, PERIKANAN, DAN KEHUTANAN",
+        ];
 
-        return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan'));
+        return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan', 'kegiatanSurvei', 'subKegiatan', 'subKegiatanNama'));
     }
 }

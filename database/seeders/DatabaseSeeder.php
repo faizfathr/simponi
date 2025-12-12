@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
             SubsektorSeeder::class,
             UsersSeeder::class,
             RoleSeeder::class,
+            KontakWaSeeder::class
         ]);
     }
 }

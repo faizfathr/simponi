@@ -11,7 +11,7 @@ Class FonteService
         $response = Http::asForm()->withHeaders([
                 'Authorization' => config('services.fonte.token'),
             ])
-            ->post(config('services.fonte.url' . '/send'), [
+            ->post(config('services.fonte.url') . '/send', [
                 'target' => $phoneNumber,
                 'message' => $message,
                 'schedule' => $time,

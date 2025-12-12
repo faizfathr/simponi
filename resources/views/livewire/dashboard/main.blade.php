@@ -67,10 +67,10 @@
         <div class="swiper-pagination mt-6"></div>
     </div>
 {{-- tabel monitoring --}}
-<div class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
+<div class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4 h-[100vh] overflow-y-scroll">
 
     <table class="table w-full border-collapse">
-        <thead class="bg-gray-50 dark:bg-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-20">
 
         {{-- BARIS 1 HEADER --}}
         <tr>
@@ -102,36 +102,30 @@
 
         <tbody>
 
-        @foreach ($rekap as $kategori)
+        @foreach ($subKegiatan as $kategori)
 
             {{-- JUDUL KATEGORI --}}
             <tr class="bg-orange-400 text-white">
                 <td colspan="{{ 2 + (count($bulan) * 2) }}"
                     class="font-bold uppercase tracking-wider border px-3 py-2">
-                    {{ $kategori['judul'] }}
+                    {{ $subKegiatanNama[$kategori-1] }}
                 </td>
             </tr>
 
             {{-- LOOP SUBJUDUL YANG BANYAK --}}
-            @foreach ($kategori['subjudul'] as $sub)
-
-                {{-- SUBJUDUL --}}
-                <tr>
-                    <td colspan="{{ 2 + (count($bulan) * 2) }}"
-                        class="uppercase tracking-wider border text-xs bg-blue-100 px-3 py-2 font-bold">
-                        {{ $sub['nama'] }}
-                    </td>
-                </tr>
-
-                {{-- ITEM UTAMA --}}
-                @foreach ($sub['items'] as $item)
+            @foreach ($kegiatanSurvei as $sub)
+                
+                @if($sub->subsektor == $kategori)
+                    {{-- SUBJUDUL --}}
+                   
+                    {{-- ITEM UTAMA --}}
                     <tr class="bg-gray-50 dark:bg-gray-700/40">
                         <td class="border px-3 py-2 font-semibold">
-                            {{ $item['nama'] }}
+                            {{ $sub->kegiatan }}
                         </td>
 
                         <td class="border px-3 py-2 text-center">
-                            {{ $item['periode'] ?? '—' }}
+                            {{ $sub->periode ?? '—' }}
                         </td>
 
                         @foreach ($bulan as $b)
@@ -139,8 +133,10 @@
                             <td class="border h-8"></td>
                         @endforeach
                     </tr>
+               
 
                     {{-- CHILD --}}
+                    {{--
                     @foreach ($item['children'] as $child)
                         <tr>
                             <td class="border px-6 py-1">- {{ $child }}</td>
@@ -153,9 +149,8 @@
                             @endforeach
                         </tr>
                     @endforeach
-
-                @endforeach
-
+                        --}}
+                @endif
             @endforeach
 
         @endforeach

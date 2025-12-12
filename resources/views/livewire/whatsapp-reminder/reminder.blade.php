@@ -19,6 +19,7 @@
                     <th class="px-4 py-3 text-left">Pesan</th>
                     <th class="px-4 py-3 text-left">Jadwal Kirim</th>
                     <th class="px-4 py-3 text-left">Status</th>
+                    <th class="px-4 py-3 text-left">Aksi</th>
                 </tr>
             </thead>
             <tbody
@@ -36,7 +37,7 @@
                             @endphp
                         </td>
                         <td class="px-4 py-3">{{ $historyItem->pesan }}</td>
-                        <td class="px-4 py-3">{{ $historyItem->scheduled_at }}</td>
+                        <td class="px-4 py-3">{{ \Carbon\Carbon::parse($historyItem->scheduled_at, 'Asia/Jakarta')->translatedFormat('d F Y, H:i') . " WIB"}}</td>
                         <td class="px-4 py-3">
                             @php
                                 $isPast = \Carbon\Carbon::parse($historyItem->scheduled_at, 'Asia/Jakarta')->isPast();
@@ -45,6 +46,16 @@
                                 class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full {{ $isPast ? 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300' : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-300' }} ">
                                 {{ $isPast ? 'Terkirim' : 'Pending' }}
                             </span>
+                        </td>
+                        <td class="px-4 py-3">
+                            <button wire:click="deleteHistory({{ $historyItem->id }})"
+                                class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded-lg text-xs font-semibold shadow flex items-center gap-1 relative">
+                                <x-icons.trash wire:loading.remove wire:target="deleteHistory({{ $historyItem->id }})" />
+                                
+                                <div wire:loading wire:target='deleteHistory({{ $historyItem->id }})'
+                                    class="h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-t-transparent absolute top-0 left-0 inset-0 m-auto">
+                                </div>
+                            </button>
                         </td>
                     </tr>
                 @endforeach
@@ -173,8 +184,8 @@
                 </div>
 
                 <div class="text-right">
-                    <button type="submit"
-                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm rounded-lg shadow">
+                    <button type="submit" 
+                        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 text-sm rounded-lg shadow flex items-center gap-2">
                         Buat Reminder
                         <div wire:loading wire:target='insertHistory'
                             class="h-5 w-5 animate-spin rounded-full border-4 border-solid border-white border-t-transparent">
