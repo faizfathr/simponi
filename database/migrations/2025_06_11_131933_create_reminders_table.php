@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('no_tujuan');
             $table->string('pesan');
+            $table->string('id_messages');
             $table->string('scheduled_at');
             $table->timestamps();
         });

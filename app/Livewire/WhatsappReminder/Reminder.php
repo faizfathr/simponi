@@ -44,23 +44,31 @@ class Reminder extends Component
             ]
         );
         $mergedPesan = $this->headerPesan . "\n" . "\n" . $this->pesan . "\n" . "\n" . $this->footerPesan;
-        ReminderHistory::insert([
-            'pesan' => (string) $mergedPesan,
-            'no_tujuan' => $this->no_tujuan,
-            'scheduled_at' => $this->scheduled_at,
-            'created_at' => Carbon::now(),
-            'updated_at' => carbon::now(),
-        ]);
 
         $fonte = new FonteService;
         $this->scheduled_at = Carbon::parse($this->scheduled_at, 'Asia/Jakarta')
             ->setTimezone('UTC')
             ->timestamp;
         $responses = $fonte->sendMessage($this->no_tujuan, $mergedPesan, (string) $this->scheduled_at);
-        dd($responses);
-        $this->openForm = FALSE;
-        $this->showNotif = TRUE;
-        $this->pesanNotif = "Reminder berhasil dibuat!";
-        $this->statusNotif = "Berhasil";
+        if ($responses['status']) {
+            ReminderHistory::insert([
+                'pesan' => (string) $mergedPesan,
+                'no_tujuan' => $this->no_tujuan,
+                'scheduled_at' => (string) $this->scheduled_at,
+                'id_messages' => implode(',', $responses['id']),
+                'created_at' => Carbon::now(),
+                'updated_at' => carbon::now(),
+            ]);
+            $this->openForm = FALSE;
+            $this->showNotif = TRUE;
+            $this->pesanNotif = "Reminder berhasil dibuat!";
+            $this->statusNotif = "Berhasil";
+        } else {
+            $this->openForm = FALSE;
+            $this->showNotif = TRUE;
+            $this->pesanNotif = "Reminder gagal dibuat! Silahkan coba lagi.";
+            $this->statusNotif = "Gagal";
+            
+        }
     }
 }
