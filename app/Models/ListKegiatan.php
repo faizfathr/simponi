@@ -32,4 +32,9 @@ class ListKegiatan extends Model
     {
         return $this->belongsTo(KegiatanSurvei::class, 'id_kegiatan','id');
     }
+
+    public function monitorings()
+    {
+        return $this->hasMany(MonitoringKegiatan::class, 'id_tabel', 'id_kegiatan');
+    }
 }

@@ -108,16 +108,15 @@
             <tr class="bg-orange-400 text-white">
                 <td colspan="{{ 2 + (count($bulan) * 2) }}"
                     class="font-bold uppercase tracking-wider border px-3 py-2">
-                    {{ $subKegiatanNama[$kategori-1] }}
+                    {{ $kategori->nama }}
                 </td>
             </tr>
 
             {{-- LOOP SUBJUDUL YANG BANYAK --}}
             @foreach ($kegiatanSurvei as $sub)
                 
-                @if($sub->subsektor == $kategori)
+                @if($sub->subsektor === $kategori->id)
                     {{-- SUBJUDUL --}}
-                   
                     {{-- ITEM UTAMA --}}
                     <tr class="bg-gray-50 dark:bg-gray-700/40">
                         <td class="border px-3 py-2 font-semibold">
@@ -125,33 +124,37 @@
                         </td>
 
                         <td class="border px-3 py-2 text-center">
-                            {{ $sub->periode ?? '—' }}
+                            {{ $ketPeriode[$sub->periode - 1] ?? '—' }}
                         </td>
-
-                        @foreach ($bulan as $b)
-                            <td class="border h-8"></td>
-                            <td class="border h-8"></td>
-                        @endforeach
-                    </tr>
-               
-
-                    {{-- CHILD --}}
-                    {{--
-                    @foreach ($item['children'] as $child)
-                        <tr>
-                            <td class="border px-6 py-1">- {{ $child }}</td>
-
-                            <td class="border text-center">—</td>
-
-                            @foreach ($bulan as $b)
-                                <td class="border h-7"></td>
-                                <td class="border h-7"></td>
+                        {{-- {{ dd($kegiatanSurvei) }} --}}
+                        @if($sub->targets->count() > 0)
+                            @foreach ($bulan as $key => $b)
+                                @if($sub->periode === 1)
+                                    {{-- Bulanan --}}
+                                    <td class="border h-8">{{ $sub->targets[$key]?->target }}</td>
+                                    <td class="border h-8">{{ $sub->targets[$key] }}</td>
+                                @elseif($sub->periode === 2)
+                                    {{-- Triwulan --}}
+                                    @if(in_array($key + 1, [1,4,7,10]))
+                                        <td class="border h-8">{{ $sub->targets[round(($key+1)/4)]?->target }}</td>
+                                        <td class="border h-8">—</td>
+                                    @else
+                                        <td class="border h-8">—</td>
+                                        <td class="border h-8">—</td>
+                                    @endif
+                                @endif
                             @endforeach
-                        </tr>
-                    @endforeach
-                        --}}
+                        @else
+                            @foreach ($bulan as $b)
+                                <td class="border h-8">—</td>
+                                <td class="border h-8">—</td>
+                            @endforeach
+                        @endif
+
+                    </tr>
+                    
                 @endif
-            @endforeach
+            @endforeach 
 
         @endforeach
 

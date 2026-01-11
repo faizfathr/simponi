@@ -18,13 +18,19 @@ class Target extends Component
     public bool $showNotif = FALSE;
     public string $id_kegiatan, $periode = "", $action = 'Tambah', $ketWaktu = '', $message = '', $status = '', $qSearch = '', $querySearchKegiatan = '';
     public $tanggal_mulai = null, $tanggal_selesai = null;
-    public int $tahun = 2025, $waktu, $target = 0, $perPage = 10;
+    public int $tahun;
+    public int $waktu, $target = 0, $perPage = 10;
     public bool $openForm = FALSE, $openWarningDelete = FALSE;
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
     public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
 
     public array $romawiFont = ["I", "II", "III", "IV"];
+
+    public function mount()
+    {
+        $this->tahun = Carbon::now()->year;
+    }
 
     public function render()
     {
@@ -70,6 +76,7 @@ class Target extends Component
     public function tambahForm()
     {
         $this->reset();
+        $this->tahun = Carbon::now()->year;
         $this->resetValidation();
         $this->openForm = true;
     }

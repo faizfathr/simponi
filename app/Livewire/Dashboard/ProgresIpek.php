@@ -13,7 +13,9 @@ class ProgresIpek extends Component
     use WithPagination, WithoutUrlPagination;
     public bool $openForm = FALSE;
 
-    public int $tahun = 2025, $perPage = 10;
+    public int $perPage = 10;
+
+    public int $tahun;
 
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
@@ -22,6 +24,11 @@ class ProgresIpek extends Component
     public array $romawiFont = ["I", "II", "III", "IV"];
 
     public string $qSearch = '';
+
+    public function mount()
+    {
+        $this->tahun = now()->year;
+    }
 
     public function render()
     {

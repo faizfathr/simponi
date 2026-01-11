@@ -202,14 +202,14 @@
             <tbody class="bg-white dark:bg-gray-800">
                 @foreach ($subKegiatan as $sk)
                     <tr>
-                        <td class="bg-orange-400 text-white font-bold w-full px-6">{{ $subKegiatanNama[$sk-1] }}</td>
+                        <td class="bg-orange-400 text-white font-bold w-full px-6">{{ $sk->nama }}</td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                         <td class="bg-orange-400 text-white w-full px-6"></td>
                     </tr>
                     @foreach ($kegiatanSurvei as $e)
-                        @if ($e->subsektor == $sk)
+                        @if ($e->subsektor == $sk->id)
                             <tr>
                                 <td
                                     class="px-14 py-1.5 whitespace-no-wrap border-b text-gray-700 border-gray-200 dark:border-gray-600 font-base text-md">

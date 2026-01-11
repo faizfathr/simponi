@@ -5,6 +5,7 @@ namespace App\Livewire\Dashboard;
 use Carbon\Carbon;
 use App\Models\KegiatanSurvei;
 use App\Models\ListKegiatan;
+use App\Models\Subsektor;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -169,19 +170,11 @@ $this->showNotif = true;
     {
     
         $kegiatanSurvei = KegiatanSurvei::where('kegiatan', 'like', '%' . $this->search . '%')->get();
-        $subKegiatan = KegiatanSurvei::distinct()->pluck('subsektor')->sort()->values();
-        $subKegiatanNama = [
-            "STATISTIK INDUSTRI",
-            "STATISTIK PERTAMBANGAN DAN PENGGALIAN, ENERGI, DAN KONSTRUKSI",
-            "STATISTIK TANAMAN PANGAN, HORTIKULTURA, DAN PERKEBUNAN",
-            "STATISTIK HORTIKULTURA DAN PERKEBUNAN",
-            "STATISTIK PETERNAKAN, PERIKANAN, DAN KEHUTANAN",
-        ];
+        $subKegiatan = Subsektor::get();
 
         return view('livewire.dashboard.manajemen-survei', [
             'kegiatanSurvei' => $kegiatanSurvei,
             'subKegiatan' => $subKegiatan,
-            'subKegiatanNama' => $subKegiatanNama,
         ]);
     }
 }

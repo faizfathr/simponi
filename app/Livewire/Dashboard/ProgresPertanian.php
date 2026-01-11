@@ -15,13 +15,20 @@ class ProgresPertanian extends Component
 
     public string $qSearch = '';
 
-    public int $tahun = 2025, $perPage = 10;
+    public int $perPage = 10;
+
+    public int $tahun;
 
     public array $listBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
 
     public array $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
 
     public array $romawiFont = ["I", "II", "III", "IV"];
+
+    public function mount()
+    {
+        $this->tahun = now()->year;
+    }
 
     public function render()
     {

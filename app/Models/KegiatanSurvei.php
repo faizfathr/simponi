@@ -20,4 +20,9 @@ public $incrementing = false;
     {
         return $this->belongsTo(StrukturTabelMonitoring::class, 'kegiatan_survei.id', 'struktur_tabel_monitoring.id');
     }
+
+    public function targets()
+    {
+        return $this->hasMany(ListKegiatan::class, 'id_kegiatan', 'id');
+    }
 }

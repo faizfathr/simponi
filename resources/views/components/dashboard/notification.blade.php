@@ -13,7 +13,7 @@
     x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 translate-x-full"
     x-transition:enter-end="opacity-100 translate-x-0" x-transition:leave="transition ease-in duration-300"
     x-transition:leave-start="opacity-100 translate-x-0" x-transition:leave-end="opacity-0 translate-x-full"
-    class="fixed top-20 right-5 max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden ml-3 z-100">
+    class="fixed top-20 right-5 max-w-sm w-full bg-white shadow-md rounded-lg overflow-hidden ml-3 z-50">
     <div class="inline-flex justify-start w-full">
         <div class="flex justify-center items-center w-12 bg-success-500">
             @if (false)
