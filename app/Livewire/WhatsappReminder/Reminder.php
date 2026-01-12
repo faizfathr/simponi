@@ -11,14 +11,14 @@ use Livewire\Component;
 class Reminder extends Component
 {
     public string $no_tujuan = '', $pesan = "Pesan \n📅 Tanggal:  ", $pesanNotif = 'selamat', $statusNotif = 'berhasil', $headerPesan = '🔔 Hai aku SIMPONI BPS Kota Singkawang, sistem reminder andalanmu!, Jangan lupa kamu punya agenda sebagai berikut.', $footerPesan = "Tetap semangat dan terus berkolaborasi 😊, Terimakasih.\n-Tim Statistik Produksi.";
-    public bool $openForm = false, $showNotif = false;
+    public bool $openForm = false, $showNotif = false, $deleteConfirmation = false;
     public $info;
     public $scheduled_at;
 
     public function render()
     {
         $daftarKontak = KontakWa::all();
-        $history = ReminderHistory::get();
+        $history = ReminderHistory::orderBy('created_at', 'desc')->get();
         return view('livewire.whatsapp-reminder.reminder', compact('history', 'daftarKontak'));
     }
 
@@ -70,5 +70,25 @@ class Reminder extends Component
             $this->statusNotif = "Gagal";
             
         }
+    }
+
+    public function deleteHistory($id)
+    {
+
+        $itemReminderHistory = ReminderHistory::where('id', $id)->first();
+        $arrItem = explode(',', $itemReminderHistory->id_messages);
+        $fonte = new FonteService;
+        foreach ($arrItem as $item) {
+            $response = $fonte->deleteMessage($item);
+        }
+
+        if ($response['status']) {
+            ReminderHistory::where('id', $id)->delete();
+        }
+
+        $this->deleteConfirmation = FALSE;
+        $this->showNotif = TRUE;
+        $this->pesanNotif = "Reminder berhasil dihapus!";
+        $this->statusNotif = "Berhasil";
     }
 }

@@ -19,6 +19,17 @@ Class FonteService
         return $response->json();
     }
 
+    public function deleteMessage($idMessage)
+    {
+        $response = Http::asForm()->withHeaders([
+                'Authorization' => config('services.fonte.token'),
+            ])
+            ->post(config('services.fonte.url') . '/delete-message', [
+                'id' => $idMessage,
+            ]);
+        return $response->json();
+    }
+
     public function getInfo()
     {
         $response = Http::withHeaders([
