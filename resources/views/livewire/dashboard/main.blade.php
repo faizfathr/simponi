@@ -66,105 +66,110 @@
         <!-- Navigasi bulatan bawah -->
         <div class="swiper-pagination mt-6"></div>
     </div>
-{{-- tabel monitoring --}}
-<div class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4 h-[100vh] overflow-y-scroll">
+    {{-- tabel monitoring --}}
+    <div
+        class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4 h-[100vh] overflow-y-scroll">
 
-    <table class="table w-full border-collapse">
-        <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-20">
+        <table class="table w-full border-collapse">
+            <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-20">
 
-        {{-- BARIS 1 HEADER --}}
-        <tr>
-            <th rowspan="2" class="px-10 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
-                Kegiatan Survei
-            </th>
+                {{-- BARIS 1 HEADER --}}
+                <tr>
+                    <th rowspan="2"
+                        class="px-10 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                        Kegiatan Survei
+                    </th>
 
-            <th rowspan="2" class="px-4 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
-                Periode
-            </th>
+                    <th rowspan="2"
+                        class="px-4 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                        Periode
+                    </th>
 
-            @foreach ($bulan as $b)
-                <th colspan="2"
-                    class="px-4 py-2 text-center text-xs text-gray-700 dark:text-gray-200 font-bold uppercase tracking-wider border bg-orange-100 dark:bg-orange-900">
-                    {{ $b }}
-                </th>
-            @endforeach
-        </tr>
+                    @foreach ($bulan as $b)
+                        <th colspan="2"
+                            class="px-4 py-2 text-center text-xs text-gray-700 dark:text-gray-200 font-bold uppercase tracking-wider border bg-orange-100 dark:bg-orange-900">
+                            {{ $b }}
+                        </th>
+                    @endforeach
+                </tr>
 
-        {{-- BARIS 2 HEADER --}}
-        <tr>
-            @foreach ($bulan as $b)
-                <th class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">T</th>
-                <th class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">R</th>
-            @endforeach
-        </tr>
+                {{-- BARIS 2 HEADER --}}
+                <tr>
+                    @foreach ($bulan as $b)
+                        <th
+                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">
+                            T</th>
+                        <th
+                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">
+                            R</th>
+                    @endforeach
+                </tr>
 
-        </thead>
+            </thead>
 
-        <tbody>
+            <tbody>
 
-        @foreach ($subKegiatan as $kategori)
-
-            {{-- JUDUL KATEGORI --}}
-            <tr class="bg-orange-400 text-white">
-                <td colspan="{{ 2 + (count($bulan) * 2) }}"
-                    class="font-bold uppercase tracking-wider border px-3 py-2">
-                    {{ $kategori->nama }}
-                </td>
-            </tr>
-
-            {{-- LOOP SUBJUDUL YANG BANYAK --}}
-            @foreach ($kegiatanSurvei as $sub)
-                
-                @if($sub->subsektor === $kategori->id)
-                    {{-- SUBJUDUL --}}
-                    {{-- ITEM UTAMA --}}
-                    <tr class="bg-gray-50 dark:bg-gray-700/40">
-                        <td class="border px-3 py-2 font-semibold">
-                            {{ $sub->kegiatan }}
+                @foreach ($subKegiatan as $kategori)
+                    {{-- JUDUL KATEGORI --}}
+                    <tr class="bg-orange-400 text-white">
+                        <td colspan="{{ 2 + count($bulan) * 2 }}"
+                            class="font-bold uppercase tracking-wider border px-3 py-2">
+                            {{ $kategori->nama }}
                         </td>
-
-                        <td class="border px-3 py-2 text-center">
-                            {{ $ketPeriode[$sub->periode - 1] ?? '—' }}
-                        </td>
-                        {{-- {{ dd($kegiatanSurvei) }} --}}
-                        @if($sub->targets->count() > 0)
-                            @foreach ($bulan as $key => $b)
-                                @if($sub->periode === 1)
-                                    {{-- Bulanan --}}
-                                    <td class="border h-8">{{ $sub->targets[$key]?->target }}</td>
-                                    <td class="border h-8">{{ $sub->targets[$key] }}</td>
-                                @elseif($sub->periode === 2)
-                                    {{-- Triwulan --}}
-                                    @if(in_array($key + 1, [1,4,7,10]))
-                                        <td class="border h-8">{{ $sub->targets[round(($key+1)/4)]?->target }}</td>
-                                        <td class="border h-8">—</td>
-                                    @else
-                                        <td class="border h-8">—</td>
-                                        <td class="border h-8">—</td>
-                                    @endif
-                                @endif
-                            @endforeach
-                        @else
-                            @foreach ($bulan as $b)
-                                <td class="border h-8">—</td>
-                                <td class="border h-8">—</td>
-                            @endforeach
-                        @endif
-
                     </tr>
-                    
-                @endif
-            @endforeach 
 
-        @endforeach
+                    {{-- LOOP SUBJUDUL YANG BANYAK --}}
+                    @foreach ($kegiatanSurvei as $sub)
+                        @if ((int)$sub->subsektor === $kategori->id)
+                            {{-- SUBJUDUL --}}
+                            {{-- ITEM UTAMA --}}
+                            <tr class="bg-gray-50 dark:bg-gray-700/40">
+                                <td class="border px-3 py-2 font-semibold">
+                                    {{ $sub->kegiatan }}
+                                </td>
 
-        </tbody>
-    </table>
+                                <td class="border px-3 py-2 text-center">
+                                    {{ $ketPeriode[$sub->periode - 1] ?? '—' }}
+                                </td>
+                                @if ($sub->targets->count() > 0)
+                                    @foreach ($bulan as $key => $b)
+                                        @if ((int) $sub->periode === 1)
+                                            {{-- Bulanan --}}
+                                            <td class="border h-8">{{ $sub->targets[$key]?->target }}</td>
+                                            <td class="border h-8">
+                                                {{ optional($sub->targets[$key]->monitorings->firstWhere('waktu', $key + 1))->realisasi ?? '—' }}
+                                            </td>
+                                        @elseif((int)$sub->periode === 2)
+                                            {{-- Triwulan --}}
+                                            @if (in_array($key + 1, [1, 4, 7, 10]))
+                                                <td class="border h-8">{{ $sub->targets[round(($key + 1) / 4)]?->target }}
+                                                </td>
+                                                <td class="border h-8">—</td>
+                                            @else
+                                                <td class="border h-8">—</td>
+                                                <td class="border h-8">—</td>
+                                            @endif
+                                        @endif
+                                    @endforeach
+                                @else
+                                    @foreach ($bulan as $b)
+                                        <td class="border h-8">—</td>
+                                        <td class="border h-8">—</td>
+                                    @endforeach
+                                @endif
 
-</div>
-{{-- end tabel monitoring --}}
+                            </tr>
+                        @endif
+                    @endforeach
+                @endforeach
 
-           <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
+            </tbody>
+        </table>
+
+    </div>
+    {{-- end tabel monitoring --}}
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 py-6">
         <!-- Card 1: Kegiatan Bulan Ini -->
         <div class="bg-white dark:bg-gray-800 shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700">
             <div class="text-lg font-semibold text-gray-800 dark:text-gray-100 mb-3 flex gap-x-2 items-center">

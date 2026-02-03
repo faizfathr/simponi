@@ -51,7 +51,7 @@
                     <span class="text-sm md:text-lg font-semibold text-gray-800 dark:text-gray-100 "
                         x-text="item.kegiatan"></span>
                     <span class="text-xs text-gray-800 dark:text-gray-100">
-                        {{ $ketPeriode[$format[3]-1]}} {{ ($format[1] > 4 && $format[3]-1 !== 1) ? $listBulan[$format[1]-1] : $romawiFont[$format[3]] }} - ({{ $format[2] }})
+                        {{ $ketPeriode[$format[3]-1]}} {{ ($format[1] > 4 && $format[3]-1 !== 1) ? $listBulan[$format[1]-1] : $romawiFont[$format[3]-1] }} - ({{ $format[2] }})
                     </span>
                 </div>
                 <a href="{{ route('resume-detail', ['id' => $format[4], 'year' => $format[2], 'waktu'=>$format[1]]) }}"
