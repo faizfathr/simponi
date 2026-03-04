@@ -51,6 +51,7 @@ class ProgresIpek extends Component
                     DB::raw('COALESCE(monitoring_realisasi.realisasi, 0) as realisasi')
                 )
                 ->where('sektor', 2)
+                 ->where('list_kegiatan.tahun', $this->tahun)
                 ->whereLike('kegiatan', '%'.$this->qSearch . '%')
                 ->orderBy('waktu', 'ASC')
                 ->get();

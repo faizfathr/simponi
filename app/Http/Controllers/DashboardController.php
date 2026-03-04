@@ -43,6 +43,7 @@ class DashboardController extends Controller
                     ['subsektor', '=', $subsektor],
                 ]);
         })
+            ->where('monitoring_kegiatan.tahun', now()->year)
             ->where('status', 2)
             ->selectRaw('id_tabel, waktu, COUNT(*) as realisasi')
             ->groupBy('id_tabel', 'waktu')
@@ -95,7 +96,7 @@ class DashboardController extends Controller
         ])
             ->join('list_kegiatan', function ($join) {
                 $join->on('kegiatan_survei.id', '=', 'id_kegiatan')
-                    ->where('tahun', 2025);
+                    ->where('tahun', now()->year);
             })
             ->select('id_kegiatan', 'target')
             ->get()
@@ -105,6 +106,7 @@ class DashboardController extends Controller
         $surveiByRealisasi = MonitoringKegiatan::join('kegiatan_survei', function ($join) use ($subsektor) {
             $join->on('monitoring_kegiatan.id_tabel', '=', 'kegiatan_survei.id')
                 ->where([
+                    ['monitoring_kegiatan.tahun', '=', now()->year],
                     ['kegiatan_survei.subsektor', '=', $subsektor],
                     ['kegiatan_survei.periode', '=', 4],
                 ]);

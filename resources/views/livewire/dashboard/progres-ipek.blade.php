@@ -72,7 +72,7 @@
                                     </h3>
                                     <span class="block text-xs md:text-sm text-gray-500 dark:text-gray-400">
                                         {{ $this->ketPeriode[$item->periode - 1] }}
-                                        {{ $item->periode == 4 ? $item->tahun : ($item->periode == 1 ? $this->listBulan[$item->waktu - 1] : $this->romawiFont[$item->waktu - 1]) }}
+                                        {{ $item->periode == 4 ? $item->tahun : ($item->periode == 1 ? $this->listBulan[$item->waktu - 1] : $this->romawiFont[$item->waktu - 1]) }} {{ $item->periode !== 4 ?  'Tahun ' . $item->tahun : '' }}
                                     </span>
                                 </div>
                             </div>
