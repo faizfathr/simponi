@@ -27,13 +27,12 @@
     'loaded': true,
     'darkMode': $persist(false).as('darkMode'),
     'stickyMenu': false,
-    'sidebarToggle': false,
+    'sidebarToggle': $persist(false).as('sidebarToggle'),
     'scrollTop': false,
     'loading': true,
 }" x-init="window.addEventListener('load', () => {
             setTimeout(() => loading = false, 500); // beri jeda biar smooth
-        })" x-init="darkMode = JSON.parse(localStorage.getItem('darkMode'));
-$watch('darkMode', value => localStorage.setItem('darkMode', JSON.stringify(value)))" :class="{ 'dark': darkMode }">
+        })" :class="{ 'dark': darkMode }">
     <div x-show="loading" x-cloak class="fixed inset-0 z-50 bg-white opacity-95 flex items-center justify-center">
         <div class="flex space-x-1">
             <div class="w-10 h-80 bg-brand-500 origin-bottom scale-y-50 animate-bar-1"></div>

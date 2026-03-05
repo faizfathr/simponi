@@ -19,14 +19,14 @@
         </div>
         <span
             class="menu-item-text font-semibold text-sm items-center"
-            :class="sidebarToggle ? 'lg:hidden' : ''"
+            :class="sidebarToggle || sidebarHover ? '' : 'lg:hidden'"
         >
             {{ $itemSelected }}
         </span>
         @if ($isSubItem)
             <svg
                 class="menu-item-arrow  stroke-current absolute mx-auto right-8 transition-all duration-200 "
-                :class="[dropdown ? 'rotate-180' : '-rorate-180', sidebarToggle ? 'lg:hidden' : '' ]"
+                :class="[dropdown ? 'rotate-180' : '-rorate-180', sidebarToggle || sidebarHover ? '' : 'lg:hidden' ]"
                 width="20"
                 height="20"
                 viewBox="0 0 20 20"
@@ -51,7 +51,7 @@
             :class="dropdown ? 'block' : 'hidden'"
         >
         <ul
-            :class="sidebarToggle ? 'lg:hidden' : 'flex'"
+            :class="sidebarToggle || sidebarHover ? 'flex' : 'lg:hidden'"
             class="menu-dropdown mt-2 flex flex-col gap-1 pl-9"
         >
 

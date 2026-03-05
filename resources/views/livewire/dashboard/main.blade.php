@@ -70,24 +70,24 @@
     <div
         class="bg-white dark:bg-gray-800 overflow-x-auto shadow-md rounded-2xl p-4 border border-gray-200 dark:border-gray-700 mt-4 h-[100vh] overflow-y-scroll">
 
-        <table class="table w-full border-collapse">
+        <table class="table w-full border-collapse dark:text-white dark:border-gray-700">
             <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-20">
 
                 {{-- BARIS 1 HEADER --}}
                 <tr>
                     <th rowspan="2"
-                        class="px-10 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                        class="px-10 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border dark:border-gray-700">
                         Kegiatan Survei
                     </th>
 
                     <th rowspan="2"
-                        class="px-4 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border">
+                        class="px-4 py-2 text-left text-xs text-gray-600 dark:text-gray-300 font-bold uppercase tracking-wider border dark:border-gray-700">
                         Periode
                     </th>
 
                     @foreach ($bulan as $b)
                         <th colspan="2"
-                            class="px-4 py-2 text-center text-xs text-gray-700 dark:text-gray-200 font-bold uppercase tracking-wider border bg-orange-100 dark:bg-orange-900">
+                            class="px-4 py-2 text-center text-xs text-gray-700 dark:text-gray-200 font-bold uppercase tracking-wider border dark:border-gray-700 bg-orange-100 dark:bg-orange-900">
                             {{ $b }}
                         </th>
                     @endforeach
@@ -97,10 +97,10 @@
                 <tr>
                     @foreach ($bulan as $b)
                         <th
-                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">
+                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border dark:border-gray-700 w-8">
                             T</th>
                         <th
-                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border w-8">
+                            class="px-2 py-1 text-center text-xs text-gray-600 dark:text-gray-300 font-semibold uppercase border dark:border-gray-700 w-8">
                             R</th>
                     @endforeach
                 </tr>
@@ -111,9 +111,9 @@
 
                 @foreach ($subKegiatan as $kategori)
                     {{-- JUDUL KATEGORI --}}
-                    <tr class="bg-orange-400 text-white">
+                    <tr class="bg-orange-400 text-white ">
                         <td colspan="{{ 2 + count($bulan) * 2 }}"
-                            class="font-bold uppercase tracking-wider border px-3 py-2">
+                            class="font-bold uppercase tracking-wider border dark:border-gray-700 px-3 py-2">
                             {{ $kategori->nama }}
                         </td>
                     </tr>
@@ -123,38 +123,38 @@
                         @if ((int)$sub->subsektor === $kategori->id)
                             {{-- SUBJUDUL --}}
                             {{-- ITEM UTAMA --}}
-                            <tr class="bg-gray-50 dark:bg-gray-700/40">
-                                <td class="border px-3 py-2 font-semibold">
+                            <tr class="bg-gray-50 dark:bg-gray-700/40 hover:bg-primary/20 dark:hover:bg-white/20 transition-colors border dark:border-gray-700">
+                                <td class="border dark:border-gray-700 px-3 py-2 font-semibold">
                                     {{ $sub->kegiatan }}
                                 </td>
 
-                                <td class="border px-3 py-2 text-center">
+                                <td class="border dark:border-gray-700 px-3 py-2 text-center">
                                     {{ $ketPeriode[$sub->periode - 1] ?? '—' }}
                                 </td>
                                 @if ($sub->targets->count() > 0)
                                     @foreach ($bulan as $key => $b)
                                         @if ((int) $sub->periode === 1)
                                             {{-- Bulanan --}}
-                                            <td class="border h-8">{{ $sub->targets[$key]?->target }}</td>
-                                            <td class="border h-8">
-                                                {{ optional($sub->targets[$key]->monitorings->firstWhere('waktu', $key + 1))->realisasi ?? '—' }}
+                                            <td class="border dark:border-gray-700 h-8">{{ $sub->targets[$key]?->target }}</td>
+                                            <td class="border dark:border-gray-700 h-8">
+                                                {{ optional($sub->targets[$key]->monitorings->firstWhere('waktu', $key + 1))->realisasi ?? '0' }}
                                             </td>
                                         @elseif((int)$sub->periode === 2)
                                             {{-- Triwulan --}}
                                             @if (in_array($key + 1, [1, 4, 7, 10]))
-                                                <td class="border h-8">{{ $sub->targets[round(($key + 1) / 4)]?->target }}
+                                                <td class="border dark:border-gray-700 h-8">{{ $sub->targets[round(($key + 1) / 4)]?->target }}
                                                 </td>
-                                                <td class="border h-8">—</td>
+                                                <td class="border dark:border-gray-700 h-8">0</td>
                                             @else
-                                                <td class="border h-8">—</td>
-                                                <td class="border h-8">—</td>
+                                                <td class="border dark:border-gray-700 h-8"></td>
+                                                <td class="border dark:border-gray-700 h-8"></td>
                                             @endif
                                         @endif
                                     @endforeach
                                 @else
                                     @foreach ($bulan as $b)
-                                        <td class="border h-8">—</td>
-                                        <td class="border h-8">—</td>
+                                        <td class="border dark:border-gray-700 h-8"></td>
+                                        <td class="border dark:border-gray-700 h-8"></td>
                                     @endforeach
                                 @endif
 

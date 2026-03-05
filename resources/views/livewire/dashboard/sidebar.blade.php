@@ -1,15 +1,16 @@
-<aside :class="sidebarToggle ? 'translate-x-0 lg:w-[90px]' : '-translate-x-full'"
-    class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[290px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-gray-900 lg:static lg:translate-x-0">
+<aside x-data="{ sidebarHover: false }" :class="sidebarToggle || sidebarHover  ? '-translate-x-full' : 'translate-x-0 lg:w-[90px]'"
+    @mouseenter="sidebarHover = true" @mouseleave="sidebarHover = false"
+    class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-gray-900 lg:static lg:translate-x-0">
     <!-- SIDEBAR HEADER -->
-    <div :class="sidebarToggle ? 'justify-center' : 'justify-between'"
+    <div :class="sidebarToggle || sidebarHover ? 'justify-between' : 'justify-center'"
         class="sidebar-header flex items-center gap-2 pb-7 lg:pt-8">
         <a href="{{ route('home') }}">
-            <span class="logo flex items-center" :class="sidebarToggle ? 'hidden' : ''">
+            <span class="logo flex items-center" :class="sidebarToggle || sidebarHover ? '' : 'hidden'">
                 <img class="w-10 lg:block hidden" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
                 <span class="ml-2 font-bold dark:text-brand-500">SIMPONI</span>
             </span>
 
-            <span class="flex items-center lg:mt-0 mt-20" :class="sidebarToggle ? 'lg:block' : 'hidden'">
+            <span class="flex items-center lg:mt-0 mt-20" :class="sidebarToggle || sidebarHover ? 'hidden' : 'lg:block'">
                 <img class="w-10" src="{{ asset('/logo/logo.png') }}" alt="Logo" />
                 <span class="ml-2 font-bold lg:hidden block">SIMPONI</span>
             </span>
@@ -23,11 +24,11 @@
             <!-- Menu Group -->
             <div>
                 <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
-                    <span class="menu-group-title" :class="sidebarToggle ? 'lg:hidden' : ''">
+                    <span class="menu-group-title" :class="sidebarToggle || sidebarHover ? '' : 'lg:hidden'">
                         MENU
                     </span>
 
-                    <svg :class="sidebarToggle ? 'lg:block hidden' : 'hidden'"
+                    <svg :class="sidebarToggle || sidebarHover ? 'hidden' : 'lg:block hidden'"
                         class="menu-group-icon mx-auto fill-current" width="24" height="24" viewBox="0 0 24 24"
                         fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path fill-rule="evenodd" clip-rule="evenodd"
@@ -137,10 +138,10 @@
                     <!-- Tambahan Group -->
                     <div>
                         <h3 class="mb-4 text-xs uppercase leading-[20px] text-gray-400">
-                            <span class="menu-group-title" :class="sidebarToggle ? 'lg:hidden' : ''">
+                            <span class="menu-group-title" :class="sidebarToggle || sidebarHover ? '' : 'lg:hidden'">
                                 LAINNYA
                             </span>
-                            <svg :class="sidebarToggle ? 'lg:block hidden' : 'hidden'"
+                            <svg :class="sidebarToggle || sidebarHover ? 'hidden' : 'lg:block  hidden'"
                                 class="menu-group-icon mx-auto fill-current" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path fill-rule="evenodd" clip-rule="evenodd"
@@ -202,7 +203,7 @@
                     </div>
 
                     <!-- Promo Box -->
-                    <div :class="sidebarToggle ? 'lg:hidden' : ''"
+                    <div :class="sidebarToggle || sidebarHover ? '' : 'lg:hidden'"
                         class="mx-auto mb-10 w-full max-w-60 rounded-2xl bg-gray-50 px-4 py-5 text-center dark:bg-white/[0.03]">
                         <h3 class="mb-2 font-semibold text-gray-900 dark:text-white">
                             Tim Produksi
