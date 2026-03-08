@@ -30,6 +30,9 @@ export default {
                 'success-500': '#12b76a',
                 'success-600': '#039855',
                 'warning-50': '#fffaeb',
+                'danger-50': '#ffeded',
+                'danger-500': '#f04438',
+                'danger-600': '#d92d20',
             },
             keyframes: {
                 progressAnimation: {

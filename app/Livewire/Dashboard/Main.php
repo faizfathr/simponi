@@ -75,8 +75,24 @@ class Main extends Component
                 }]);
             }])
             ->get();
+        $kegiatanSurveiTahunLalu = KegiatanSurvei::where('periode', 2)
+        ->with(['targets' => function ($query) {
+            $query->where('tahun', now()->year - 1)
+                ->where('waktu', 4)
+            ->with(['monitorings' => function ($monitoringQuery) {
+                $monitoringQuery->selectRaw('
+                        id_tabel,
+                        waktu,
+                        COUNT(*) as realisasi
+                    ')
+                    ->where('status', 2)
+                    ->where('tahun', now()->year - 1)
+                    ->groupBy('id_tabel', 'waktu');
+                }]);
+            }])
+            ->get();
         $subKegiatan = Subsektor::get();
 
-        return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan', 'kegiatanSurvei', 'subKegiatan', 'kegiatanTahunIni'));
+        return view('livewire.dashboard.main', compact('mitra', 'kegiatan', 'kegiatanBerjalan', 'kegiatanSurvei', 'subKegiatan', 'kegiatanTahunIni', 'kegiatanSurveiTahunLalu'));
     }
 }
