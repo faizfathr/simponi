@@ -108,7 +108,6 @@
             </thead>
 
             <tbody>
-
                 @foreach ($subKegiatan as $kategori)
                     {{-- JUDUL KATEGORI --}}
                     <tr class="bg-orange-400 text-white ">
@@ -127,34 +126,33 @@
                                 $tahunLalu = $kegiatanSurveiTahunLalu->where('id', $sub->id)->first();
                             @endphp
                             {{-- DATA TAHUN LALU TRIWULAN 4 --}}
-                            @if ($tahunLalu)
+                            @if (!is_null($tahunLalu) && (int) $tahunLalu->periode === 2)
                                 <tr
                                     class="bg-gray-50 dark:bg-gray-700/40 hover:bg-primary/20 dark:hover:bg-white/20 transition-colors border dark:border-gray-700">
                                     <td class="border dark:border-gray-700 px-3 py-2 font-semibold">
-                                        {{ $tahunLalu->kegiatan }} (Tahun {{ now()->year - 1 }} Triwulan 4)
+                                        {{ $tahunLalu->kegiatan }} <b>Tahun {{ now()->year - 1 }} TW IV</b>
                                     </td>
                                     <td class="border dark:border-gray-700 px-3 py-2 text-center">
                                         {{ $ketPeriode[$tahunLalu->periode - 1] ?? '—' }}
                                     </td>
-                                    {{-- {{ dd($tahunLalu->targets[0]) }} --}}
                                     @php
-                                        $target = $tahunLalu->targets[0]?->target ?: 0;
-                                        // $realisasi =
-                                        //     optional(
-                                        //         $tahunLalu->targets?->monitorings->firstWhere('waktu', 4),
-                                        //     )->realisasi ?? 0;
+                                        $target = $tahunLalu->targets->first()?->target ?: 0;
+                                        $realisasi =
+                                            optional($tahunLalu->targets->first()?->monitorings->firstWhere('waktu', 4))
+                                                ->realisasi ?? 0;
                                     @endphp
                                     <td
                                         class="border dark:border-gray-700 h-8 bg-slate-200 dark:bg-slate-600 font-semibold">
                                         {{ $target }}
                                     </td>
-                                    {{-- <td @class([
+                                    <td @class([
                                         'border dark:border-gray-700 h-8 font-semibold',
-                                        'bg-success-500 dark:bg-success-600' => $realisasi >= $target,
+                                        'bg-success-500 dark:bg-success-600' =>
+                                            $realisasi >= $target && $realisasi > 0,
                                         'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
                                     ])>
                                         {{ $realisasi }}
-                                    </td> --}}
+                                    </td>
                                 </tr>
                             @endif
 
@@ -183,7 +181,8 @@
                                             </td>
                                             <td @class([
                                                 'border dark:border-gray-700 h-8 font-semibold',
-                                                'bg-success-500 dark:bg-success-600' => $realisasi >= $target,
+                                                'bg-success-500 dark:bg-success-600' =>
+                                                    $realisasi >= $target && $realisasi > 0,
                                                 'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
                                             ])>
                                                 {{ $realisasi }}
@@ -205,7 +204,66 @@
                                                 </td>
                                                 <td @class([
                                                     'border dark:border-gray-700 h-8 font-semibold',
-                                                    'bg-success-500 dark:bg-success-600' => $realisasi >= $target,
+                                                    'bg-success-500 dark:bg-success-600' =>
+                                                        $realisasi >= $target && $realisasi > 0,
+                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                ])>
+                                                    {{ $realisasi }}
+                                                </td>
+                                            @else
+                                                <td class="border dark:border-gray-700 h-8"></td>
+                                                <td class="border dark:border-gray-700 h-8"></td>
+                                            @endif
+                                        @elseif((int) $sub->periode === 3)
+                                            {{-- Subround --}}
+                                            @if (in_array($key + 1, [4, 8, 12]))
+                                                @php
+                                                    $target = $sub->targets[round(($key) / 4)-1]?->target ?: 0;
+                                                    $realisasi =
+                                                        optional(
+                                                            $sub->targets[
+                                                                round(($key) / 4)-1
+                                                            ]->monitorings->firstWhere('waktu', round(($key+1) / 4)),
+                                                        )->realisasi ?? 0;
+                                                @endphp
+                                                <td class="border dark:border-gray-700 h-8">
+                                                    {{ $target }}
+                                                </td>
+                                                <td @class([
+                                                    'border dark:border-gray-700 h-8 font-semibold',
+                                                    'bg-success-500 dark:bg-success-600' => $realisasi >= $target && $realisasi > 0,
+                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                ])>
+                                                    {{ $realisasi }}
+                                                </td>
+                                            @else
+                                                <td class="border dark:border-gray-700 h-8"></td>
+                                                <td class="border dark:border-gray-700 h-8"></td>
+                                            @endif
+                                        @elseif((int) $sub->periode === 4)
+                                            @php
+                                                $bulanSelesai = Date::parse(
+                                                    $sub->targets->first()?->tanggal_selesai,
+                                                    'Asia/Jakarta',
+                                                )->month;
+                                            @endphp
+                                           @if ($key+1 === $bulanSelesai)
+                                                @php
+                                                    $target = $sub->targets->first()?->target ?: 0;
+                                                    $realisasi =
+                                                        optional(
+                                                            $sub->targets
+                                                                ->first()
+                                                                ?->monitorings->firstWhere('waktu', 4),
+                                                        )->realisasi ?? 0;
+                                                @endphp
+                                                <td class="border dark:border-gray-700 h-8">
+                                                    {{ $target }}
+                                                </td>
+                                                <td @class([
+                                                    'border dark:border-gray-700 h-8 font-semibold',
+                                                    'bg-success-500 dark:bg-success-600' =>
+                                                        $realisasi >= $target && $realisasi > 0,
                                                     'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
                                                 ])>
                                                     {{ $realisasi }}

@@ -1,6 +1,8 @@
-<aside x-data="{ sidebarHover: false }" :class="sidebarToggle || sidebarHover  ? '-translate-x-full' : 'translate-x-0 lg:w-[90px]'"
-    @mouseenter="sidebarHover = true" @mouseleave="sidebarHover = false"
-    class="sidebar fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-gray-900 lg:static lg:translate-x-0">
+<aside x-data="{ sidebarHover: false }" 
+   :class="sidebarToggle || sidebarHover ? 'translate-x-0' : '-translate-x-full lg:translate-x-0 lg:w-[90px]'"
+    @mouseenter="sidebarHover = true" 
+    @mouseleave="sidebarHover = false"
+    class="fixed left-0 top-0 z-50 flex h-screen w-[240px] flex-col overflow-y-hidden border-r border-gray-200 bg-white px-5 duration-300 ease-linear dark:border-gray-800 dark:bg-gray-900 lg:static lg:translate-x-0">
     <!-- SIDEBAR HEADER -->
     <div :class="sidebarToggle || sidebarHover ? 'justify-between' : 'justify-center'"
         class="sidebar-header flex items-center gap-2 pb-7 lg:pt-8">

@@ -16,7 +16,7 @@
         <div class="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto bg-gray-100">
             <!-- Small Device Overlay Start -->
             <div @click="sidebarToggle = false" :class="sidebarToggle ? 'block lg:hidden' : 'hidden'"
-                class="fixed w-full h-screen z-9 bg-gray-900/50"></div>
+                class="fixed w-full h-screen z-30 bg-gray-900/50"></div>
 
             <!-- Small Device Overlay End -->
 
