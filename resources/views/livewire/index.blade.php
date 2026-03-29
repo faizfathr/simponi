@@ -76,6 +76,9 @@
                     @if (request()->routeIs('manajemen-survei.struktur-tabel'))
                         @livewire('manajemen.struktur-tabel', ['id' => $idPage], key($idPage))
                     @endif
+                    @if (request()->routeIs('administrasi.surat-tugas'))
+                        @livewire('administrasi.surat-tugas')
+                    @endif
                 </div>
             </main>
             <!-- ===== Main Content End ===== -->

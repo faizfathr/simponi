@@ -26,6 +26,10 @@ Route::prefix('/manajemen-survei')->group(function () {
 
 });
 
+Route::prefix('/administrasi')->group(function () {
+    Route::get('surat-tugas', Home::class)->name('administrasi.surat-tugas');
+});
+
 Route::get('/manajemen-petugas', Home::class)->name('manajemen-petugas');
 
 Route::get('/manajemen-administrasi', Home::class)->name('manajemen-administrasi');

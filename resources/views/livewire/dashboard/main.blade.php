@@ -169,11 +169,15 @@
                                         @if ((int) $sub->periode === 1)
                                             {{-- Bulanan --}}
                                             @php
-                                                $target = $sub->targets[$key]?->target ?: 0;
+                                                $target =
+                                                    collect($sub->targets)->firstWhere('waktu', $key+1)?->target ?? 0;
                                                 $realisasi =
-                                                    optional(
-                                                        $sub->targets[$key]->monitorings->firstWhere('waktu', $key + 1),
-                                                    )->realisasi ?? 0;
+                                                    collect(
+                                                        $sub->targets->firstWhere('waktu', $key+1)?->monitorings ?? [],
+                                                    )->firstWhere(
+                                                        'waktu',
+                                                        $key + 1,
+                                                    )?->realisasi ?? 0;
                                             @endphp
                                             <td
                                                 class="border dark:border-gray-700 h-8 bg-slate-200 dark:bg-slate-600 font-semibold">
@@ -218,12 +222,13 @@
                                             {{-- Subround --}}
                                             @if (in_array($key + 1, [4, 8, 12]))
                                                 @php
-                                                    $target = $sub->targets[round(($key) / 4)-1]?->target ?: 0;
+                                                    $target = $sub->targets[round($key / 4) - 1]?->target ?: 0;
                                                     $realisasi =
                                                         optional(
-                                                            $sub->targets[
-                                                                round(($key) / 4)-1
-                                                            ]->monitorings->firstWhere('waktu', round(($key+1) / 4)),
+                                                            $sub->targets[round($key / 4) - 1]->monitorings->firstWhere(
+                                                                'waktu',
+                                                                round(($key + 1) / 4),
+                                                            ),
                                                         )->realisasi ?? 0;
                                                 @endphp
                                                 <td class="border dark:border-gray-700 h-8">
@@ -231,7 +236,8 @@
                                                 </td>
                                                 <td @class([
                                                     'border dark:border-gray-700 h-8 font-semibold',
-                                                    'bg-success-500 dark:bg-success-600' => $realisasi >= $target && $realisasi > 0,
+                                                    'bg-success-500 dark:bg-success-600' =>
+                                                        $realisasi >= $target && $realisasi > 0,
                                                     'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
                                                 ])>
                                                     {{ $realisasi }}
@@ -247,15 +253,12 @@
                                                     'Asia/Jakarta',
                                                 )->month;
                                             @endphp
-                                           @if ($key+1 === $bulanSelesai)
+                                            @if ($key + 1 === $bulanSelesai)
                                                 @php
                                                     $target = $sub->targets->first()?->target ?: 0;
                                                     $realisasi =
-                                                        optional(
                                                             $sub->targets
-                                                                ->first()
-                                                                ?->monitorings->firstWhere('waktu', 4),
-                                                        )->realisasi ?? 0;
+                                                                ->first()?->monitorings->first()?->realisasi ?: 0;
                                                 @endphp
                                                 <td class="border dark:border-gray-700 h-8">
                                                     {{ $target }}
@@ -380,7 +383,8 @@
                     class="dark:bg-dark-900 shadow-theme-xs focus:border-brand-300 focus:ring-brand-500/10 dark:focus:border-brand-800 h-11 max-w-max appearance-none rounded-lg border border-gray-300 bg-transparent bg-none px-4 py-2.5 pr-11 text-sm text-gray-800 placeholder:text-gray-400 focus:ring-3 focus:outline-hidden dark:border-gray-700 dark:bg-gray-900 dark:text-white/90 dark:placeholder:text-white/30">
 
                     @foreach (range(2023, 2028) as $thn)
-                        <option value="{{ $thn }}" class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
+                        <option value="{{ $thn }}"
+                            class="text-gray-700 dark:bg-gray-900 dark:text-gray-400">
                             {{ $thn }}
                         </option>
                     @endforeach

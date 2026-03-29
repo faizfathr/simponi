@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('nama')->require();
             $table->string('no_rek')->require();
             $table->smallInteger('status')->require(); //0 => organik, 1=>mitra
+            $table->string('nip')->nullable();
+            $table->smallInteger('jabatan')->nullable();
+            $table->smallInteger('golongan')->nullable();
             $table->timestamps();
         });
     }

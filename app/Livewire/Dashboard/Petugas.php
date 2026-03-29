@@ -2,14 +2,19 @@
 
 namespace App\Livewire\Dashboard;
 
+use App\Models\Jabatan;
 use Livewire\Component;
 use App\Models\Mitra;
+use App\Models\PangkatGolongan;
 use Illuminate\Validation\Rule;
 
 class Petugas extends Component
 {
     public $nama;
+    public $jabatan;
+    public $golongan;
     public $no_rek;
+    public $nip;
     public $id;
     public $statusDb;
     public $search = '';
@@ -19,13 +24,13 @@ class Petugas extends Component
     public $showNotif = false;
     public $action = '';
     public $openWarningDelete = false;
-   
+
 
     public function getRules()
     {
         return [
             'nama' => 'required|string|max:255',
-            'no_rek' => 'required|numeric|digits:8',
+            'no_rek' => 'required|numeric',
             'statusDb' => 'required|in:0,1',
         ];
     }
@@ -37,8 +42,7 @@ class Petugas extends Component
             'no_rek' => [
                 'required',
                 'numeric',
-                'digits:8',
-                Rule::unique('mitra', 'no_rek') ->ignore($this->id)->where(function ($query) {
+                Rule::unique('mitra', 'no_rek')->ignore($this->id)->where(function ($query) {
                     return $query->where('status', $this->statusDb);
                 }),
             ],
@@ -50,57 +54,58 @@ class Petugas extends Component
             'nama.regex' => 'Nama hanya boleh berisi huruf dan spasi',
             'no_rek.required' => 'No rekening harus diisi',
             'no_rek.numeric' => 'No rekening harus berupa angka',
-            'no_rek.digits' => 'No rekening harus berupa 8 digit angka',
             'no_rek.unique' => 'No rekening sudah terdaftar',
             'statusDb.required' => 'Status harus diisi',
             'statusDb.in' => 'Status harus pegawai atau kemitraan',
         ]);
         if ($this->action == 'Edit') {
-                logger('UPDATE DIPANGGIL');
+            logger('UPDATE DIPANGGIL');
             $petugas = Mitra::findOrFail($this->id);
             $petugas->update([
                 'nama' => $this->nama,
                 'no_rek' => $this->no_rek,
                 'status' => $this->statusDb,
+                'jabatan' => $this->jabatan,
+                'golongan' => $this->golongan,
+                'nip' => $this->nip,
+            ]);
+            $this->message = "Petugas berhasil diperbaharui";
+            $this->status = "success";
+            session()->flash('success', 'Petugas berhasil diperbarui.');
+        } else {
+            do {
+                $count = Mitra::where('status', $this->statusDb)->count();
+                $generateId = $this->statusDb == 1
+                    ? 61720000 + $count + 1
+                    : 340000 + $count + 1;
+            } while (Mitra::find($generateId));
+
+            Mitra::create([
+                'id' => $generateId,
+                'nama' => $this->nama,
+                'jabatan' => $this->jabatan,
+                'golongan' => $this->golongan,
+                'no_rek' => $this->no_rek,
+                'status' => $this->statusDb,
+                'nip' => $this->nip,
             ]);
 
-                   $this->message = "Petugas berhasil diperbaharui";
-            $this->status = "success";
-    session()->flash('success', 'Petugas berhasil diperbarui.');
-  
-   
-        } else{
-        do {
-            $count = Mitra::where('status', $this->statusDb)->count();
-            $generateId = $this->statusDb == 1
-                ? 61720000 + $count + 1
-                : 340000 + $count + 1;
-        } while (Mitra::find($generateId));
 
-        Mitra::create([
-            'id' => $generateId,
-            'nama' => $this->nama,
-            'no_rek' => $this->no_rek,
-            'status' => $this->statusDb,
-        ]);
+            $this->message = "Pegawai berhasil ditambahkan";
+            $this->status = 'success';
+        }
+        $this->search = '';
+        $this->openForm = false;
+        $this->resetForm();
+        $this->showNotif = true;
+        $this->showNotif = true;
+        $this->openForm = false;
 
+        $this->resetForm();
 
-        $this->message = "Pegawai berhasil ditambahkan";
-        $this->status = 'success';
-   
-    }
-    $this->search = '';  
-     $this->openForm = false;
-$this->resetForm();
-$this->showNotif = true;
-$this->showNotif = true;
-$this->openForm = false;
-
-$this->resetForm();
-
-// kirim event ke browser
-$this->dispatch('formClosed');
-$this->dispatch('notifShowed', message: $this->message, status: $this->status);
+        // kirim event ke browser
+        $this->dispatch('formClosed');
+        $this->dispatch('notifShowed', message: $this->message, status: $this->status);
     }
 
     public function tambahForm()
@@ -110,7 +115,10 @@ $this->dispatch('notifShowed', message: $this->message, status: $this->status);
             'no_rek',
             'id',
             'action',
-            'statusDb'
+            'statusDb',
+            'jabatan',
+            'golongan',
+            'nip',
         ]);
         $this->action = 'tambah';
         $this->openForm = true;
@@ -123,7 +131,10 @@ $this->dispatch('notifShowed', message: $this->message, status: $this->status);
             'no_rek',
             'id',
             'action',
-            'statusDb'
+            'statusDb',
+            'jabatan',
+            'golongan',
+            'nip',
         ]);
         $this->action = 'Tambah';
     }
@@ -133,12 +144,16 @@ $this->dispatch('notifShowed', message: $this->message, status: $this->status);
         $petugas = Mitra::findOrFail($id);
         $this->id = $petugas->id;
         $this->nama = $petugas->nama;
+        $this->jabatan= $petugas->jabatan;
+        $this->golongan = $petugas->golongan;
         $this->no_rek = $petugas->no_rek;
         $this->statusDb = $petugas->status;
+        $this->nip = $petugas->nip;
         $this->action = 'Edit';
         $this->openForm = true;
     }
-    public function deletePetugas($id){
+    public function deletePetugas($id)
+    {
         Mitra::findOrFail($id)->delete();
 
         $this->openWarningDelete = false;
@@ -147,14 +162,14 @@ $this->dispatch('notifShowed', message: $this->message, status: $this->status);
         $this->showNotif = true;
 
         session()->flash('success', 'Data kegiatan berhasil dihapus');
-    
     }
-    public function confirmDelete($id){
+    public function confirmDelete($id)
+    {
         $this->id = $id;
         $data = Mitra::findOrFail($id);
         $this->nama = $data->nama;
         $this->no_rek = $data->no_rek;
-                $this->statusDb = $data->status;
+        $this->statusDb = $data->status;
         $this->openWarningDelete = true;
     }
     public function render()
@@ -167,9 +182,12 @@ $this->dispatch('notifShowed', message: $this->message, status: $this->status);
                     ->orWhere('id', 'like', '%' . $this->search . '%');
             })->get()
             : Mitra::all();
-
+        $listJabatan = Jabatan::all();
+        $listGolongan = PangkatGolongan::all();
         return view('livewire.dashboard.petugas', [
-            'listPetugas' => $listPetugas
+            'listPetugas' => $listPetugas,
+            'listJabatan' => $listJabatan,
+            'listGolongan' => $listGolongan
         ]);
     }
 }

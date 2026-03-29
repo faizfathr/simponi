@@ -14,7 +14,7 @@ class Mitra extends Model
 
     public $incrementing = false;
 
-    protected $fillable = ['id', 'nama', 'no_rek', 'status'];
+    protected $fillable = ['id', 'nama', 'no_rek', 'status', 'jabatan', 'golongan', 'nip'];
 
     public function getKegiatanPml()
     {
@@ -24,5 +24,15 @@ class Mitra extends Model
     public function getKegiatanPcl()
     {
         return $this->hasMany(MonitoringKegiatan::class, 'pcl', 'id');
+    }
+
+    public function getJabatan()
+    {
+        return $this->belongsTo(Jabatan::class, 'jabatan', 'id');
+    }
+
+    public function getGolongan()
+    {
+        return $this->belongsTo(PangkatGolongan::class, 'golongan', 'id');
     }
 }

@@ -1,8 +1,6 @@
 <?php
 
 namespace App\Models;
-
-use Google\Service\CloudRun\KeyToPath;
 use Illuminate\Database\Eloquent\Model;
 
 class ListKegiatan extends Model
@@ -27,6 +25,8 @@ class ListKegiatan extends Model
     ];
 
     protected $primaryKey = 'id';
+
+    protected $keyType = 'int';
 
     public function joinKegiatan()  
     {
