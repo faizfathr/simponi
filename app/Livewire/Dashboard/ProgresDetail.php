@@ -16,7 +16,7 @@ class ProgresDetail extends Component
     public $file;
 
     public $idPage = null;
-    public bool $openForm = FALSE, $showNotif = FALSE;
+    public bool $openForm = FALSE, $showNotif = FALSE, $tandai_semua = FALSE;
     public $sampel_header, $prosess_header, $sampel_body, $prosess_body;
     public array $monitoring, $allItem;
     public string $id_tabel,  $message = '', $status = '';
@@ -111,10 +111,18 @@ class ProgresDetail extends Component
             $data['prosess'] = collect($data['prosess'])->map(function ($item) {
                 return (int) $item;
             })->toArray();
-            $data['proses'] = implode(';', $data['prosess']);
+            if ($this->tandai_semua) {
+                $prosessModified = array_map(
+                    fn($item) => $item == 0 ? 1 : $item,
+                    $data['prosess']
+                );
+                $data['proses'] = implode(';', $prosessModified);
+            } else {
+                $data['proses'] = implode(';', $data['prosess']);
+            }
             if (array_sum(explode(";", $data['proses'])) === 0) {
                 $data['status'] = 0;
-            } else if (count(explode(";", $data['proses'])) === array_sum($data['prosess'])) {
+            } else if (count(explode(";", $data['proses'])) === array_sum(explode(";", $data['proses']))) {
                 $data['status'] = 2;
             } else {
                 $data['status'] = 1;
@@ -231,7 +239,7 @@ class ProgresDetail extends Component
         }
         if (count($monitoring) > 0) {
             $this->message = 'Data monitoring berhasil dicopy';
-        } else{
+        } else {
             $this->message = 'Tidak ada data monitoring yang dicopy';
         }
         $this->status = 'Gagal';
