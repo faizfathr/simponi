@@ -24,7 +24,7 @@ class Index extends Component
                 
                 'password' => 'required',
                    'username' => ['required', function ($attribute, $value, $fail) {
-                if (!Auth::attempt(['username' => $value, 'password' => $this->password])) {
+                if (!Auth::attempt(['username' => $value, 'password' => $this->password], true)) {
                     $user = Auth::user();
                     if (!$user) {
                         $fail('Username tidak dikenali.');
