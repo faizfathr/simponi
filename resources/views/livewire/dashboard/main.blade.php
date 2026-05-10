@@ -147,9 +147,9 @@
                                     </td>
                                     <td @class([
                                         'border dark:border-gray-700 h-8 font-semibold',
-                                        'bg-success-500 dark:bg-success-600' =>
-                                            $realisasi >= $target && $realisasi > 0,
-                                        'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                        'bg-success-500 dark:bg-success-600' => $realisasi >= $target && $realisasi > 0,
+                                        'bg-orange-500 dark:bg-orange-600' => $realisasi > 0 && $realisasi < $target,
+                                        'bg-danger-500 dark:bg-danger-600' => $realisasi == 0,
                                     ])>
                                         {{ $realisasi }}
                                     </td>
@@ -185,9 +185,9 @@
                                             </td>
                                             <td @class([
                                                 'border dark:border-gray-700 h-8 font-semibold',
-                                                'bg-success-500 dark:bg-success-600' =>
-                                                    $realisasi >= $target && $realisasi > 0,
-                                                'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                'bg-success-500 dark:bg-success-600' => $realisasi >= $target && $realisasi > 0,
+                                                'bg-orange-500 dark:bg-orange-600' => $realisasi > 0 && $realisasi < $target,
+                                                'bg-danger-500 dark:bg-danger-600' => $realisasi == 0,
                                             ])>
                                                 {{ $realisasi }}
                                             </td>
@@ -208,9 +208,9 @@
                                                 </td>
                                                 <td @class([
                                                     'border dark:border-gray-700 h-8 font-semibold',
-                                                    'bg-success-500 dark:bg-success-600' =>
-                                                        $realisasi >= $target && $realisasi > 0,
-                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                    'bg-success-500 dark:bg-success-600' =>$realisasi >= $target && $realisasi > 0,
+                                                    'bg-orange-500 dark:bg-orange-600' => $realisasi > 0 && $realisasi < $target,
+                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi == 0,
                                                 ])>
                                                     {{ $realisasi }}
                                                 </td>
@@ -236,9 +236,9 @@
                                                 </td>
                                                 <td @class([
                                                     'border dark:border-gray-700 h-8 font-semibold',
-                                                    'bg-success-500 dark:bg-success-600' =>
-                                                        $realisasi >= $target && $realisasi > 0,
-                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                    'bg-success-500 dark:bg-success-600' =>$realisasi >= $target && $realisasi > 0,
+                                                    'bg-orange-500 dark:bg-orange-600' => $realisasi > 0 && $realisasi < $target,
+                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi == 0,
                                                 ])>
                                                     {{ $realisasi }}
                                                 </td>
@@ -265,9 +265,9 @@
                                                 </td>
                                                 <td @class([
                                                     'border dark:border-gray-700 h-8 font-semibold',
-                                                    'bg-success-500 dark:bg-success-600' =>
-                                                        $realisasi >= $target && $realisasi > 0,
-                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi < $target,
+                                                    'bg-success-500 dark:bg-success-600' => $realisasi >= $target && $realisasi > 0,
+                                                    'bg-orange-500 dark:bg-orange-600' => $realisasi > 0 && $realisasi < $target,
+                                                    'bg-danger-500 dark:bg-danger-600' => $realisasi == 0,
                                                 ])>
                                                     {{ $realisasi }}
                                                 </td>

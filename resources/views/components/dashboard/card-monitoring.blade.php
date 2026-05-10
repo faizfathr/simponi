@@ -7,6 +7,12 @@
     $ketPeriode = ['Bulan', 'Triwulan', 'Subround', 'Tahun'];
     $romawiFont = ["I", "II", "III", "IV"];
     $format = explode(',', $query);
+    $arrFormat = [
+        'waktu' => $format[1],
+        'tahun' => $format[2],
+        'periode' => $format[3],
+        'id_kegiatan' => $format[4],
+    ];
 @endphp
 
 <div x-data="{ items: []}"
@@ -50,11 +56,16 @@
                 <div class="flex flex-col">
                     <span class="text-sm md:text-lg font-semibold text-gray-800 dark:text-gray-100 "
                         x-text="item.kegiatan"></span>
-                    <span class="text-xs text-gray-800 dark:text-gray-100">
-                        {{ $ketPeriode[$format[3]-1]}} {{ ($format[1] > 4 && $format[3]-1 !== 1) ? $listBulan[$format[1]-1] : $romawiFont[$format[3]-1] }} - ({{ $format[2] }})
+                    <span class="text-xs text-gray-800 dark:text-gray-100" >
+                        {{ $ketPeriode[$arrFormat['periode']-1]}} 
+                        {{ 
+                            ($arrFormat['waktu'] > 4 && $arrFormat['periode']-1 !== 1) 
+                                ? $listBulan[$arrFormat['waktu']-1] . ' - ' . $arrFormat['tahun']
+                                : ($arrFormat['periode'] == 4 ? $arrFormat['tahun'] : $romawiFont[$arrFormat['periode']-1] . ' - ' . $arrFormat['tahun'])
+                        }}
                     </span>
                 </div>
-                <a href="{{ route('resume-detail', ['id' => $format[4], 'year' => $format[2], 'waktu'=>$format[1]]) }}"
+                <a href="{{ route('resume-detail', ['id' => $arrFormat['id_kegiatan'], 'year' => $arrFormat['tahun'], 'waktu'=>$arrFormat['waktu']]) }}"
                     wire:navigate
                     class="inline-flex items-center px-3 py-1.5 rounded-lg bg-brand-500 text-white text-xs font-medium hover:bg-brand-600 transition">
                     Lihat Detail

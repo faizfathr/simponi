@@ -30,6 +30,8 @@ export default {
                 'success-500': '#12b76a',
                 'success-600': '#039855',
                 'warning-50': '#fffaeb',
+                'warning-500': '#f79009',
+                'warning-600': '#dc6803',
                 'danger-50': '#ffeded',
                 'danger-500': '#f04438',
                 'danger-600': '#d92d20',
